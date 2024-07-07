@@ -1,5 +1,46 @@
 
-### Get Bicycle
+
+### Add Bicycle
+POST http://localhost:8080/api/v1/bicycle
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 0,
+  "brand": "Tesla",
+  "model": "Model B",
+  "productionYear": 2077,
+  "maxSpeed": 60,
+  "batteryChargeDesign": 60357,
+  "batteryChargeCurrent": 55687
+}
+
+### Get Bicycles
 GET http://localhost:8080/api/v1/bicycle
+Accept: application/json
+Content-Type: application/json
+
+### Get Bicycle by ID
+GET http://localhost:8080/api/v1/bicycle/2
+Accept: application/json
+Content-Type: application/json
+
+### Update Bicycle
+PUT http://localhost:8080/api/v1/bicycle/2
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1,
+  "brand": "Tesla",
+  "model": "Model XD",
+  "productionYear": 2077,
+  "maxSpeed": 60,
+  "batteryChargeDesign": 11568,
+  "batteryChargeCurrent": 85674
+}
+
+### Delete Bicycle
+DELETE http://localhost:8080/api/v1/bicycle/2
 Accept: application/json
 Content-Type: application/json

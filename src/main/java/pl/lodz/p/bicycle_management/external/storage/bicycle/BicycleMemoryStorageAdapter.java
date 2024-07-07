@@ -1,0 +1,49 @@
+package pl.lodz.p.bicycle_management.external.storage.bicycle;
+
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
+import pl.lodz.p.bicycle_management.api.bicycle.BicycleDtoMapper;
+import pl.lodz.p.bicycle_management.domain.Bicycle;
+import pl.lodz.p.bicycle_management.domain.BicycleRepository;
+
+import java.util.*;
+
+@Repository
+public class BicycleMemoryStorageAdapter implements BicycleRepository {
+    final private BicycleDtoMapper bicycleDtoMapper;
+    final private Map<Integer, Bicycle> bicycles = new HashMap<>();
+    private static int currentId = 0;
+
+    public BicycleMemoryStorageAdapter(BicycleDtoMapper bicycleDtoMapper) {
+        this.bicycleDtoMapper = bicycleDtoMapper;
+    }
+
+    @Override
+    public Bicycle save(Bicycle bicycle) {
+        bicycles.put(++currentId, bicycle);
+        bicycle.setId(currentId);
+        return bicycle;
+    }
+
+    @Override
+    public Optional<Bicycle> findById(Integer id) {
+        return Optional.ofNullable(bicycles.get(id));
+    }
+
+    @Override
+    public List<Bicycle> findAll() {
+        return new ArrayList<>(bicycles.values());
+    }
+
+    @Override
+    public Bicycle update(Integer id, Bicycle bicycle) {
+        bicycle.setId(id);
+        bicycles.put(id, bicycle);
+        return bicycle;
+    }
+
+    @Override
+    public void delete(Integer id) {
+        bicycles.remove(id);
+    }
+}
