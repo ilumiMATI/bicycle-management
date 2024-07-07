@@ -10,8 +10,6 @@ import java.util.Objects;
 
 @AggregateRoot
 @Data
-@Getter
-@Setter
 public class Bicycle {
     private Integer id;
     private String brand;
