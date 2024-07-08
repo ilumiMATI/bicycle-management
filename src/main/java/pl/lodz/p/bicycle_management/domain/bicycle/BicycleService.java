@@ -1,22 +1,18 @@
-package pl.lodz.p.bicycle_management.api.bicycle;
+package pl.lodz.p.bicycle_management.domain.bicycle;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.lodz.p.bicycle_management.domain.Bicycle;
-import pl.lodz.p.bicycle_management.domain.BicycleRepository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class BicycleApiService {
+public class BicycleService {
     final private BicycleRepository bicycleRepository;
 
     public Bicycle addBicycle(Bicycle bicycle) {
-        bicycleRepository.save(bicycle);
-        return bicycle;
+        return bicycleRepository.save(bicycle);
     }
 
     public Optional<Bicycle> findBicycleById(int id) {

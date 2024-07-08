@@ -1,22 +1,15 @@
 package pl.lodz.p.bicycle_management.external.storage.bicycle;
 
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
-import pl.lodz.p.bicycle_management.api.bicycle.BicycleDtoMapper;
-import pl.lodz.p.bicycle_management.domain.Bicycle;
-import pl.lodz.p.bicycle_management.domain.BicycleRepository;
+import pl.lodz.p.bicycle_management.domain.bicycle.Bicycle;
+import pl.lodz.p.bicycle_management.domain.bicycle.BicycleRepository;
 
 import java.util.*;
 
 @Repository
 public class BicycleMemoryStorageAdapter implements BicycleRepository {
-    final private BicycleDtoMapper bicycleDtoMapper;
     final private Map<Integer, Bicycle> bicycles = new HashMap<>();
     private static int currentId = 0;
-
-    public BicycleMemoryStorageAdapter(BicycleDtoMapper bicycleDtoMapper) {
-        this.bicycleDtoMapper = bicycleDtoMapper;
-    }
 
     @Override
     public Bicycle save(Bicycle bicycle) {

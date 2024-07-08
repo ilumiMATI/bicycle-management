@@ -1,15 +1,13 @@
-package pl.lodz.p.bicycle_management.domain;
+package pl.lodz.p.bicycle_management.domain.bicycle;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import pl.lodz.p.annotations.architecture.PrimaryPort;
 import pl.lodz.p.annotations.ddd.AggregateRoot;
 
 import java.util.Objects;
 
-@AggregateRoot
 @Data
+@AggregateRoot
 public class Bicycle {
     private Integer id;
     private String brand;

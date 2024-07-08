@@ -1,4 +1,4 @@
-package pl.lodz.p.bicycle_management.domain;
+package pl.lodz.p.bicycle_management.domain.bicycle;
 
 import org.springframework.stereotype.Repository;
 
