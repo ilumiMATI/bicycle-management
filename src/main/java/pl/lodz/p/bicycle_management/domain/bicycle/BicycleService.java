@@ -15,7 +15,7 @@ public class BicycleService {
         return bicycleRepository.save(bicycle);
     }
 
-    public Optional<Bicycle> findBicycleById(int id) {
+    public Optional<Bicycle> findBicycleById(Integer id) {
         return bicycleRepository.findById(id);
     }
 

@@ -14,30 +14,27 @@ import java.util.Optional;
 @Repository
 public class BicycleDatabaseStorageAdapter implements BicycleRepository {
     final private JpaBicycleRepository jpaBicycleRepository;
-    final private BicycleEntityMapper bicycleEntityMapper;
 
     @Override
     public Bicycle save(Bicycle bicycle) {
-        BicycleEntity bicycleEntity = bicycleEntityMapper.toEntity(bicycle);
-        return bicycleEntityMapper.toDomain(jpaBicycleRepository.save(bicycleEntity));
+        return jpaBicycleRepository.save(bicycle);
     }
 
     @Override
     public Optional<Bicycle> findById(Integer id) {
-        return jpaBicycleRepository.findById(id).map(bicycleEntityMapper::toDomain);
+        return jpaBicycleRepository.findById(id);
     }
 
     @Override
     public List<Bicycle> findAll() {
-        return jpaBicycleRepository.findAll(Sort.by(Sort.Direction.ASC,"id")).stream().map(bicycleEntityMapper::toDomain).toList();
+        return jpaBicycleRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
     }
 
     @Override
     public Bicycle update(Bicycle bicycle) {
-        Optional<BicycleEntity> bicycleEntity = jpaBicycleRepository.findById(bicycle.getId());
+        Optional<Bicycle> bicycleEntity = jpaBicycleRepository.findById(bicycle.getId());
         if (bicycleEntity.isPresent()) {
-            BicycleEntity bicycleEntityToUpdate = jpaBicycleRepository.save(bicycleEntityMapper.toEntity(bicycle));
-            return bicycleEntityMapper.toDomain(bicycleEntityToUpdate);
+            return jpaBicycleRepository.save(bicycle);
         }
         throw new BicycleNotFoundException();
     }

@@ -1,34 +1,39 @@
 package pl.lodz.p.bicycle_management.domain.bicycle;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import pl.lodz.p.annotations.architecture.PrimaryPort;
+import jakarta.persistence.*;
+import lombok.*;
 import pl.lodz.p.annotations.ddd.AggregateRoot;
+import pl.lodz.p.bicycle_management.domain.bicycle.type.BicycleType;
 
-import java.util.Objects;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 @EqualsAndHashCode(of = "id")
-@Data
+@Table(name = "bicycles")
+@Entity
 @AggregateRoot
 public class Bicycle {
+    @Id
+    @SequenceGenerator(
+            name = "bicycle_id_seq",
+            sequenceName = "bicycle_id_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "bicycle_id_seq"
+    )
+    @Column(name = "bicycleId")
     private Integer id;
-    private String brand;
-    private String model;
-    private Integer productionYear;
-    private Integer maxSpeed;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn (name = "bicycleTypeId")
+    private BicycleType bicycleType;
+
+    @Column (nullable = false)
     private Integer batteryChargeDesign;
+
+    @Column (nullable = false)
     private Integer batteryChargeCurrent;
-
-    @PrimaryPort
-    public void setBatteryCharge(Integer batteryCharge) {
-        batteryChargeCurrent = batteryCharge;
-        if (batteryCharge > batteryChargeDesign) {
-            batteryChargeDesign = batteryCharge;
-        }
-    }
-
-    @PrimaryPort
-    public Double getBatteryPercentage() {
-        return batteryChargeCurrent * 100.0 / batteryChargeDesign;
-    }
 }

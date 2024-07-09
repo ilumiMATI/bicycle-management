@@ -1,12 +1,10 @@
-package pl.lodz.p.bicycle_management.external.rest;
+package pl.lodz.p.bicycle_management.api.bicycle;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.bicycle_management.domain.bicycle.BicycleNotFoundException;
 import pl.lodz.p.bicycle_management.domain.bicycle.BicycleService;
-import pl.lodz.p.bicycle_management.api.bicycle.BicycleDto;
-import pl.lodz.p.bicycle_management.api.bicycle.BicycleDtoMapper;
 import pl.lodz.p.bicycle_management.domain.bicycle.Bicycle;
 
 import java.util.List;
@@ -20,9 +18,9 @@ public class BicycleController {
     final private BicycleDtoMapper bicycleDtoMapper;
 
     @PostMapping
-    ResponseEntity<BicycleDto> addBicycle(@RequestBody BicycleDto bicycleDto) {
-        Bicycle bicycle = bicycleService.addBicycle(bicycleDtoMapper.toDomain(bicycleDto));
-        return ResponseEntity.ok(bicycleDtoMapper.toDto(bicycle));
+    ResponseEntity<BicycleMinimalDto> addBicycle(@RequestBody BicycleMinimalDto bicycleMinimalDto) {
+        Bicycle bicycle = bicycleService.addBicycle(bicycleDtoMapper.toDomain(bicycleMinimalDto));
+        return ResponseEntity.ok(bicycleDtoMapper.toMinimalDto(bicycle));
     }
 
     @GetMapping
@@ -39,10 +37,10 @@ public class BicycleController {
     }
 
     @PutMapping
-    ResponseEntity<BicycleDto> updateBicycle(@RequestBody BicycleDto bicycleDto) {
+    ResponseEntity<BicycleMinimalDto> updateBicycle(@RequestBody BicycleMinimalDto bicycleMinimalDto) {
         try {
-            Bicycle updatedBicycle = bicycleService.updateBicycle(bicycleDtoMapper.toDomain(bicycleDto));
-            return ResponseEntity.ok(bicycleDtoMapper.toDto(updatedBicycle));
+            Bicycle updatedBicycle = bicycleService.updateBicycle(bicycleDtoMapper.toDomain(bicycleMinimalDto));
+            return ResponseEntity.ok(bicycleDtoMapper.toMinimalDto(updatedBicycle));
         } catch (BicycleNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }

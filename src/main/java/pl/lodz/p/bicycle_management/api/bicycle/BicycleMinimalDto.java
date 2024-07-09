@@ -1,10 +1,8 @@
 package pl.lodz.p.bicycle_management.api.bicycle;
 
-import pl.lodz.p.bicycle_management.api.bicycle.type.BicycleTypeDto;
-
-public record BicycleDto(
+public record BicycleMinimalDto(
         Integer id,
-        BicycleTypeDto bicycleType,
+        Integer bicycleTypeId,
         Integer batteryChargeDesign,
         Integer batteryChargeCurrent
 ) {

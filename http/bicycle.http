@@ -5,10 +5,7 @@ Content-Type: application/json
 
 {
   "id": null,
-  "brand": "Tesla",
-  "model": "Model B",
-  "productionYear": 2077,
-  "maxSpeed": 60,
+  "bicycleTypeId": 1,
   "batteryChargeDesign": 60357,
   "batteryChargeCurrent": 55687
 }
@@ -32,7 +29,6 @@ Content-Type: application/json
   "id": 5,
   "brand": "Tesla",
   "model": "Model XD",
-  "productionYear": 2077,
   "maxSpeed": 60,
   "batteryChargeDesign": 11568,
   "batteryChargeCurrent": 85674
