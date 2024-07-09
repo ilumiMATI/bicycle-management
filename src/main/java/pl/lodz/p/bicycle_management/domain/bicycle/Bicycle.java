@@ -1,15 +1,15 @@
-package pl.lodz.p.bicycle_management.domain;
+package pl.lodz.p.bicycle_management.domain.bicycle;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.EqualsAndHashCode;
 import pl.lodz.p.annotations.architecture.PrimaryPort;
 import pl.lodz.p.annotations.ddd.AggregateRoot;
 
 import java.util.Objects;
 
-@AggregateRoot
+@EqualsAndHashCode(of = "id")
 @Data
+@AggregateRoot
 public class Bicycle {
     private Integer id;
     private String brand;
@@ -31,18 +31,4 @@ public class Bicycle {
     public Double getBatteryPercentage() {
         return batteryChargeCurrent * 100.0 / batteryChargeDesign;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Bicycle bicycle = (Bicycle) o;
-        return Objects.equals(id, bicycle.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
-
 }

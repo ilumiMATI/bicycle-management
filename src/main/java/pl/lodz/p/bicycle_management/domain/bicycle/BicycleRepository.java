@@ -1,4 +1,4 @@
-package pl.lodz.p.bicycle_management.domain;
+package pl.lodz.p.bicycle_management.domain.bicycle;
 
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +10,6 @@ public interface BicycleRepository {
     Bicycle save(Bicycle bicycle);
     Optional<Bicycle> findById(Integer id);
     List<Bicycle> findAll();
-    Bicycle update(Integer id, Bicycle bicycle);
+    Bicycle update(Bicycle bicycle);
     void delete(Integer id);
 }
