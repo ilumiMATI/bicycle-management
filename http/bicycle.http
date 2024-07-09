@@ -4,7 +4,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "id": 0,
+  "id": null,
   "brand": "Tesla",
   "model": "Model B",
   "productionYear": 2077,
@@ -24,12 +24,12 @@ Accept: application/json
 Content-Type: application/json
 
 ### Update Bicycle
-PUT http://localhost:8080/api/v1/bicycle/2
+PUT http://localhost:8080/api/v1/bicycle
 Accept: application/json
 Content-Type: application/json
 
 {
-  "id": 1,
+  "id": 5,
   "brand": "Tesla",
   "model": "Model XD",
   "productionYear": 2077,

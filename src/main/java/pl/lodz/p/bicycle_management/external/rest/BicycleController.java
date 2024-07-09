@@ -3,6 +3,7 @@ package pl.lodz.p.bicycle_management.external.rest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.lodz.p.bicycle_management.domain.bicycle.BicycleNotFoundException;
 import pl.lodz.p.bicycle_management.domain.bicycle.BicycleService;
 import pl.lodz.p.bicycle_management.api.bicycle.BicycleDto;
 import pl.lodz.p.bicycle_management.api.bicycle.BicycleDtoMapper;
@@ -37,15 +38,14 @@ public class BicycleController {
         return ResponseEntity.notFound().build();
     }
 
-    // TODO: NotFound logic should be inside repository and here it should only be catched
-    @PutMapping(path = "/{id}")
-    ResponseEntity<BicycleDto> updateBicycle(@PathVariable Integer id, @RequestBody BicycleDto bicycleDto) {
-        Optional<Bicycle> bicycle = bicycleService.findBicycleById(id);
-        if (bicycle.isEmpty())
+    @PutMapping
+    ResponseEntity<BicycleDto> updateBicycle(@RequestBody BicycleDto bicycleDto) {
+        try {
+            Bicycle updatedBicycle = bicycleService.updateBicycle(bicycleDtoMapper.toDomain(bicycleDto));
+            return ResponseEntity.ok(bicycleDtoMapper.toDto(updatedBicycle));
+        } catch (BicycleNotFoundException ex) {
             return ResponseEntity.notFound().build();
-
-        Bicycle updatedBicycle = bicycleService.updateBicycle(id, bicycleDtoMapper.toDomain(bicycleDto));
-        return ResponseEntity.ok(bicycleDtoMapper.toDto(updatedBicycle));
+        }
     }
 
     @DeleteMapping(path = "/{id}")

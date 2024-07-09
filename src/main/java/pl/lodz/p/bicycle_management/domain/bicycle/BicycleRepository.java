@@ -10,6 +10,6 @@ public interface BicycleRepository {
     Bicycle save(Bicycle bicycle);
     Optional<Bicycle> findById(Integer id);
     List<Bicycle> findAll();
-    Bicycle update(Integer id, Bicycle bicycle);
+    Bicycle update(Bicycle bicycle);
     void delete(Integer id);
 }

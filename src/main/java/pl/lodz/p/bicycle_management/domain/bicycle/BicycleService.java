@@ -23,8 +23,8 @@ public class BicycleService {
         return bicycleRepository.findAll();
     }
 
-    public Bicycle updateBicycle(Integer id, Bicycle bicycle) {
-        return bicycleRepository.update(id, bicycle);
+    public Bicycle updateBicycle(Bicycle bicycle) {
+        return bicycleRepository.update(bicycle);
     }
 
     public void deleteBicycle(Integer id) {

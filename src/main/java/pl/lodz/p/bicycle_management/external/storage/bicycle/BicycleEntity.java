@@ -6,12 +6,12 @@ import lombok.*;
 import java.util.Objects;
 
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
+@Entity
 public class BicycleEntity {
     @Id
     @SequenceGenerator(

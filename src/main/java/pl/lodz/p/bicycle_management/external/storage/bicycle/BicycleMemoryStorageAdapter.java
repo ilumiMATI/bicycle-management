@@ -29,9 +29,8 @@ public class BicycleMemoryStorageAdapter implements BicycleRepository {
     }
 
     @Override
-    public Bicycle update(Integer id, Bicycle bicycle) {
-        bicycle.setId(id);
-        bicycles.put(id, bicycle);
+    public Bicycle update(Bicycle bicycle) {
+        bicycles.put(bicycle.getId(), bicycle);
         return bicycle;
     }
 

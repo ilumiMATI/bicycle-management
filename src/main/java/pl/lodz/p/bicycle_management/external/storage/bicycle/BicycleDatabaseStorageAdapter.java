@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 import pl.lodz.p.bicycle_management.domain.bicycle.Bicycle;
+import pl.lodz.p.bicycle_management.domain.bicycle.BicycleNotFoundException;
 import pl.lodz.p.bicycle_management.domain.bicycle.BicycleRepository;
 
 import java.util.List;
@@ -31,16 +32,14 @@ public class BicycleDatabaseStorageAdapter implements BicycleRepository {
         return jpaBicycleRepository.findAll(Sort.by(Sort.Direction.ASC,"id")).stream().map(bicycleEntityMapper::toDomain).toList();
     }
 
-    // TODO: There should be a BicycleNotFound Exception right?
     @Override
-    public Bicycle update(Integer id, Bicycle bicycle) {
-        Optional<BicycleEntity> bicycleEntity = jpaBicycleRepository.findById(id);
-        BicycleEntity bicycleEntityToUpdate = null;
+    public Bicycle update(Bicycle bicycle) {
+        Optional<BicycleEntity> bicycleEntity = jpaBicycleRepository.findById(bicycle.getId());
         if (bicycleEntity.isPresent()) {
-            bicycle.setId(id);
-            bicycleEntityToUpdate = jpaBicycleRepository.save(bicycleEntityMapper.toEntity(bicycle));
+            BicycleEntity bicycleEntityToUpdate = jpaBicycleRepository.save(bicycleEntityMapper.toEntity(bicycle));
+            return bicycleEntityMapper.toDomain(bicycleEntityToUpdate);
         }
-        return bicycleEntityMapper.toDomain(bicycleEntityToUpdate);
+        throw new BicycleNotFoundException();
     }
 
     @Override
