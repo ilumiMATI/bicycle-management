@@ -13,7 +13,7 @@ import pl.lodz.p.bicycle_management.bicycle.external.storage.type.BicycleTypeDat
 import pl.lodz.p.bicycle_management.bicycle.external.storage.type.JpaBicycleTypeRepository;
 
 @Configuration
-@ConfigurationProperties("domain.properties")
+@ConfigurationProperties("bicycle.domain.properties")
 public class BicycleDomainConfiguration {
     @Bean
     public BicycleRepository bicycleRepository(JpaBicycleRepository jpaBicycleRepository) {

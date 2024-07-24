@@ -1,9 +1,8 @@
-package pl.lodz.p.bicycle_management;
+package pl.lodz.p.bicycle_management.bicycle;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import pl.lodz.p.bicycle_management.bicycle.application.BicycleDto;
 import pl.lodz.p.bicycle_management.bicycle.application.BicycleDtoMapper;
 import pl.lodz.p.bicycle_management.bicycle.application.BicycleMinimalDto;
 import pl.lodz.p.bicycle_management.bicycle.application.type.BicycleTypeDto;

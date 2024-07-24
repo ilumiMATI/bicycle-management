@@ -1,0 +1,35 @@
+### Add Rent
+POST http://localhost:8080/api/v1/rent
+Accept: application/json
+Content-Type: application/json
+
+{
+  "userId": 2,
+  "bicycleId": 1
+}
+
+### Get Rents
+GET http://localhost:8080/api/v1/rent
+Accept: application/json
+Content-Type: application/json
+
+### Get Rent by ID
+GET http://localhost:8080/api/v1/rent/1
+Accept: application/json
+Content-Type: application/json
+
+### Update Rent
+PUT http://localhost:8080/api/v1/rent
+Accept: application/json
+Content-Type: application/json
+
+{
+  "id": 1,
+  "userId": 1,
+  "bicycleId": 3
+}
+
+### Delete Rent
+DELETE http://localhost:8080/api/v1/rent/1
+Accept: application/json
+Content-Type: application/json

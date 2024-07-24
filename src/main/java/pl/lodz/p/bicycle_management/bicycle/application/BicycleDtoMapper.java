@@ -15,7 +15,7 @@ public interface BicycleDtoMapper {
     Bicycle toDomain(BicycleMinimalDto bicycleMinimalDto);
 
     @Named("bicycleTypeFromId")
-    default BicycleType mapBicycleTypeFromId(Integer id) {
+    static BicycleType mapBicycleTypeFromId(Integer id) {
         if (id == null) {
             return null;
         }
