@@ -10,6 +10,8 @@ cors:
   exposed-headers: "*"
 
 spring:
+  application:
+    name: bicycle-management
   datasource:
     url: jdbc:postgresql://localhost:5432/db
     username: root

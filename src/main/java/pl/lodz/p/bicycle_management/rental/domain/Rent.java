@@ -4,18 +4,16 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.lodz.p.bicycle_management.annotations.ddd.AggregateRoot;
 import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
-import pl.lodz.p.bicycle_management.user.domain.User;
 
 import java.time.LocalDateTime;
 
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 @Table(name = "rents")
-@Entity
-@AggregateRoot
 public class Rent {
     @Id
     @SequenceGenerator(
@@ -30,13 +28,11 @@ public class Rent {
     @Column(name = "rentId")
     private Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
-    private User user;
+    @Column(name = "userId", nullable = false)
+    private Integer userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bicycleId")
-    private Bicycle bicycle;
+    @Column(name = "bicycleId", nullable = false)
+    private Integer bicycleId;
 
     private LocalDateTime timeRented;
 

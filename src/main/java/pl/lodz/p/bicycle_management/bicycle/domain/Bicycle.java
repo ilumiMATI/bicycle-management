@@ -3,7 +3,6 @@ package pl.lodz.p.bicycle_management.bicycle.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.lodz.p.bicycle_management.annotations.ddd.AggregateRoot;
-import pl.lodz.p.bicycle_management.bicycle.domain.type.BicycleType;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +26,7 @@ public class Bicycle {
     @Column(name = "bicycleId")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "bicycleTypeId")
     private BicycleType bicycleType;
 
