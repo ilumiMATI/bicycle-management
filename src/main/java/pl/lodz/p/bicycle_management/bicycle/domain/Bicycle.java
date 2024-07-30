@@ -3,7 +3,6 @@ package pl.lodz.p.bicycle_management.bicycle.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import pl.lodz.p.bicycle_management.annotations.ddd.AggregateRoot;
-import pl.lodz.p.bicycle_management.bicycle.domain.type.BicycleType;
 
 @NoArgsConstructor
 @AllArgsConstructor

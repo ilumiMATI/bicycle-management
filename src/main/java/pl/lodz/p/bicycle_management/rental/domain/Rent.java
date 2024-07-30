@@ -30,7 +30,7 @@ public class Rent {
     @Column(name = "rentId")
     private Integer id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
     private User user;
 
