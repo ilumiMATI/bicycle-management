@@ -1,36 +1,48 @@
 package pl.lodz.p.bicycle_management.user.application;
 
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.lodz.p.bicycle_management.user.domain.EncodingService;
+import pl.lodz.p.bicycle_management.user.domain.PageUser;
 import pl.lodz.p.bicycle_management.user.domain.User;
 import pl.lodz.p.bicycle_management.user.domain.UserRepository;
+import pl.lodz.p.bicycle_management.user.domain.UserNotFoundException;
 
-import java.util.List;
-import java.util.Optional;
-
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    final private UserRepository userRepository;
 
-    public User addUser(User user) {
-        return userRepository.save(user);
+    private final UserRepository userRepository;
+    private final EncodingService encoder;
+
+    public User save(User user) {
+        return userRepository.save(
+                user.withPassword(
+                        encoder.encode(user.getPassword())
+                )
+        );
     }
 
-    public Optional<User> findUserById(Integer id) {
-        return userRepository.findById(id);
+    public void update(User user) {
+        userRepository.update(user);
     }
 
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+    public void removeById(Integer id) {
+        userRepository.remove(id);
     }
 
-    public User updateUser(User user) {
-        return userRepository.update(user);
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
     }
 
-    public void deleteUser(Integer id) {
-        userRepository.delete(id);
+    public User findById(Integer id) {
+        return userRepository.findById(id)
+                .orElseThrow(UserNotFoundException::new);
+    }
+
+    public PageUser findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 }

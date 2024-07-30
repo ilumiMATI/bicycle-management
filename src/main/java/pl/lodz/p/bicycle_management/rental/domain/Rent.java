@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import pl.lodz.p.bicycle_management.annotations.ddd.AggregateRoot;
 import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
-import pl.lodz.p.bicycle_management.user.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -30,11 +29,10 @@ public class Rent {
     @Column(name = "rentId")
     private Integer id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId")
-    private User user;
+    @Column(name = "userId", nullable = false)
+    private Integer userId;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bicycleId")
     private Bicycle bicycle;
 

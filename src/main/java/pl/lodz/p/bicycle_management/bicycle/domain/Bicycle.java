@@ -26,7 +26,7 @@ public class Bicycle {
     @Column(name = "bicycleId")
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn (name = "bicycleTypeId")
     private BicycleType bicycleType;
 
