@@ -14,23 +14,26 @@ import java.util.Optional;
 public class RentService {
     final private RentRepository rentRepository;
 
-    public Rent addRent(Rent rent) {
+    public Rent create(Rent rent) {
         return rentRepository.save(rent);
     }
-    public Optional<Rent> findRentById(Integer id) {
+    public Optional<Rent> findById(Integer id) {
         return rentRepository.findById(id);
     }
-    public List<Rent> findAllRents() {
+    public Optional<Rent> findByRentNumber(String rentNumber) {
+        return rentRepository.findByRentNumber(rentNumber);
+    }
+    public List<Rent> findAll() {
         return rentRepository.findAll();
     }
-    public Rent updateRent(Rent rent) {
+    public Rent update(Rent rent) {
         Optional<Rent> optionalRent = rentRepository.findById(rent.getId());
         if (optionalRent.isPresent()) {
             return rentRepository.save(rent);
         }
         throw new RentNotFoundException();
     }
-    public void deleteRent(Integer id) {
+    public void delete(Integer id) {
         rentRepository.delete(id);
     }
 }

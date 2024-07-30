@@ -5,4 +5,8 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import pl.lodz.p.bicycle_management.rental.domain.Rent;
 
-public interface JpaRentRepository extends JpaRepository<Rent, Integer> { }
+import java.util.Optional;
+
+public interface JpaRentRepository extends JpaRepository<Rent, Integer> {
+    Optional<Rent> findByRentNumber(String reservationNumber);
+}

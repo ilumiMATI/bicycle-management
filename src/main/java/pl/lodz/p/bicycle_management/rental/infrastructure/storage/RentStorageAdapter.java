@@ -29,6 +29,11 @@ public class RentStorageAdapter implements RentRepository {
     }
 
     @Override
+    public Optional<Rent> findByRentNumber(String rentNumber) {
+        return jpaRentRepository.findByRentNumber(rentNumber);
+    }
+
+    @Override
     public List<Rent> findAll() {
         return jpaRentRepository.findAll();
     }

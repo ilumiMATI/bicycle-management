@@ -2,8 +2,6 @@ package pl.lodz.p.bicycle_management.rental.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pl.lodz.p.bicycle_management.annotations.ddd.AggregateRoot;
-import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +11,18 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@Table(name = "rents")
+@Table(
+    name = "rents",
+    uniqueConstraints = {
+        @UniqueConstraint(
+            name = "rent_number_unique",
+            columnNames = "rentNumber"
+        ), @UniqueConstraint(
+            name = "bicycle_id_unique",
+            columnNames = "bicycleId"
+        )
+    }
+)
 public class Rent {
     @Id
     @SequenceGenerator(
@@ -28,10 +37,16 @@ public class Rent {
     @Column(name = "rentId")
     private Integer id;
 
-    @Column(name = "userId", nullable = false)
+    @Version
+    private Integer version;
+
+    @Column
+    private String rentNumber;
+
+    @Column(nullable = false)
     private Integer userId;
 
-    @Column(name = "bicycleId", nullable = false)
+    @Column(nullable = false)
     private Integer bicycleId;
 
     private LocalDateTime timeRented;

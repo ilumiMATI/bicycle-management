@@ -20,35 +20,35 @@ public class RentController {
     private final RentDtoMapper rentDtoMapper;
 
     @PostMapping
-    ResponseEntity<RentDto> addRent(@RequestBody RentDto rentMinimalDto) {
-        RentDto rentMinimalDtoWithTime = new RentDto(null,
-                rentMinimalDto.userId(), rentMinimalDto.bicycleId(), LocalDateTime.now());
-        Rent rent = rentService.addRent(rentDtoMapper.toDomain(rentMinimalDtoWithTime));
+    ResponseEntity<RentDto> addRent(@RequestBody RentDto rentDto) {
+        RentDto rentDtoWithTime = new RentDto(null, rentDto.rentNumber(),
+                rentDto.userId(), rentDto.bicycleId(), LocalDateTime.now());
+        Rent rent = rentService.create(rentDtoMapper.toDomain(rentDtoWithTime));
         return ResponseEntity.ok(rentDtoMapper.toDto(rent));
     }
 
-    @GetMapping
-    ResponseEntity<List<RentDto>> getAllRents() {
-        return ResponseEntity.ok(
-                StreamSupport.stream(rentService.findAllRents().spliterator(), false)
-                        .map(rentDtoMapper::toDto)
-                        .toList());
-    }
-
-    @GetMapping(path = "/{id}")
-    ResponseEntity<RentDto> getRentById(@PathVariable Integer id) {
-        Optional<Rent> rent = rentService.findRentById(id);
+    @GetMapping(path = "/{rentNumber}")
+    ResponseEntity<RentDto> getRentById(@PathVariable String rentNumber) {
+        Optional<Rent> rent = rentService.findByRentNumber(rentNumber);
         if(rent.isPresent()) {
             return ResponseEntity.ok(rentDtoMapper.toDto(rent.get()));
         }
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping
+    ResponseEntity<List<RentDto>> getAllRents() {
+        return ResponseEntity.ok(
+                StreamSupport.stream(rentService.findAll().spliterator(), false)
+                        .map(rentDtoMapper::toDto)
+                        .toList());
+    }
+
     // Updating rent info shouldn't allow everything
     @PutMapping
-    ResponseEntity<RentDto> updateRent(@RequestBody RentDto rentMinimalDto) {
+    ResponseEntity<RentDto> updateRent(@RequestBody RentDto rentDto) {
         try {
-            Rent updatedRent = rentService.updateRent(rentDtoMapper.toDomain(rentMinimalDto));
+            Rent updatedRent = rentService.update(rentDtoMapper.toDomain(rentDto));
             return ResponseEntity.ok(rentDtoMapper.toDto(updatedRent));
         } catch (RentNotFoundException ex) {
             return ResponseEntity.notFound().build();
@@ -57,7 +57,7 @@ public class RentController {
 
     @DeleteMapping(path = "/{id}")
     ResponseEntity<Void> deleteRent(@PathVariable Integer id) {
-        rentService.deleteRent(id);
+        rentService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

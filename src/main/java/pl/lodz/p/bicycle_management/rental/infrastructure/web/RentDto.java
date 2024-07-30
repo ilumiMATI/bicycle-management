@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 public record RentDto(
         Integer id,
+        String rentNumber,
         Integer userId,
         Integer bicycleId,
         LocalDateTime timeRented

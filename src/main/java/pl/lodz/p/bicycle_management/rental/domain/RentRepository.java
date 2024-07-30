@@ -13,5 +13,7 @@ public interface RentRepository {
 
     Optional<Rent> findById(Integer id);
 
+    Optional<Rent> findByRentNumber(String rentNumber);
+
     List<Rent> findAll();
 }

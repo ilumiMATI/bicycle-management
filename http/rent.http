@@ -33,6 +33,7 @@ Content-Type: application/json
 Authorization: {{auth_token}}
 
 {
+  "rentNumber": "RN1090",
   "userId": 2,
   "bicycleId": 2
 }
@@ -43,8 +44,8 @@ Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
-### Get Rent by ID
-GET http://localhost:8080/api/v1/rent/1
+### Get Rent by RentNumber
+GET http://localhost:8080/api/v1/rent/RN1090
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
@@ -56,9 +57,11 @@ Content-Type: application/json
 Authorization: {{auth_token}}
 
 {
-  "id": 1,
-  "userId": 1,
-  "bicycleId": 3
+  "id": 6,
+  "rentNumber": "RN9999",
+  "userId": 2,
+  "bicycleId": 3,
+  "timeRented": "2010-12-24T18:00:00"
 }
 
 ### Delete Rent
