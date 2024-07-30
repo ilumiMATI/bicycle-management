@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 public record RentDto(
         Integer id,
         Integer userId,
-        BicycleDto bicycle,
+        Integer bicycleId,
         LocalDateTime timeRented
 ) {
 }

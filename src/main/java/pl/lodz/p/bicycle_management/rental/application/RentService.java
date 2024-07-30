@@ -6,6 +6,7 @@ import pl.lodz.p.bicycle_management.rental.domain.Rent;
 import pl.lodz.p.bicycle_management.rental.domain.RentNotFoundException;
 import pl.lodz.p.bicycle_management.rental.domain.RentRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -19,7 +20,7 @@ public class RentService {
     public Optional<Rent> findRentById(Integer id) {
         return rentRepository.findById(id);
     }
-    public Iterable<Rent> findAllRents() {
+    public List<Rent> findAllRents() {
         return rentRepository.findAll();
     }
     public Rent updateRent(Rent rent) {
@@ -30,6 +31,6 @@ public class RentService {
         throw new RentNotFoundException();
     }
     public void deleteRent(Integer id) {
-        rentRepository.deleteById(id);
+        rentRepository.delete(id);
     }
 }

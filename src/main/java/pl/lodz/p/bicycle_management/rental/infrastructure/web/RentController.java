@@ -20,11 +20,11 @@ public class RentController {
     private final RentDtoMapper rentDtoMapper;
 
     @PostMapping
-    ResponseEntity<RentMinimalDto> addRent(@RequestBody RentMinimalDto rentMinimalDto) {
-        RentMinimalDto rentMinimalDtoWithTime = new RentMinimalDto(null,
+    ResponseEntity<RentDto> addRent(@RequestBody RentDto rentMinimalDto) {
+        RentDto rentMinimalDtoWithTime = new RentDto(null,
                 rentMinimalDto.userId(), rentMinimalDto.bicycleId(), LocalDateTime.now());
         Rent rent = rentService.addRent(rentDtoMapper.toDomain(rentMinimalDtoWithTime));
-        return ResponseEntity.ok(rentDtoMapper.toMinimalDto(rent));
+        return ResponseEntity.ok(rentDtoMapper.toDto(rent));
     }
 
     @GetMapping
@@ -46,10 +46,10 @@ public class RentController {
 
     // Updating rent info shouldn't allow everything
     @PutMapping
-    ResponseEntity<RentMinimalDto> updateRent(@RequestBody RentMinimalDto rentMinimalDto) {
+    ResponseEntity<RentDto> updateRent(@RequestBody RentDto rentMinimalDto) {
         try {
             Rent updatedRent = rentService.updateRent(rentDtoMapper.toDomain(rentMinimalDto));
-            return ResponseEntity.ok(rentDtoMapper.toMinimalDto(updatedRent));
+            return ResponseEntity.ok(rentDtoMapper.toDto(updatedRent));
         } catch (RentNotFoundException ex) {
             return ResponseEntity.notFound().build();
         }

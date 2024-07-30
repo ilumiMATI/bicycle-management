@@ -7,14 +7,13 @@ import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
 
 import java.time.LocalDateTime;
 
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 @Table(name = "rents")
-@Entity
-@AggregateRoot
 public class Rent {
     @Id
     @SequenceGenerator(
@@ -32,9 +31,8 @@ public class Rent {
     @Column(name = "userId", nullable = false)
     private Integer userId;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bicycleId")
-    private Bicycle bicycle;
+    @Column(name = "bicycleId", nullable = false)
+    private Integer bicycleId;
 
     private LocalDateTime timeRented;
 

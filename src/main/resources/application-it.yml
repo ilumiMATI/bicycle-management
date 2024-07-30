@@ -1,7 +1,5 @@
 server:
-  port: 8080
-  error:
-    include-message: always
+  port: 0
 
 cors:
   allowed-origins: "*"
@@ -13,7 +11,7 @@ spring:
   application:
     name: bicycle-management
   datasource:
-    url: jdbc:postgresql://localhost:5432/db
+    url: jdbc:postgresql://localhost:5332/db
     username: root
     password: root
   jpa:

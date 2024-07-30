@@ -9,23 +9,6 @@ import pl.lodz.p.bicycle_management.rental.domain.User;
 
 @Mapper(componentModel = "spring")
 public interface RentDtoMapper {
-    @Mapping(source = "rent.bicycle.id", target = "bicycleId")
-    //@Mapping(source = "userId", target = "userId")
-    RentMinimalDto toMinimalDto(Rent rent);
-
-    //@Mapping(source = "userId", target = "userId")
-    @Mapping(source = "bicycleId", target = "bicycle", qualifiedByName = "bicycleFromId")
-    Rent toDomain(RentMinimalDto rentMinimalDto);
-
-    @Named("bicycleFromId")
-    static Bicycle mapBicycleFromId(Integer bicycleId) {
-        if (bicycleId == null) return null;
-
-        Bicycle bicycle = new Bicycle();
-        bicycle.setId(bicycleId);
-        return bicycle;
-    }
-
     Rent toDomain(RentDto rentDto);
     RentDto toDto(Rent rent);
 }
