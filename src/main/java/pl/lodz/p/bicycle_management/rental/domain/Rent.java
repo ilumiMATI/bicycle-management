@@ -24,30 +24,27 @@ import java.time.LocalDateTime;
     }
 )
 public class Rent {
-    @Id
-    @SequenceGenerator(
-            name = "rent_id_seq",
-            sequenceName = "rent_id_seq",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "rent_id_seq"
-    )
-    @Column(name = "rentId")
-    private Integer id;
+    @EmbeddedId
+    @AttributeOverride(name = "id", column = @Column(name = "rent_id"))
+    private RentId id;
 
     @Version
     private Integer version;
 
-    @Column
-    private String rentNumber;
+    @Column(nullable = false)
+    @Embedded
+    @AttributeOverride(name = "value", column = @Column(name = "rent_number"))
+    private RentNumber rentNumber;
 
     @Column(nullable = false)
-    private Integer userId;
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "user_id"))
+    private UserId userId;
 
     @Column(nullable = false)
-    private Integer bicycleId;
+    @Embedded
+    @AttributeOverride(name = "id", column = @Column(name = "bicycle_id"))
+    private BicycleId bicycleId;
 
     private LocalDateTime timeRented;
 

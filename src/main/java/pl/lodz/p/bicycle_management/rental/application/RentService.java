@@ -18,8 +18,8 @@ public class RentService {
         return rentRepository.save(rent);
     }
 
-    public void delete(Integer id) {
-        rentRepository.delete(id);
+    public void delete(RentId rentId) {
+        rentRepository.delete(rentId);
     }
 
     public Rent findByRentNumber(String rentNumber) {

@@ -9,6 +9,8 @@ import pl.lodz.p.bicycle_management.BaseIT;
 import pl.lodz.p.bicycle_management.TestUserFactory;
 import pl.lodz.p.bicycle_management.rental.application.RentService;
 import pl.lodz.p.bicycle_management.rental.domain.PageRent;
+import pl.lodz.p.bicycle_management.rental.domain.RentNumber;
+import pl.lodz.p.bicycle_management.rental.domain.UserId;
 import pl.lodz.p.bicycle_management.user.application.UserService;
 import pl.lodz.p.bicycle_management.user.domain.User;
 
@@ -39,10 +41,10 @@ public class RentControllerTest extends BaseIT {
         RentDto responseRentDto = (RentDto) response.getBody();
 
         // then
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
-        assertEquals(responseRentDto.rentNumber(), rentDto.rentNumber());
-        assertEquals(responseRentDto.userId(), rentDto.userId());
-        assertEquals(responseRentDto.bicycleId(), rentDto.bicycleId());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(rentDto.rentNumber(), responseRentDto.rentNumber());
+        assertEquals(rentDto.userId(), responseRentDto.userId());
+        assertEquals(rentDto.bicycleId(), responseRentDto.bicycleId());
     }
 
     @Test
@@ -61,7 +63,7 @@ public class RentControllerTest extends BaseIT {
                 PageRent.class);
 
         // then
-        assertEquals(response.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test
@@ -80,6 +82,6 @@ public class RentControllerTest extends BaseIT {
                 PageRent.class);
 
         // then
-        assertEquals(response.getStatusCode(), HttpStatus.FORBIDDEN);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
     }
 }

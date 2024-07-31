@@ -10,7 +10,7 @@ public interface RentRepository {
 
     Rent save(Rent rent);
     
-    void delete(Integer id);
+    void delete(RentId rentId);
 
     Optional<Rent> findByRentNumber(String rentNumber);
 

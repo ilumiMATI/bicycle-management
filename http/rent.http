@@ -35,7 +35,7 @@ Authorization: {{auth_token}}
 {
   "rentNumber": "RN3467",
   "userId": 2,
-  "bicycleId": 45
+  "bicycleId": 10
 }
 
 ### Get Rents

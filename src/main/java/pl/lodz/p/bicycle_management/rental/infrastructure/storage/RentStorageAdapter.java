@@ -6,10 +6,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
-import pl.lodz.p.bicycle_management.rental.domain.PageRent;
-import pl.lodz.p.bicycle_management.rental.domain.Rent;
-import pl.lodz.p.bicycle_management.rental.domain.RentAlreadyExistsException;
-import pl.lodz.p.bicycle_management.rental.domain.RentRepository;
+import pl.lodz.p.bicycle_management.rental.domain.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,8 +33,8 @@ public class RentStorageAdapter implements RentRepository {
     }
 
     @Override
-    public void delete(Integer id) {
-        jpaRentRepository.findById(id).ifPresent(rent -> jpaRentRepository.deleteById(id));
+    public void delete(RentId rentId) {
+        jpaRentRepository.findById(rentId.getId()).ifPresent(rent -> jpaRentRepository.deleteById(rentId.getId()));
     }
 
     @Override
