@@ -1,5 +1,6 @@
 package pl.lodz.p.bicycle_management.rental.domain;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -11,9 +12,7 @@ public interface RentRepository {
     
     void delete(Integer id);
 
-    Optional<Rent> findById(Integer id);
-
     Optional<Rent> findByRentNumber(String rentNumber);
 
-    List<Rent> findAll();
+    PageRent findAll(final Pageable pageable);
 }
