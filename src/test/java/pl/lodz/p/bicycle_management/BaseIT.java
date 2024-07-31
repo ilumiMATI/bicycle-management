@@ -15,6 +15,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleRepository;
+import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleTypeRepository;
+import pl.lodz.p.bicycle_management.rental.infrastructure.storage.JpaRentRepository;
 import pl.lodz.p.bicycle_management.security.JWTUtil;
 import pl.lodz.p.bicycle_management.user.application.UserService;
 import pl.lodz.p.bicycle_management.user.domain.User;
@@ -51,13 +54,21 @@ public class BaseIT {
     @Autowired
     private JpaUserRepository jpaUserRepository;
 
-//    @Autowired
-//    private JpaReservationRepository jpaReservationRepository;
+    @Autowired
+    private JpaRentRepository jpaRentRepository;
+
+    @Autowired
+    private JpaBicycleRepository jpaBicycleRepository;
+
+    @Autowired
+    private JpaBicycleTypeRepository jpaBicycleTypeRepository;
 
     @BeforeEach
     void init() {
         jpaUserRepository.deleteAll();
-//        jpaReservationRepository.deleteAll();
+        jpaRentRepository.deleteAll();
+        jpaBicycleRepository.deleteAll();
+        jpaBicycleTypeRepository.deleteAll();
     }
 
     protected String localUrl(String endpoint) {

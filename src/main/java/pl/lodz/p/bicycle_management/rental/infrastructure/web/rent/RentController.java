@@ -11,7 +11,7 @@ import pl.lodz.p.bicycle_management.rental.domain.Rent;
 import java.time.LocalDateTime;
 
 @RestController
-@RequestMapping("/api/v1/rent")
+@RequestMapping("/api/v1/rents")
 @RequiredArgsConstructor
 public class RentController {
     private final RentService rentService;
