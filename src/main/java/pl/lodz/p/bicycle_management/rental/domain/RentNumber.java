@@ -14,7 +14,7 @@ public class RentNumber {
         for (int i = 0; i < 3; i++) {
             sb.append((char) random.nextInt(65,91));
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 4; i++) {
             sb.append(random.nextInt(0,9));
         }
         this.value = sb.toString();

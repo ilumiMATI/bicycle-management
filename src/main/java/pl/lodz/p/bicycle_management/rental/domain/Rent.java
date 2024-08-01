@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -23,10 +24,21 @@ import java.time.LocalDateTime;
         )
     }
 )
+@IdClass(RentId.class)
 public class Rent {
-    @EmbeddedId
-    @AttributeOverride(name = "id", column = @Column(name = "rent_id"))
-    private RentId id;
+    @Id
+    @SequenceGenerator(
+            name = "rent_id_seq",
+            sequenceName = "rent_id_seq",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "rent_id_seq"
+    )
+    @Column(name = "rent_id", nullable = false)
+//    @AttributeOverride(name = "id", column = @Column(name = "rent_id"))
+    private Integer id;
 
     @Version
     private Integer version;
@@ -48,4 +60,10 @@ public class Rent {
 
     private LocalDateTime timeRented;
 
+
+    public Rent(UserId userId, BicycleId bicycleId) {
+        this.rentNumber = new RentNumber();
+        this.userId = userId;
+        this.bicycleId = bicycleId;
+    }
 }

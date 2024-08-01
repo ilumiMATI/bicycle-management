@@ -34,12 +34,17 @@ public class RentStorageAdapter implements RentRepository {
 
     @Override
     public void delete(RentId rentId) {
-        jpaRentRepository.findById(rentId.getId()).ifPresent(rent -> jpaRentRepository.deleteById(rentId.getId()));
+        jpaRentRepository.findById(rentId).ifPresent(rent -> jpaRentRepository.deleteById(rentId));
     }
 
     @Override
-    public Optional<Rent> findByRentNumber(String rentNumber) {
+    public Optional<Rent> findByRentNumber(RentNumber rentNumber) {
         return jpaRentRepository.findByRentNumber(rentNumber);
+    }
+
+    @Override
+    public Optional<Rent> findById(RentId rentId) {
+        return jpaRentRepository.findById(rentId);
     }
 
     @Override

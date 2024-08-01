@@ -26,6 +26,17 @@ Content-Type: application/json
     client.global.set("auth_token", "Bearer " + response.body.token);
 %}
 
+### Create Rents command
+POST http://localhost:8080/api/v1/rents/create
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+{
+  "userId": 1,
+  "bicycleIds": [2]
+}
+
 ### Save Rent
 POST http://localhost:8080/api/v1/rents
 Accept: application/json
@@ -39,7 +50,7 @@ Authorization: {{auth_token}}
 }
 
 ### Get Rents
-GET http://localhost:8080/api/v1/rents?page=0&size=2
+GET http://localhost:8080/api/v1/rents?page=0&size=5
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}

@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RentNumberTest extends BaseIT {
 
     @Test
-    void generated_rent_number_should_contain_3_letters_followed_by_5_digits() {
+    void generated_rent_number_should_contain_3_letters_followed_by_digits() {
         RentNumber rentNumber = new RentNumber();
         String letters = rentNumber.toString().substring(0,3);
         String number = rentNumber.toString().substring(3);

@@ -12,7 +12,9 @@ public interface RentRepository {
     
     void delete(RentId rentId);
 
-    Optional<Rent> findByRentNumber(String rentNumber);
+    Optional<Rent> findByRentNumber(RentNumber rentNumber);
+
+    Optional<Rent> findById(RentId rentId);
 
     PageRent findAll(final Pageable pageable);
 }

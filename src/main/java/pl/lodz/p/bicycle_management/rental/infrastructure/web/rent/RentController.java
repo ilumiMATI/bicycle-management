@@ -6,9 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.bicycle_management.rental.application.RentService;
-import pl.lodz.p.bicycle_management.rental.domain.Rent;
+import pl.lodz.p.bicycle_management.rental.domain.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/rents")
@@ -18,22 +20,35 @@ public class RentController {
     private final RentDtoMapper rentDtoMapper;
     private final PageRentDtoMapper pageRentDtoMapper;
 
+    @PostMapping(path = "/create")
+    ResponseEntity<Void> createRents(@RequestBody CreateCommand cmd) {
+        rentService.createRents(
+                new UserId(cmd.userId()),
+                cmd.bicycleIds()
+                        .stream()
+                        .map(BicycleId::new)
+                        .collect(Collectors.toList())
+        );
+        return ResponseEntity.ok().build();
+    }
+
+    // CRUD BELOW
+
     @PostMapping
     ResponseEntity<RentDto> createRent(@RequestBody RentDto rentDto) {
         Rent rent = rentService.save(rentDtoMapper.toDomain(rentDto));
         return ResponseEntity.ok(rentDtoMapper.toDto(rent));
     }
 
-    @DeleteMapping(path = "/{rentNumber}")
-    ResponseEntity<Void> deleteRentByNumber(@PathVariable String rentNumber) {
-        Rent rent = rentService.findByRentNumber(rentNumber);
-        rentService.delete(rent.getId());
+    @DeleteMapping(path = "/{id}")
+    ResponseEntity<Void> deleteById(@PathVariable Integer id) {
+        rentService.delete(new RentId(id));
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping(path = "/{rentNumber}")
     ResponseEntity<RentDto> getRentByNumber(@PathVariable String rentNumber) {
-        Rent rent = rentService.findByRentNumber(rentNumber);
+        Rent rent = rentService.findByRentNumber(new RentNumber(rentNumber));
         return ResponseEntity.ok(rentDtoMapper.toDto(rent));
     }
 
