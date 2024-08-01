@@ -1,36 +1,69 @@
 package pl.lodz.p.bicycle_management.rental.application;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pl.lodz.p.bicycle_management.rental.domain.Rent;
-import pl.lodz.p.bicycle_management.rental.domain.RentNotFoundException;
-import pl.lodz.p.bicycle_management.rental.domain.RentRepository;
+import pl.lodz.p.bicycle_management.rental.domain.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Log
 public class RentService {
-    final private RentRepository rentRepository;
+    private final RentRepository rentRepository;
+    private final AuthenticationService authenticationService;
 
-    public Rent addRent(Rent rent) {
+    @Transactional
+    public void createRents(UserId userId, List<BicycleId> bicycles) {
+        User loggedUser = authenticationService.getLoggedInUser();
+        RentingPolicy rentingPolicy = RentServicePolicyFactory.prepareRentingPolicy(loggedUser);
+        List<Rent> rents = rentingPolicy.createRents(this,loggedUser.getId(),userId,bicycles);
+        List<Rent> savedRents = new ArrayList<>();
+        for (Rent rent : rents) {
+            savedRents.add(rentRepository.save(rent));
+        }
+    }
+
+    public List<Rent> getMyRents() {
+        User loggedUser = authenticationService.getLoggedInUser();
+        return rentRepository.findByUserId(loggedUser.getId());
+    }
+
+    @Transactional
+    public void returnRent(RentNumber rentNumber) {
+        User loggedUser = authenticationService.getLoggedInUser();
+        ReturnPolicy returnPolicy = RentServicePolicyFactory.prepareReturnPolicy(loggedUser);
+        Money moneyToCharge = returnPolicy.finalizeRent(this,loggedUser.getId(), rentNumber);
+        log.info("User needs to be charged " + moneyToCharge.getAmount().toString());
+    }
+
+    public Rent save(Rent rent) {
         return rentRepository.save(rent);
     }
-    public Optional<Rent> findRentById(Integer id) {
-        return rentRepository.findById(id);
+
+    public void delete(RentId rentId) {
+        rentRepository.delete(rentId);
     }
-    public List<Rent> findAllRents() {
-        return rentRepository.findAll();
+
+    public Rent findByRentNumber(RentNumber rentNumber) {
+        return rentRepository.findByRentNumber(rentNumber)
+                .orElseThrow(RentNotFoundException::new);
     }
-    public Rent updateRent(Rent rent) {
-        Optional<Rent> optionalRent = rentRepository.findById(rent.getId());
-        if (optionalRent.isPresent()) {
-            return rentRepository.save(rent);
-        }
-        throw new RentNotFoundException();
+
+    public Rent findById(RentId rentId) {
+        return rentRepository.findById(rentId)
+                .orElseThrow(RentNotFoundException::new);
     }
-    public void deleteRent(Integer id) {
-        rentRepository.delete(id);
+
+    public boolean existsByUserId(UserId userId) {
+        return rentRepository.existsByUserId(userId);
+    }
+
+    public PageRent findAll(Pageable pageable) {
+        return rentRepository.findAll(pageable);
     }
 }

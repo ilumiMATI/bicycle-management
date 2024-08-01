@@ -5,6 +5,6 @@ import lombok.*;
 
 @Data
 public class User {
-    Integer id;
+    UserId id;
     UserRole role;
 }

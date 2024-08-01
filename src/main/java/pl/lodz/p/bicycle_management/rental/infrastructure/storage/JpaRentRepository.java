@@ -1,8 +1,14 @@
 package pl.lodz.p.bicycle_management.rental.infrastructure.storage;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
-import pl.lodz.p.bicycle_management.rental.domain.Rent;
+import pl.lodz.p.bicycle_management.rental.domain.*;
 
-public interface JpaRentRepository extends JpaRepository<Rent, Integer> { }
+import java.util.List;
+import java.util.Optional;
+
+public interface JpaRentRepository extends JpaRepository<Rent, RentId> {
+    Optional<Rent> findByRentNumber(RentNumber rentNumber);
+    List<Rent> findByUserId(UserId userId);
+    boolean existsByUserId(UserId userId);
+}
