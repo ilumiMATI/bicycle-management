@@ -1,7 +1,6 @@
 package pl.lodz.p.bicycle_management.rental.infrastructure.web.rent;
 
 import org.mapstruct.Qualifier;
-import pl.lodz.p.bicycle_management.rental.domain.UserId;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

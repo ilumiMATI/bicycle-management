@@ -2,7 +2,6 @@ package pl.lodz.p.bicycle_management.rental.infrastructure.web.rent;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
 import pl.lodz.p.bicycle_management.rental.domain.*;
 
 @Mapper(componentModel = "spring")

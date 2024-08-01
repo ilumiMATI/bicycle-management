@@ -1,7 +1,5 @@
 package pl.lodz.p.bicycle_management.rental.infrastructure.web.rent;
 
-import pl.lodz.p.bicycle_management.rental.domain.UserId;
-
 import java.time.LocalDateTime;
 
 public record RentDto(

@@ -48,6 +48,17 @@ public class RentStorageAdapter implements RentRepository {
     }
 
     @Override
+    public List<Rent> findByUserId(UserId userId) {
+        return jpaRentRepository.findByUserId(userId);
+    }
+
+    @Override
+    public boolean existsByUserId(UserId userId) {
+        return jpaRentRepository.existsByUserId(userId);
+    }
+
+
+    @Override
     public PageRent findAll(final Pageable pageable) {
         Page<Rent> pageOfRentsEntity = jpaRentRepository.findAll(pageable);
         List<Rent> rentsOnCurrentPage = new ArrayList<>(pageOfRentsEntity.getContent());

@@ -26,6 +26,12 @@ Content-Type: application/json
     client.global.set("auth_token", "Bearer " + response.body.token);
 %}
 
+### Get My Rents command
+GET http://localhost:8080/api/v1/rents/my
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
 ### Create Rents command
 POST http://localhost:8080/api/v1/rents/create
 Accept: application/json
@@ -34,8 +40,20 @@ Authorization: {{auth_token}}
 
 {
   "userId": 1,
-  "bicycleIds": [2]
+  "bicycleIds": [1]
 }
+
+### Return Rent command
+POST http://localhost:8080/api/v1/rents/GFZ6034/return
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+### Get Rents
+GET http://localhost:8080/api/v1/rents?page=0&size=5
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
 
 ### Save Rent
 POST http://localhost:8080/api/v1/rents
@@ -48,12 +66,6 @@ Authorization: {{auth_token}}
   "userId": 2,
   "bicycleId": 10
 }
-
-### Get Rents
-GET http://localhost:8080/api/v1/rents?page=0&size=5
-Accept: application/json
-Content-Type: application/json
-Authorization: {{auth_token}}
 
 ### Get Rent by RentNumber
 GET http://localhost:8080/api/v1/rents/RN3467

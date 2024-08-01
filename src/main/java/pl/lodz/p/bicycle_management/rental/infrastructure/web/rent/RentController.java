@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.bicycle_management.rental.application.RentService;
 import pl.lodz.p.bicycle_management.rental.domain.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +20,7 @@ public class RentController {
     private final PageRentDtoMapper pageRentDtoMapper;
 
     @PostMapping(path = "/create")
-    ResponseEntity<Void> createRents(@RequestBody CreateCommand cmd) {
+    ResponseEntity<Void> createRents(@RequestBody RentCommand cmd) {
         rentService.createRents(
                 new UserId(cmd.userId()),
                 cmd.bicycleIds()
@@ -32,10 +31,23 @@ public class RentController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(path = "/my")
+    ResponseEntity<List<RentDto>> getMyRents() {
+        List<Rent> rents = rentService.getMyRents();
+        return ResponseEntity.ok(
+                rents.stream().map(rentDtoMapper::toDto).collect(Collectors.toList()));
+    }
+
+    @PostMapping(path = "/{rentNumber}/return")
+    ResponseEntity<Void> returnRent(@PathVariable("rentNumber") String rentNumber) {
+        rentService.returnRent(new RentNumber(rentNumber));
+        return ResponseEntity.ok().build();
+    }
+
     // CRUD BELOW
 
     @PostMapping
-    ResponseEntity<RentDto> createRent(@RequestBody RentDto rentDto) {
+    ResponseEntity<RentDto> saveRent(@RequestBody RentDto rentDto) {
         Rent rent = rentService.save(rentDtoMapper.toDomain(rentDto));
         return ResponseEntity.ok(rentDtoMapper.toDto(rent));
     }
