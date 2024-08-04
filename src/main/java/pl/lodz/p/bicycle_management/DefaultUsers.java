@@ -1,11 +1,11 @@
 package pl.lodz.p.bicycle_management;
 
+import pl.lodz.p.bicycle_management.user.domain.User;
+import pl.lodz.p.bicycle_management.user.domain.UserRole;
+import pl.lodz.p.bicycle_management.user.domain.UserService;
 import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import pl.lodz.p.bicycle_management.user.application.UserService;
-import pl.lodz.p.bicycle_management.user.domain.User;
-import pl.lodz.p.bicycle_management.user.domain.UserRole;
 
 @Component
 @Log

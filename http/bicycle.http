@@ -32,7 +32,6 @@ Accept: application/json
 Content-Type: application/json
 
 {
-  "id": null,
   "bicycleTypeId": 1,
   "batteryChargeDesign": 60357,
   "batteryChargeCurrent": 55687

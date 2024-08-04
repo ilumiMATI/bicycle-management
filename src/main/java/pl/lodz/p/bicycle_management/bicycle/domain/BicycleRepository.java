@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface BicycleRepository {
     Bicycle save(Bicycle bicycle);
     Optional<Bicycle> findById(Integer id);
+    Optional<Bicycle> findByBicycleNumber(BicycleNumber bicycleNumber);
     List<Bicycle> findAll();
     Bicycle update(Bicycle bicycle);
     void delete(Integer id);

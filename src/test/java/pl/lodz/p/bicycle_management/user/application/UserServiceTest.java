@@ -1,12 +1,13 @@
 package pl.lodz.p.bicycle_management.user.application;
 
+import pl.lodz.p.bicycle_management.BaseIT;
+import pl.lodz.p.bicycle_management.TestUserFactory;
+import pl.lodz.p.bicycle_management.user.domain.User;
+import pl.lodz.p.bicycle_management.user.domain.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.lodz.p.bicycle_management.BaseIT;
-import pl.lodz.p.bicycle_management.TestUserFactory;
-import pl.lodz.p.bicycle_management.user.domain.User;
 
 class UserServiceTest extends BaseIT {
 
