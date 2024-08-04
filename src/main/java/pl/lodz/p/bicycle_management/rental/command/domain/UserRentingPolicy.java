@@ -7,11 +7,11 @@ import java.util.List;
 @AllArgsConstructor
 public class UserRentingPolicy implements RentingPolicy{
     @Override
-    public void rentBicycle(final UserRentals userRentals, final String bicycleId) {
+    public void rentBicycle(final UserRentals userRentals, final String bicycleNumber) {
         final List<String> bicycles = userRentals.getBicycles();
         if (bicycles.size() >= 2) {
             throw new MethodNotAllowedException();
         }
-        bicycles.add(bicycleId);
+        bicycles.add(bicycleNumber);
     }
 }

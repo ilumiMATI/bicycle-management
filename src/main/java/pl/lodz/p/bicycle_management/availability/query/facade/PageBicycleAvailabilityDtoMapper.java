@@ -19,7 +19,7 @@ public interface PageBicycleAvailabilityDtoMapper  extends BicycleMappingHelper 
     List<BicycleAvailabilityDto> toListDto(List<BicycleAvailability> availabilities);
 
     @Named("bicycleAvailabilityToBicycleAvailabilityDto")
-    @Mapping(source = "bicycleId.bicycleId", target = "bicycleId")
+    @Mapping(source = "bicycleNumber.bicycleNumber", target = "bicycleNumber")
     @Mapping(source = "userId.userId", target = "userId")
     BicycleAvailabilityDto toDto(BicycleAvailability domain);
 }

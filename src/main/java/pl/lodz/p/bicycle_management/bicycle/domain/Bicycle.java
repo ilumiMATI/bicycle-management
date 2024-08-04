@@ -12,8 +12,8 @@ import lombok.*;
         name = "bicycles",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "bicycles_bicycle_identifier_unique",
-                        columnNames = "bicycleId"
+                        name = "bicycles_bicycle_number_unique",
+                        columnNames = "bicycleNumber"
                 )
 })
 @Entity
@@ -33,7 +33,7 @@ public class Bicycle {
 
     @Embedded
     @Column (nullable = false)
-    private BicycleId bicycleId;
+    private BicycleNumber bicycleNumber;
 
     @Column (nullable = false)
     private String model;

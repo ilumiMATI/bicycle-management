@@ -1,12 +1,13 @@
 package pl.lodz.p.bicycle_management.payment.command.domain;
 
-public record UserId(Integer id) {
-    public static UserId of(Integer id
-    ) {
-        return new UserId(id);
+import java.io.Serializable;
+
+public record UserId(Integer userId) {
+    public static UserId of(Integer userId) {
+        return new UserId(userId);
     }
 
     public String asString() {
-        return id.toString();
+        return userId.toString();
     }
 }

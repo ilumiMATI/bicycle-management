@@ -48,9 +48,9 @@ public class RentalService {
             userId = command.userId();
         }
 
-        availabilityService.lockBicycle(command.bicycleId(), userId);
+        availabilityService.lockBicycle(command.bicycleNumber(), userId);
         UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(userId), user);
-        userRentals.rentBike(command.bicycleId());
+        userRentals.rentBike(command.bicycleNumber());
     }
 
     public void returnBike(ReturnCommand command) {
@@ -67,9 +67,9 @@ public class RentalService {
         }
 
         UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(userId), user);
-        userRentals.returnBike(command.bicycleId());
+        userRentals.returnBike(command.bicycleNumber());
 
-        Integer rentTimeInMinutes = availabilityService.unlockBicycle(command.bicycleId(), userId);
+        Integer rentTimeInMinutes = availabilityService.unlockBicycle(command.bicycleNumber(), userId);
         paymentService.payForRent(userId, rentTimeInMinutes);
     }
 

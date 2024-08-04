@@ -26,7 +26,7 @@ public class BicycleStorageAdapter implements BicycleRepository {
             log.info("Saved entity " + saved);
             return saved;
         } catch (DataIntegrityViolationException ex) {
-            log.warning("Bicycle with number " + bicycle.getBicycleId().asString() + " already exits in db");
+            log.warning("Bicycle with number " + bicycle.getBicycleNumber().asString() + " already exits in db");
             throw new BicycleAlreadyExistsException();
         }
     }
@@ -39,10 +39,11 @@ public class BicycleStorageAdapter implements BicycleRepository {
     }
 
     @Override
-    public Optional<Bicycle> findByBicycleId(BicycleId bicycleId) {
-        return jpaBicycleRepository.findByBicycleId(bicycleId);
+    public Optional<Bicycle> findByBicycleNumber(BicycleNumber bicycleNumber) {
+        return jpaBicycleRepository.findByBicycleNumber(bicycleNumber);
     }
 
+    // TODO: Change to PageBicycle ...
     @Override
     public List<Bicycle> findAll() {
         return jpaBicycleRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
@@ -50,7 +51,7 @@ public class BicycleStorageAdapter implements BicycleRepository {
 
     @Override
     public Bicycle update(Bicycle bicycle) {
-        return jpaBicycleRepository.findByBicycleId(bicycle.getBicycleId())
+        return jpaBicycleRepository.findByBicycleNumber(bicycle.getBicycleNumber())
                 .map((found) -> jpaBicycleRepository.save(bicycle))
                 .orElseThrow(BicycleNotFoundException::new);
     }

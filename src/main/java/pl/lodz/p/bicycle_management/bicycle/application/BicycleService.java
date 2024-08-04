@@ -3,7 +3,7 @@ package pl.lodz.p.bicycle_management.bicycle.application;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
-import pl.lodz.p.bicycle_management.bicycle.domain.BicycleId;
+import pl.lodz.p.bicycle_management.bicycle.domain.BicycleNumber;
 import pl.lodz.p.bicycle_management.bicycle.domain.BicycleNotFoundException;
 import pl.lodz.p.bicycle_management.bicycle.domain.BicycleRepository;
 
@@ -17,7 +17,7 @@ public class BicycleService {
     private final AvailabilityService availabilityService;
 
     public Bicycle addBicycle(Bicycle bicycle) {
-        availabilityService.createAvailability(bicycle.getBicycleId());
+        availabilityService.createAvailability(bicycle.getBicycleNumber());
         return bicycleRepository.save(bicycle);
     }
 
@@ -26,8 +26,8 @@ public class BicycleService {
                 .orElseThrow(BicycleNotFoundException::new);
     }
 
-    public Bicycle findBicycleByBicycleId(BicycleId bicycleId) {
-        return bicycleRepository.findByBicycleId(bicycleId)
+    public Bicycle findBicycleByBicycleNumber(BicycleNumber bicycleNumber) {
+        return bicycleRepository.findByBicycleNumber(bicycleNumber)
                 .orElseThrow(BicycleNotFoundException::new);
     }
 
@@ -40,7 +40,7 @@ public class BicycleService {
     }
 
     public void deleteBicycle(Integer id) {
-        availabilityService.removeAvailability(bicycleRepository.findById(id).get().getBicycleId());
+        availabilityService.removeAvailability(bicycleRepository.findById(id).get().getBicycleNumber());
         bicycleRepository.delete(id);
     }
 }

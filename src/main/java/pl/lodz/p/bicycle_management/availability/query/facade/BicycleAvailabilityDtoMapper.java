@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface BicycleAvailabilityDtoMapper extends BicycleMappingHelper {
 
-    @Mapping(source = "bicycleId.bicycleId", target = "bicycleId")
+    @Mapping(source = "bicycleNumber.bicycleNumber", target = "bicycleNumber")
     @Mapping(source = "userId.userId", target = "userId")
     BicycleAvailabilityDto toDto(BicycleAvailability domain);
 

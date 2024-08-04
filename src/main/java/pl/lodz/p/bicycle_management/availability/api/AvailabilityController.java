@@ -48,9 +48,9 @@ class AvailabilityController {
 
     private final BicycleAvailabilityFacade availabilityFacade;
 
-    @GetMapping( path = "/{bicycleId}")
-    public ResponseEntity<BicycleAvailabilityDto> getAvailability(@PathVariable String bicycleId) {
-        return ResponseEntity.ok(availabilityFacade.findByBicycleId(bicycleId));
+    @GetMapping( path = "/{bicycleNumber}")
+    public ResponseEntity<BicycleAvailabilityDto> getAvailability(@PathVariable String bicycleNumber) {
+        return ResponseEntity.ok(availabilityFacade.findByBicycleNumber(bicycleNumber));
     }
 
     @GetMapping

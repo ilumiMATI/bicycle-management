@@ -65,7 +65,7 @@ Authorization: {{auth_token}}
 #Authorization: {{auth_token}}
 #
 #{
-#  "bicycleId": "bike1",
+#  "bicycleNumber": "bike1",
 #  "userId": 1
 #}
 #
@@ -76,7 +76,7 @@ Authorization: {{auth_token}}
 #Authorization: {{auth_token}}
 #
 #{
-#  "bicycleId": "bike1",
+#  "bicycleNumber": "bike1",
 #  "userId": 1
 #}
 

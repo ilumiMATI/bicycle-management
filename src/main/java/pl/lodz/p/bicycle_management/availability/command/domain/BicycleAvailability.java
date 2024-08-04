@@ -24,8 +24,8 @@ import java.time.temporal.ChronoUnit;
         name = "bicycle_availabilities",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "availability_bicycle_identifier_unique",
-                        columnNames = "bicycleId"
+                        name = "bicycle_availabilities_bicycle_number_unique",
+                        columnNames = "bicycleNumber"
                 )
         }
 )
@@ -49,7 +49,7 @@ public class BicycleAvailability {
 
     @Embedded
     @Column(nullable = false)
-    BicycleId bicycleId;
+    BicycleNumber bicycleNumber;
 
     @Column(nullable = true)
     @Embedded
@@ -61,8 +61,8 @@ public class BicycleAvailability {
     @Version
     Integer version;
 
-    public BicycleAvailability(final BicycleId bicycleId) {
-        this.bicycleId = bicycleId;
+    public BicycleAvailability(final BicycleNumber bicycleNumber) {
+        this.bicycleNumber = bicycleNumber;
     }
 
     public void lockFor(UserId userId) {

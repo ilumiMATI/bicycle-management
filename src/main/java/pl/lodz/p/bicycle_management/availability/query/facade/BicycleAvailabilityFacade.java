@@ -2,7 +2,7 @@ package pl.lodz.p.bicycle_management.availability.query.facade;
 
 
 import pl.lodz.p.bicycle_management.availability.command.domain.BicycleAvailability;
-import pl.lodz.p.bicycle_management.availability.command.domain.BicycleId;
+import pl.lodz.p.bicycle_management.availability.command.domain.BicycleNumber;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.data.domain.Page;
@@ -23,8 +23,8 @@ class BicycleAvailabilityFacade {
     private final BicycleAvailabilityDtoMapper bicycleAvailabilityDtoMapper;
     private final PageBicycleAvailabilityDtoMapper pageBicycleAvailabilityDtoMapper;
 
-    public BicycleAvailabilityDto findByBicycleId(final String bicycleId) {
-        final Optional<BicycleAvailability> maybeBicycleAvailability = bicycleAvailabilityRepository.findByBicycleId(BicycleId.of(bicycleId));
+    public BicycleAvailabilityDto findByBicycleNumber(final String bicycleNumber) {
+        final Optional<BicycleAvailability> maybeBicycleAvailability = bicycleAvailabilityRepository.findByBicycleNumber(BicycleNumber.of(bicycleNumber));
         return bicycleAvailabilityDtoMapper.toDto(maybeBicycleAvailability.orElseThrow(BicycleAvailabilityDtoNotFoundException::new));
     }
 

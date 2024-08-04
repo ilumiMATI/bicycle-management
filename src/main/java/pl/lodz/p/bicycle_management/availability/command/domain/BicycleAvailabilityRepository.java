@@ -6,8 +6,8 @@ public interface BicycleAvailabilityRepository {
 
     BicycleAvailability save(BicycleAvailability bicycleAvailability);
 
-    void remove(BicycleId bicycleId);
+    void remove(BicycleNumber bicycleNumber);
 
-    Optional<BicycleAvailability> findBy(BicycleId bicycleId);
+    Optional<BicycleAvailability> findBy(BicycleNumber bicycleNumber);
 
 }

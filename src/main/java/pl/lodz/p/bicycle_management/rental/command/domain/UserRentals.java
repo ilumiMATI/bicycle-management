@@ -54,20 +54,20 @@ public class UserRentals {
         this.userId = userId;
     }
 
-    public void rentBike(String bicycleId) {
+    public void rentBike(String bicycleNumber) {
         if (rentingPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
 
-        rentingPolicy.rentBicycle(this, bicycleId);
+        rentingPolicy.rentBicycle(this, bicycleNumber);
     }
 
-    public void returnBike(String bicycleId) {
+    public void returnBike(String bicycleNumber) {
         if (returningPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
 
-        returningPolicy.returnBicycle(this, bicycleId);
+        returningPolicy.returnBicycle(this, bicycleNumber);
     }
 
 }

@@ -14,25 +14,25 @@ public class AvailabilityService {
 //    private final AuthenticationService authenticationService;
 
     public BicycleAvailability create(final CreateCommand createCommand) {
-        return bicycleAvailabilityRepository.save(new BicycleAvailability(BicycleId.of(createCommand.bicycleId())));
+        return bicycleAvailabilityRepository.save(new BicycleAvailability(BicycleNumber.of(createCommand.bicycleNumber())));
     }
 
     public void remove(final RemoveCommand removeCommand) {
-        bicycleAvailabilityRepository.remove(BicycleId.of(removeCommand.bicycleId()));
+        bicycleAvailabilityRepository.remove(BicycleNumber.of(removeCommand.bicycleNumber()));
     }
 
-    public BicycleAvailability findByBicycleId(BicycleId bicycleId) {
+    public BicycleAvailability findByBicycleNumber(BicycleNumber bicycleNumber) {
 
-        return bicycleAvailabilityRepository.findBy(bicycleId)
+        return bicycleAvailabilityRepository.findBy(bicycleNumber)
                 .orElseThrow(BicycleNotFoundException::new);
     }
 
     public void lockBicycle(LockCommand lockCommand) {
         System.out.println("####### lock bicycle");
 //        User user = authenticationService.getLoggedInUser();
-        BicycleAvailability bicycleAvailability = findByBicycleId(BicycleId.of(lockCommand.bicycleId()));
+        BicycleAvailability bicycleAvailability = findByBicycleNumber(BicycleNumber.of(lockCommand.bicycleNumber()));
 //        if (lockCommand.userId() == null) {
-//            bicycleAvailability.lockFor(UserId.of(user.bicycleId()));
+//            bicycleAvailability.lockFor(UserId.of(user.bicycleNumber()));
 //        } else {
 //            if (user.role() != UserRole.ADMIN) {
 //                throw new MethodNotAllowedException();
@@ -44,7 +44,7 @@ public class AvailabilityService {
 
     public Integer unlockBicycle(UnlockCommand unlockCommand) {
 //        User user = authenticationService.getLoggedInUser();
-        BicycleAvailability bicycleAvailability = findByBicycleId(BicycleId.of(unlockCommand.bicycleId()));
+        BicycleAvailability bicycleAvailability = findByBicycleNumber(BicycleNumber.of(unlockCommand.bicycleNumber()));
         return bicycleAvailability.unlock();
     }
 
