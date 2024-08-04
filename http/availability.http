@@ -1,0 +1,92 @@
+### login admin
+POST http://localhost:8080/api/v1/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "admin@gmail.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("auth_token", "Bearer " + response.body.token);
+%}
+
+### login vip
+POST http://localhost:8080/api/v1/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "vip@gmail.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("auth_token", "Bearer " + response.body.token);
+%}
+
+### login user
+POST http://localhost:8080/api/v1/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "user@gmail.com",
+  "password": "password"
+}
+
+> {%
+    client.global.set("auth_token", "Bearer " + response.body.token);
+%}
+
+### get availability by bicycle id
+GET http://localhost:8080/api/v1/availabilities/bike1
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+### get all availabilities
+GET http://localhost:8080/api/v1/availabilities
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+#### get all availabilities
+#GET http://localhost:8080/api/v1/availabilities?page=2&size=3
+#Accept: application/json
+#Content-Type: application/json
+#Authorization: {{auth_token}}
+
+#### lock bicycle
+#POST http://localhost:8080/api/v1/availabilities/lock
+#Accept: application/json
+#Content-Type: application/json
+#Authorization: {{auth_token}}
+#
+#{
+#  "bicycleId": "bike1",
+#  "userId": 1
+#}
+#
+#### unlock bicycle
+#POST http://localhost:8080/api/v1/availabilities/unlock
+#Accept: application/json
+#Content-Type: application/json
+#Authorization: {{auth_token}}
+#
+#{
+#  "bicycleId": "bike1",
+#  "userId": 1
+#}
+
+#### create reservation
+#POST http://localhost:8080/api/v1/reservations
+#Accept: application/json
+#Content-Type: application/json
+#Authorization: {{auth_token}}
+#
+#{
+#  "reservationNumber": "res3",
+#  "amountOfSeats": 3
+#}

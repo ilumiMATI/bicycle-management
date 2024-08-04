@@ -2,7 +2,6 @@ package pl.lodz.p.bicycle_management.bicycle.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import pl.lodz.p.bicycle_management.annotations.ddd.AggregateRoot;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,7 +10,6 @@ import pl.lodz.p.bicycle_management.annotations.ddd.AggregateRoot;
 @EqualsAndHashCode(of = "id")
 @Table(name = "bicycles")
 @Entity
-@AggregateRoot
 public class Bicycle {
     @Id
     @SequenceGenerator(

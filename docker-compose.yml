@@ -1,11 +1,12 @@
+version: '3'
 services:
   db:
     container_name: postgres
     image: postgres:alpine
     environment:
-      - POSTGRES_DB=db
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=bicycle
+      - POSTGRES_USER=bicycleuser
+      - POSTGRES_PASSWORD=bicyclepassword
       - PGDATA=var/lib/postgresql/data
     command: ["postgres", "-c", "log_statement=all"]
     volumes:
@@ -24,28 +25,11 @@ services:
     ports:
       - "5332:5432"
     environment:
-      - POSTGRES_DB=db
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=bicycle
+      - POSTGRES_USER=bicycleuser
+      - POSTGRES_PASSWORD=bicyclepassword
       - PGDATA=var/lib/postgresql/data
     command: [ "postgres", "-c", "log_statement=all" ]
-    networks:
-      - postgres
-    restart: unless-stopped
-    depends_on:
-      - db
-
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: 'admin@admin.com'
-      PGADMIN_DEFAULT_PASSWORD: 'admin'
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin4/storage
-    ports:
-      - "5050:80"
     networks:
       - postgres
     restart: unless-stopped

@@ -17,10 +17,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleRepository;
 import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleTypeRepository;
-import pl.lodz.p.bicycle_management.rental.infrastructure.storage.JpaRentRepository;
 import pl.lodz.p.bicycle_management.security.JWTUtil;
-import pl.lodz.p.bicycle_management.user.application.UserService;
 import pl.lodz.p.bicycle_management.user.domain.User;
+import pl.lodz.p.bicycle_management.user.domain.UserService;
 import pl.lodz.p.bicycle_management.user.infrastructure.storage.JpaUserRepository;
 
 @ActiveProfiles("it")
@@ -55,9 +54,6 @@ public class BaseIT {
     private JpaUserRepository jpaUserRepository;
 
     @Autowired
-    private JpaRentRepository jpaRentRepository;
-
-    @Autowired
     private JpaBicycleRepository jpaBicycleRepository;
 
     @Autowired
@@ -66,7 +62,6 @@ public class BaseIT {
     @BeforeEach
     void init() {
         jpaUserRepository.deleteAll();
-        jpaRentRepository.deleteAll();
         jpaBicycleRepository.deleteAll();
         jpaBicycleTypeRepository.deleteAll();
     }

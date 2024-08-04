@@ -1,14 +1,16 @@
 package pl.lodz.p.bicycle_management.user.infrastructure.web.user;
 
+import pl.lodz.p.bicycle_management.BaseIT;
+import pl.lodz.p.bicycle_management.TestUserFactory;
+import pl.lodz.p.bicycle_management.user.api.ErrorResponse;
+import pl.lodz.p.bicycle_management.user.api.PageUserDto;
+import pl.lodz.p.bicycle_management.user.api.UserDto;
+import pl.lodz.p.bicycle_management.user.domain.User;
+import pl.lodz.p.bicycle_management.user.domain.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import pl.lodz.p.bicycle_management.BaseIT;
-import pl.lodz.p.bicycle_management.TestUserFactory;
-import pl.lodz.p.bicycle_management.user.application.UserService;
-import pl.lodz.p.bicycle_management.user.domain.User;
-import pl.lodz.p.bicycle_management.user.infrastructure.web.ErrorResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -137,7 +139,7 @@ class UserControllerTest extends BaseIT {
 
         //when
         var response = callHttpMethod(HttpMethod.GET,
-                "/api/v1/users/me",
+                "/api/v1/auth/me",
                 token,
                 null,
                 UserDto.class);

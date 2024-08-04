@@ -33,5 +33,6 @@ build/
 .vscode/
 
 ### NOT AUTO GENERATED ###
+.DS_Store
 ## DOCKER ##
 volumes/
