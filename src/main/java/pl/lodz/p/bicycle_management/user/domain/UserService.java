@@ -1,6 +1,5 @@
 package pl.lodz.p.bicycle_management.user.domain;
 
-import pl.lodz.p.bicycle_management.user.infrastructure.storage.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

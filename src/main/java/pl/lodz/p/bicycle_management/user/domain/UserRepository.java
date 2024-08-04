@@ -1,7 +1,5 @@
-package pl.lodz.p.bicycle_management.user.infrastructure.storage;
+package pl.lodz.p.bicycle_management.user.domain;
 
-import pl.lodz.p.bicycle_management.user.domain.PageUser;
-import pl.lodz.p.bicycle_management.user.domain.User;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;

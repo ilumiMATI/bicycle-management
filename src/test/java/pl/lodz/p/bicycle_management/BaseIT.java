@@ -16,7 +16,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleRepository;
-import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleTypeRepository;
 import pl.lodz.p.bicycle_management.security.JWTUtil;
 import pl.lodz.p.bicycle_management.user.domain.User;
 import pl.lodz.p.bicycle_management.user.domain.UserService;

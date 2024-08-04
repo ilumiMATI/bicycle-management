@@ -16,11 +16,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 @Entity
 @Table(
+        name = "bicycle_availabilities",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "bicycle_id_number_unique",
+                        name = "availability_bicycle_identifier_unique",
                         columnNames = "bicycleId"
                 )
         }
@@ -42,12 +46,18 @@ public class BicycleAvailability {
             generator = "bicycle_availability_id_seq"
     )
     Integer id;
-    @Column(nullable = false)
+
     @Embedded
+    @Column(nullable = false)
     BicycleId bicycleId;
+
     @Column(nullable = true)
     @Embedded
     UserId userId;
+
+    @Column(nullable = true)
+    LocalDateTime lockTime;
+
     @Version
     Integer version;
 
@@ -59,11 +69,15 @@ public class BicycleAvailability {
         if (this.userId != null) {
             throw new BicycleAlreadyLockedException();
         }
+        this.lockTime = LocalDateTime.now();
         this.userId = userId;
     }
 
-    public void unlock() {
+    public Integer unlock() {
+        Integer minutes = (int) lockTime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+        this.lockTime = null;
         this.userId = null;
+        return minutes;
     }
 
 }

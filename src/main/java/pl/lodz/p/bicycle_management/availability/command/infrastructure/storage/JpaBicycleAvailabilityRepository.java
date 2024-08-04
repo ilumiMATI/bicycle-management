@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface JpaBicycleAvailabilityRepository extends JpaRepository<BicycleAvailability, Integer> {
     @Lock(LockModeType.OPTIMISTIC_FORCE_INCREMENT)
     Optional<BicycleAvailability> findByBicycleId(BicycleId bicycleId);
+    void deleteByBicycleId(BicycleId bicycleId);
 }

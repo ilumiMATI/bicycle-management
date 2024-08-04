@@ -8,7 +8,14 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
-@Table(name = "bicycles")
+@Table(
+        name = "bicycles",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "bicycles_bicycle_identifier_unique",
+                        columnNames = "bicycleId"
+                )
+})
 @Entity
 public class Bicycle {
     @Id
@@ -21,16 +28,25 @@ public class Bicycle {
             strategy = GenerationType.SEQUENCE,
             generator = "bicycle_id_seq"
     )
-    @Column(name = "bicycleId")
+    @Column (nullable = false)
     private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn (name = "bicycleTypeId")
-    private BicycleType bicycleType;
+    @Embedded
+    @Column (nullable = false)
+    private BicycleId bicycleId;
+
+    @Column (nullable = false)
+    private String model;
+
+    @Column (nullable = false)
+    private String brand;
 
     @Column (nullable = false)
     private Integer batteryChargeDesign;
 
     @Column (nullable = false)
     private Integer batteryChargeCurrent;
+
+    @Version
+    private Integer version;
 }

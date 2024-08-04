@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
+import pl.lodz.p.bicycle_management.user.domain.UserRepository;
 
 import java.util.List;
 import java.util.Optional;

@@ -13,8 +13,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Log
-public
-class BicycleAvailabilityStorageAdapter implements BicycleAvailabilityRepository {
+public class BicycleAvailabilityStorageAdapter implements BicycleAvailabilityRepository {
 
     private final JpaBicycleAvailabilityRepository bicycleAvailabilityRepository;
 
@@ -28,6 +27,11 @@ class BicycleAvailabilityStorageAdapter implements BicycleAvailabilityRepository
             log.warning("Bicycle Availability with number " + bicycleAvailability.getBicycleId().asString() + " already exits in db");
             throw new BicycleAlreadyExistsException();
         }
+    }
+
+    @Override
+    public void remove(BicycleId bicycleId) {
+        bicycleAvailabilityRepository.deleteByBicycleId(bicycleId);
     }
 
     @Override

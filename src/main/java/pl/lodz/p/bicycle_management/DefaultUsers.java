@@ -33,7 +33,7 @@ public class DefaultUsers implements CommandLineRunner {
             UserRole.VIP
     );
 
-    private final User medicalDoctorUser = new User(
+    private final User regularUser = new User(
             null,
             "user@gmail.com",
             "User",
@@ -46,7 +46,7 @@ public class DefaultUsers implements CommandLineRunner {
         try {
             addUser(adminUser);
             addUser(vipUser);
-            addUser(medicalDoctorUser);
+            addUser(regularUser);
         } catch (Exception ex) {
             log.warning(ex.getMessage());
         }

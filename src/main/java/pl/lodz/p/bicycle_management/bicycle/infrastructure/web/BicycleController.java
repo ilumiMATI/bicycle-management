@@ -18,9 +18,9 @@ public class BicycleController {
     final private BicycleDtoMapper bicycleDtoMapper;
 
     @PostMapping
-    ResponseEntity<BicycleMinimalDto> addBicycle(@RequestBody BicycleMinimalDto bicycleMinimalDto) {
+    ResponseEntity<BicycleDto> addBicycle(@RequestBody BicycleDto bicycleMinimalDto) {
         Bicycle bicycle = bicycleService.addBicycle(bicycleDtoMapper.toDomain(bicycleMinimalDto));
-        return ResponseEntity.ok(bicycleDtoMapper.toMinimalDto(bicycle));
+        return ResponseEntity.ok(bicycleDtoMapper.toDto(bicycle));
     }
 
     @GetMapping
@@ -30,25 +30,20 @@ public class BicycleController {
 
     @GetMapping(path = "/{id}")
     ResponseEntity<BicycleDto> findBicycleById(@PathVariable Integer id) {
-        Optional<Bicycle> bicycle = bicycleService.findBicycleById(id);
-        if (bicycle.isPresent())
-            return ResponseEntity.ok(bicycleDtoMapper.toDto(bicycle.get()));
-        return ResponseEntity.notFound().build();
+        Bicycle bicycle = bicycleService.findBicycleById(id);
+        return ResponseEntity.ok(bicycleDtoMapper.toDto(bicycle));
     }
 
     @PutMapping
-    ResponseEntity<BicycleMinimalDto> updateBicycle(@RequestBody BicycleMinimalDto bicycleMinimalDto) {
-        try {
-            Bicycle updatedBicycle = bicycleService.updateBicycle(bicycleDtoMapper.toDomain(bicycleMinimalDto));
-            return ResponseEntity.ok(bicycleDtoMapper.toMinimalDto(updatedBicycle));
-        } catch (BicycleNotFoundException ex) {
-            return ResponseEntity.notFound().build();
-        }
+    ResponseEntity<BicycleDto> updateBicycle(@RequestBody BicycleDto bicycleMinimalDto) {
+        Bicycle updatedBicycle = bicycleService.updateBicycle(bicycleDtoMapper.toDomain(bicycleMinimalDto));
+        return ResponseEntity.ok(bicycleDtoMapper.toDto(updatedBicycle));
     }
 
     @DeleteMapping(path = "/{id}")
-    void deleteBicycle(@PathVariable Integer id) {
+    ResponseEntity<Void> deleteBicycle(@PathVariable Integer id) {
         bicycleService.deleteBicycle(id);
+        return ResponseEntity.ok().build();
     }
 
 }

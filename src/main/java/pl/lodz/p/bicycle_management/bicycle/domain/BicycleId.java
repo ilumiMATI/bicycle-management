@@ -1,4 +1,4 @@
-package pl.lodz.p.bicycle_management.availability.command.domain;
+package pl.lodz.p.bicycle_management.bicycle.domain;
 
 public record BicycleId(String bicycleId) {
     public static BicycleId of(String bicycleId) {

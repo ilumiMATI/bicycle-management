@@ -15,11 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class RentalService {
-
-
     private final AuthenticationService authenticationService;
     private final UserRentalsRepository userRentalsRepository;
     private final AvailabilityService availabilityService;
+    private final PaymentService paymentService;
 
 //    public void test() {
 //        availabilityService.unlockBicycle(new UnlockCommand("bike1", 1));
@@ -69,7 +68,9 @@ public class RentalService {
 
         UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(userId), user);
         userRentals.returnBike(command.bicycleId());
-        availabilityService.unlockBicycle(command.bicycleId(), userId);
+
+        Integer rentTimeInMinutes = availabilityService.unlockBicycle(command.bicycleId(), userId);
+        paymentService.payForRent(userId, rentTimeInMinutes);
     }
 
 }

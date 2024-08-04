@@ -17,7 +17,7 @@ public class AvailabilityFacade implements AvailabilityService {
     }
 
     @Override
-    public void unlockBicycle(final String bicycleId, Integer userId) {
-        availabilityService.unlockBicycle(new UnlockCommand(bicycleId, userId));
+    public Integer unlockBicycle(final String bicycleId, Integer userId) {
+        return availabilityService.unlockBicycle(new UnlockCommand(bicycleId, userId));
     }
 }
