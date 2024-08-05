@@ -1,12 +1,6 @@
 package pl.lodz.p.bicycle_management.rental.command.application;
 
-import pl.lodz.p.bicycle_management.rental.command.domain.MethodNotAllowedException;
-import pl.lodz.p.bicycle_management.rental.command.domain.User;
-import pl.lodz.p.bicycle_management.rental.command.domain.UserRentals;
-import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsFactory;
-import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsNotFoundException;
-import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsRepository;
-import pl.lodz.p.bicycle_management.rental.command.domain.UserRole;
+import pl.lodz.p.bicycle_management.rental.command.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,12 +19,16 @@ public class RentalService {
 //    }
 
     public UserRentals create(final CreateCommand createCommand) {
-        return userRentalsRepository.save(UserRentalsFactory.createUserRentals(createCommand.userId()));
+        return userRentalsRepository.save(UserRentalsFactory.createUserRentals(new UserId(createCommand.userId())));
     }
 
-    public UserRentals findByUserId(Integer userId) {
+    public void remove(final RemoveCommand removeCommand) {
+        userRentalsRepository.remove(new UserId(removeCommand.userId()));
+    }
 
-        final UserRentals userRentals = userRentalsRepository.findBy(userId)
+    public UserRentals findByUserId(UserId userId) {
+
+        final UserRentals userRentals = userRentalsRepository.findByUserId(userId)
                 .orElseThrow(UserRentalsNotFoundException::new);
         return userRentals;
     }
@@ -49,7 +47,7 @@ public class RentalService {
         }
 
         availabilityService.lockBicycle(command.bicycleNumber(), userId);
-        UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(userId), user);
+        UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(UserId.of(userId)), user);
         userRentals.rentBike(command.bicycleNumber());
     }
 
@@ -66,7 +64,7 @@ public class RentalService {
             userId = command.userId();
         }
 
-        UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(userId), user);
+        UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(UserId.of(userId)), user);
         userRentals.returnBike(command.bicycleNumber());
 
         Integer rentTimeInMinutes = availabilityService.unlockBicycle(command.bicycleNumber(), userId);

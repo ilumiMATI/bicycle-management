@@ -1,8 +1,8 @@
 package pl.lodz.p.bicycle_management.rental.command.infrastructure.storage;
 
 
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import pl.lodz.p.bicycle_management.rental.command.domain.UserId;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentals;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsAlreadyExistsException;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsRepository;
@@ -18,12 +18,12 @@ import java.util.Optional;
 @Repository
 public class UserRentalsStorageAdapter implements UserRentalsRepository {
 
-    private final JpaUserRentalsRepository repository;
+    private final JpaUserRentalsRepository jpaUserRentalsRepository;
 
     @Override
     public UserRentals save(final UserRentals userRentals) {
         try {
-            UserRentals saved = repository.save(userRentals);
+            UserRentals saved = jpaUserRentalsRepository.save(userRentals);
             log.info("Saved entity " + saved);
             return saved;
         } catch (DataIntegrityViolationException ex) {
@@ -33,7 +33,12 @@ public class UserRentalsStorageAdapter implements UserRentalsRepository {
     }
 
     @Override
-    public Optional<UserRentals> findBy(final Integer userId) {
-        return repository.findByUserId(userId);
+    public void remove(UserId userId) {
+        jpaUserRentalsRepository.deleteByUserId(userId);
+    }
+
+    @Override
+    public Optional<UserRentals> findByUserId(final UserId userId) {
+        return jpaUserRentalsRepository.findByUserId(userId);
     }
 }

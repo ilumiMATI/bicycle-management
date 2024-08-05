@@ -1,6 +1,4 @@
-package pl.lodz.p.bicycle_management.bicycle.api;
-
-import pl.lodz.p.bicycle_management.bicycle.domain.BicycleNumber;
+package pl.lodz.p.bicycle_management.bicycle.domain;
 
 public interface AvailabilityService {
     void createAvailability(BicycleNumber bicycleNumber);

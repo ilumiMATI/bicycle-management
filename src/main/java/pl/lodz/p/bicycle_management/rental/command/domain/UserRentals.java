@@ -34,7 +34,8 @@ public class UserRentals {
     Integer id;
 
     @Column
-    Integer userId;
+    @Embedded
+    UserId userId;
 
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_rentals_bicycles", joinColumns = @JoinColumn(name = "user_rentals_id"))
@@ -50,7 +51,7 @@ public class UserRentals {
     @Transient
     ReturningPolicy returningPolicy;
 
-    UserRentals(final Integer userId) {
+    UserRentals(final UserId userId) {
         this.userId = userId;
     }
 

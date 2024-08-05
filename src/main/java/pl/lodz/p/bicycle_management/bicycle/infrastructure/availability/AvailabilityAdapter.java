@@ -2,7 +2,7 @@ package pl.lodz.p.bicycle_management.bicycle.infrastructure.availability;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import pl.lodz.p.bicycle_management.bicycle.api.AvailabilityService;
+import pl.lodz.p.bicycle_management.bicycle.domain.AvailabilityService;
 import pl.lodz.p.bicycle_management.bicycle.domain.BicycleNumber;
 
 @RequiredArgsConstructor

@@ -58,12 +58,6 @@ Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
-##### get all rentals
-##GET http://localhost:8080/api/v1/rentals?page=2&size=3
-##Accept: application/json
-##Content-Type: application/json
-##Authorization: {{auth_token}}
-
 ### rent bicycle
 POST http://localhost:8080/api/v1/rentals/rent
 Accept: application/json

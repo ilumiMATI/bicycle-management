@@ -1,7 +1,7 @@
 package pl.lodz.p.bicycle_management.rental.command.domain;
 
 public class UserRentalsFactory {
-    public static UserRentals createUserRentals(Integer userId) {
+    public static UserRentals createUserRentals(UserId userId) {
         return new UserRentals(userId);
     }
 
