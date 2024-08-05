@@ -46,4 +46,12 @@ public class UserWallet {
         this.money = money;
         this.userId = userId;
     }
+
+    public void pay(Money amount) {
+        money.subtract(amount);
+    }
+
+    public void deposit(Money amount) {
+        money.add(amount);
+    }
 }

@@ -24,6 +24,9 @@ public record Money(
     }
 
     public Money subtract(Money money) {
+        if (money.amount.compareTo(this.amount) > 0) {
+            throw new PaymentInsufficientFundsException();
+        }
         return new Money(money.amount.subtract(money.amount()));
     }
 
