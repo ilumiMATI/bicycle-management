@@ -49,4 +49,12 @@ public class Bicycle {
 
     @Version
     private Integer version;
+
+    public Bicycle(BicycleNumber bicycleNumber, String model, String brand, Integer batteryChargeDesign, Integer batteryChargeCurrent) {
+        this.bicycleNumber = bicycleNumber;
+        this.model = model;
+        this.brand = brand;
+        this.batteryChargeDesign = batteryChargeDesign;
+        this.batteryChargeCurrent = batteryChargeCurrent;
+    }
 }
