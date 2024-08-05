@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import pl.lodz.p.bicycle_management.user.domain.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,12 +23,12 @@ import java.util.stream.Collectors;
 public
 class UserStorageAdapter implements UserRepository {
 
-    private final JpaUserRepository userRepository;
+    private final JpaUserRepository jpaUserRepository;
 
     @Override
     public User save(final User user) {
         try {
-            User saved = userRepository.save(user);
+            User saved = jpaUserRepository.save(user);
             log.info("Saved entity " + saved);
             return saved;
         } catch (DataIntegrityViolationException ex) {
@@ -38,29 +39,28 @@ class UserStorageAdapter implements UserRepository {
 
     @Override
     public void update(final User user) {
-        userRepository.findById(user.getId()).ifPresent(userEntity -> userRepository.save(user));
+        jpaUserRepository.findById(user.getId()).ifPresent(userEntity -> jpaUserRepository.save(user));
     }
 
     @Override
     public void remove(final Integer id) {
-        userRepository.findById(id).ifPresent(userEntity -> userRepository.deleteById(id));
+        jpaUserRepository.findById(id).ifPresent(userEntity -> jpaUserRepository.deleteById(id));
     }
 
     @Override
     public Optional<User> findByEmail(final String email) {
-        return userRepository.findByEmail(email);
+        return jpaUserRepository.findByEmail(email);
     }
 
     @Override
     public Optional<User> findById(final Integer id) {
-        return userRepository.findById(id);
+        return jpaUserRepository.findById(id);
     }
 
     @Override
     public PageUser findAll(final Pageable pageable) {
-        Page<User> pageOfUsersEntity = userRepository.findAll(pageable);
-        List<User> usersOnCurrentPage = pageOfUsersEntity.getContent().stream()
-                .collect(Collectors.toList());
+        Page<User> pageOfUsersEntity = jpaUserRepository.findAll(pageable);
+        List<User> usersOnCurrentPage = pageOfUsersEntity.getContent();
         return new PageUser(
                 usersOnCurrentPage,
                 pageable.getPageNumber() + 1,

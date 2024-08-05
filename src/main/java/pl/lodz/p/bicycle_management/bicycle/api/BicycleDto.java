@@ -1,4 +1,4 @@
-package pl.lodz.p.bicycle_management.bicycle.infrastructure.web;
+package pl.lodz.p.bicycle_management.bicycle.api;
 
 public record BicycleDto(
         Integer id,

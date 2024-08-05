@@ -7,7 +7,6 @@ import java.util.List;
 
 @Value
 public class PageUser implements Serializable {
-
     List<User> users;
     Integer currentPage;
     Integer totalPages;

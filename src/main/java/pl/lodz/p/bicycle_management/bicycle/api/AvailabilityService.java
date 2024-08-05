@@ -1,6 +1,5 @@
-package pl.lodz.p.bicycle_management.bicycle.application;
+package pl.lodz.p.bicycle_management.bicycle.api;
 
-import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
 import pl.lodz.p.bicycle_management.bicycle.domain.BicycleNumber;
 
 public interface AvailabilityService {
