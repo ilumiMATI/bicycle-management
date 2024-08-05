@@ -21,7 +21,7 @@ public class PaymentService {
         // payment
         payWithWallet(userId,moneyToPay);
     }
-    // TODO: Create wallet aggregate with wallet policies ...
+    // TODO: Create wallet aggregate with wallet policies ... (In construction)
     public void payWithWallet(UserId userId, Money money) {
         log.info("Paying with wallet");
     }

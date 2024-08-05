@@ -6,7 +6,7 @@ import pl.lodz.p.bicycle_management.user.domain.RentalService;
 
 @Component
 @RequiredArgsConstructor
-public class RentalServiceAdapter implements RentalService {
+public class UserRentalServiceAdapter implements RentalService {
     private final pl.lodz.p.bicycle_management.rental.command.application.RentalService rentalService;
 
     @Override

@@ -8,9 +8,10 @@ import java.util.List;
 
 @Entity
 @Table(
+        name = "user_rentals",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "user_id_unique",
+                        name = "user_rentals_user_id_unique",
                         columnNames = "userId"
                 )
         }
@@ -43,7 +44,7 @@ public class UserRentals {
     List<String> bicycles = new ArrayList<>();
 
     @Version
-    private Integer version;
+    Integer version;
 
     @Transient
     RentingPolicy rentingPolicy;

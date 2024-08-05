@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class AvailabilityFacade implements AvailabilityService {
+public class RentalAvailabilityFacade implements AvailabilityService {
     public final pl.lodz.p.bicycle_management.availability.command.application.AvailabilityService availabilityService;
 
     @Override

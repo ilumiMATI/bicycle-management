@@ -19,11 +19,11 @@ public class RentalService {
 //    }
 
     public UserRentals create(final CreateCommand createCommand) {
-        return userRentalsRepository.save(UserRentalsFactory.createUserRentals(new UserId(createCommand.userId())));
+        return userRentalsRepository.save(UserRentalsFactory.createUserRentals(UserId.of(createCommand.userId())));
     }
 
     public void remove(final RemoveCommand removeCommand) {
-        userRentalsRepository.remove(new UserId(removeCommand.userId()));
+        userRentalsRepository.removeByUserId(UserId.of(removeCommand.userId()));
     }
 
     public UserRentals findByUserId(UserId userId) {

@@ -65,7 +65,7 @@ Content-Type: application/json
 Authorization: {{auth_token}}
 
 {
-  "bicycleNumber": "bike2",
+  "bicycleNumber": "bike1",
   "userId": 1
 }
 
