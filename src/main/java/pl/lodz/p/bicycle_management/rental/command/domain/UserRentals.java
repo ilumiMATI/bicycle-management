@@ -39,7 +39,7 @@ public class UserRentals {
 
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_rentals_bicycles", joinColumns = @JoinColumn(name = "user_rentals_id"))
-    @Column(name = "bicycle", nullable = true)
+    @Column(name = "bicycle_number", nullable = true)
     List<String> bicycles = new ArrayList<>();
 
     @Version

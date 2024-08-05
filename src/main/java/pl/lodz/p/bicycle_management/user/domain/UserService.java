@@ -9,19 +9,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final EncodingService encoder;
-//    private final RentalService rentalService;
+    private final RentalService rentalService;
 
     // This constructor was added because there was circular dependency between UserService and RentalService
     // TODO: Ask about it
-//    public UserService(UserRepository userRepository, EncodingService encoder, @Lazy RentalService rentalService) {
-//        this.userRepository = userRepository;
-//        this.encoder = encoder;
-//        this.rentalService = rentalService;
-//    }
+    public UserService(UserRepository userRepository, EncodingService encoder, @Lazy RentalService rentalService) {
+        this.userRepository = userRepository;
+        this.encoder = encoder;
+        this.rentalService = rentalService;
+    }
 
     public User save(User user) {
         User createdUser = userRepository.save(
@@ -29,7 +29,7 @@ public class UserService {
                         encoder.encode(user.getPassword())
                 )
         );
-//        rentalService.createRentalsForUser(createdUser.getId());
+        rentalService.createRentalsForUser(createdUser.getId());
         return createdUser;
     }
 
@@ -38,7 +38,7 @@ public class UserService {
     }
 
     public void remove(Integer id) {
-//        rentalService.removeRentalsForUser(id);
+        rentalService.removeRentalsForUser(id);
         userRepository.remove(id);
     }
 
