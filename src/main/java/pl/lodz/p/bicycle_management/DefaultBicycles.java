@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import pl.lodz.p.bicycle_management.bicycle.infrastructure.web.BicycleDto;
-import pl.lodz.p.bicycle_management.bicycle.infrastructure.web.BicycleDtoMapper;
-import pl.lodz.p.bicycle_management.bicycle.application.BicycleService;
+import pl.lodz.p.bicycle_management.bicycle.api.BicycleDto;
+import pl.lodz.p.bicycle_management.bicycle.api.BicycleDtoMapper;
+import pl.lodz.p.bicycle_management.bicycle.domain.BicycleService;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class DefaultBicycles implements CommandLineRunner {
     public void run(String... args) throws Exception {
         try {
             for (BicycleDto bicycleDto : bicycles ) {
-                bicycleService.addBicycle(bicycleDtoMapper.toDomain(bicycleDto));
+                bicycleService.save(bicycleDtoMapper.toDomain(bicycleDto));
             }
         } catch (Exception ex) {
             log.warning(ex.getMessage());

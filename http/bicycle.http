@@ -27,41 +27,48 @@ Content-Type: application/json
 %}
 
 ### Add Bicycle
-POST http://localhost:8080/api/v1/bicycle
+POST http://localhost:8080/api/v1/bicycles
 Accept: application/json
 Content-Type: application/json
+Authorization: {{auth_token}}
 
 {
-  "bicycleTypeId": 1,
-  "batteryChargeDesign": 60357,
-  "batteryChargeCurrent": 55687
+  "bicycleNumber": "bikeX",
+  "model": "Y",
+  "brand": "X",
+  "batteryChargeDesign": 468,
+  "batteryChargeCurrent": 256
 }
 
 ### Get Bicycles
-GET http://localhost:8080/api/v1/bicycle
+GET http://localhost:8080/api/v1/bicycles
 Accept: application/json
 Content-Type: application/json
+Authorization: {{auth_token}}
 
 ### Get Bicycle by ID
-GET http://localhost:8080/api/v1/bicycle/2
+GET http://localhost:8080/api/v1/bicycles/2
 Accept: application/json
 Content-Type: application/json
+Authorization: {{auth_token}}
 
 ### Update Bicycle
-PUT http://localhost:8080/api/v1/bicycle
+PUT http://localhost:8080/api/v1/bicycles
 Accept: application/json
 Content-Type: application/json
+Authorization: {{auth_token}}
 
 {
-  "id": 5,
-  "brand": "Tesla",
-  "model": "Model XD",
-  "maxSpeed": 60,
-  "batteryChargeDesign": 11568,
-  "batteryChargeCurrent": 85674
+  "id": 4,
+  "bicycleNumber": "bikeX",
+  "model": "Y V2",
+  "brand": "X",
+  "batteryChargeDesign": 789,
+  "batteryChargeCurrent": 579
 }
 
 ### Delete Bicycle
-DELETE http://localhost:8080/api/v1/bicycle/2
+DELETE http://localhost:8080/api/v1/bicycles/2
 Accept: application/json
 Content-Type: application/json
+Authorization: {{auth_token}}

@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("availability.domain.properties")
 public class AvailabilityDomainConfiguration {
 
-    @Bean
-    public BicycleAvailabilityRepository bicycleAvailabilityRepository(JpaBicycleAvailabilityRepository jpaBicycleAvailabilityRepository) {
-        return new BicycleAvailabilityStorageAdapter(jpaBicycleAvailabilityRepository);
-    }
+//    @Bean
+//    public BicycleAvailabilityRepository bicycleAvailabilityRepository(JpaBicycleAvailabilityRepository jpaBicycleAvailabilityRepository) {
+//        return new BicycleAvailabilityStorageAdapter(jpaBicycleAvailabilityRepository);
+//    }
 
 }

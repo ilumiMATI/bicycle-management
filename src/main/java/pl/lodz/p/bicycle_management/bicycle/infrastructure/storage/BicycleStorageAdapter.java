@@ -3,6 +3,8 @@ package pl.lodz.p.bicycle_management.bicycle.infrastructure.storage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -13,14 +15,14 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 
+@Log
 @RequiredArgsConstructor
 @Repository
-@Log
 public class BicycleStorageAdapter implements BicycleRepository {
     final private JpaBicycleRepository jpaBicycleRepository;
 
     @Override
-    public Bicycle save(Bicycle bicycle) {
+    public Bicycle save(final Bicycle bicycle) {
         try {
             Bicycle saved = jpaBicycleRepository.save(bicycle);
             log.info("Saved entity " + saved);
@@ -34,30 +36,36 @@ public class BicycleStorageAdapter implements BicycleRepository {
 
 
     @Override
-    public Optional<Bicycle> findById(Integer id) {
+    public Optional<Bicycle> findById(final Integer id) {
         return jpaBicycleRepository.findById(id);
     }
 
     @Override
-    public Optional<Bicycle> findByBicycleNumber(BicycleNumber bicycleNumber) {
+    public Optional<Bicycle> findByBicycleNumber(final BicycleNumber bicycleNumber) {
         return jpaBicycleRepository.findByBicycleNumber(bicycleNumber);
     }
 
-    // TODO: Change to PageBicycle ...
     @Override
-    public List<Bicycle> findAll() {
-        return jpaBicycleRepository.findAll(Sort.by(Sort.Direction.ASC,"id"));
+    public PageBicycle findAll(final Pageable pageable) {
+        Page<Bicycle> pageOfBicycles = jpaBicycleRepository.findAll(pageable);
+        List<Bicycle> bicyclesOnCurrentPage = pageOfBicycles.getContent();
+        return new PageBicycle(
+                bicyclesOnCurrentPage,
+                pageable.getPageNumber() + 1,
+                pageOfBicycles.getTotalPages(),
+                pageOfBicycles.getTotalElements()
+        );
     }
 
     @Override
-    public Bicycle update(Bicycle bicycle) {
+    public Bicycle update(final Bicycle bicycle) {
         return jpaBicycleRepository.findByBicycleNumber(bicycle.getBicycleNumber())
                 .map((found) -> jpaBicycleRepository.save(bicycle))
                 .orElseThrow(BicycleNotFoundException::new);
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(final Integer id) {
         jpaBicycleRepository.deleteById(id);
     }
 }

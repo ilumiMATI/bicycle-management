@@ -1,6 +1,8 @@
 package pl.lodz.p.bicycle_management.availability.command.infrastructure.storage;
 
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import pl.lodz.p.bicycle_management.availability.command.domain.BicycleAlreadyExistsException;
 import pl.lodz.p.bicycle_management.availability.command.domain.BicycleAvailability;
 import pl.lodz.p.bicycle_management.availability.command.domain.BicycleAvailabilityRepository;
@@ -13,6 +15,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Log
+@Repository
 public class BicycleAvailabilityStorageAdapter implements BicycleAvailabilityRepository {
 
     private final JpaBicycleAvailabilityRepository bicycleAvailabilityRepository;

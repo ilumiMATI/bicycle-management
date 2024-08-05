@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties("reservation.domain.properties")
 public class RentalDomainConfiguration {
 
-    @Bean
-    public UserRentalsRepository userRentalsRepository(JpaUserRentalsRepository jpaUserRentalsRepository) {
-        return new UserRentalsStorageAdapter(jpaUserRentalsRepository);
-    }
+//    @Bean
+//    public UserRentalsRepository userRentalsRepository(JpaUserRentalsRepository jpaUserRentalsRepository) {
+//        return new UserRentalsStorageAdapter(jpaUserRentalsRepository);
+//    }
 
 }

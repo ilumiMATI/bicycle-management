@@ -1,6 +1,8 @@
 package pl.lodz.p.bicycle_management.rental.command.infrastructure.storage;
 
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentals;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsAlreadyExistsException;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsRepository;
@@ -10,10 +12,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Optional;
 
+
 @RequiredArgsConstructor
 @Log
-public
-class UserRentalsStorageAdapter implements UserRentalsRepository {
+@Repository
+public class UserRentalsStorageAdapter implements UserRentalsRepository {
 
     private final JpaUserRentalsRepository repository;
 

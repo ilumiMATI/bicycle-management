@@ -33,11 +33,16 @@ class UserController {
     private final JWTUtil jwtUtil;
     private final Security security;
 
+    @PostMapping
+    public ResponseEntity<UserDto> saveUser(@RequestBody UserDto dto) {
+        User user = userService.save(userMapper.toDomain(dto));
+        return ResponseEntity.ok(userMapper.toDto(user));
+    }
+
     @GetMapping( path = "/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Integer id) {
         User user = userService.findById(id);
-        return ResponseEntity
-                .ok(userMapper.toDto(user));
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
     @GetMapping
@@ -51,18 +56,9 @@ class UserController {
         return ResponseEntity.ok(pageUsers);
     }
 
-    @PostMapping
-    public ResponseEntity<UserDto> saveUser(@RequestBody UserDto dto) {
-
-        User user = userService.save(userMapper.toDomain(dto));
-        return ResponseEntity
-                .ok(userMapper.toDto(user));
-    }
-
     @PutMapping
     public ResponseEntity<Void> updateUser(@RequestBody UserDto dto) {
         userService.update(userMapper.toDomain(dto));
-
         return ResponseEntity.ok().build();
     }
 
@@ -71,5 +67,4 @@ class UserController {
         userService.removeById(id);
         return ResponseEntity.noContent().build();
     }
-
 }

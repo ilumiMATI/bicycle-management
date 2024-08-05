@@ -15,8 +15,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Log
-public
-class UserRentalsFacade {
+public class UserRentalsFacade {
 
     private final JpaQueryUserRentalsRepository repository;
     private final UserRentalsDtoMapper mapper;

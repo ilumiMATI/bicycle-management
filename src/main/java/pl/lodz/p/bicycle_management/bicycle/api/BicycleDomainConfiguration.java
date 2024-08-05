@@ -1,4 +1,4 @@
-package pl.lodz.p.bicycle_management.bicycle.application;
+package pl.lodz.p.bicycle_management.bicycle.api;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -10,14 +10,9 @@ import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleRep
 @Configuration
 @ConfigurationProperties("bicycle.domain.properties")
 public class BicycleDomainConfiguration {
-    @Bean
-    public BicycleRepository bicycleRepository(JpaBicycleRepository jpaBicycleRepository) {
-        return new BicycleStorageAdapter(jpaBicycleRepository);
-    }
 
 //    @Bean
-//    public BicycleService bicycleService(BicycleRepository bicycleRepository) {
-//        return new BicycleService(bicycleRepository);
+//    public BicycleRepository bicycleRepository(JpaBicycleRepository jpaBicycleRepository) {
+//        return new BicycleStorageAdapter(jpaBicycleRepository);
 //    }
-
 }

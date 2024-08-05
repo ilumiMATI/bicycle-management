@@ -1,4 +1,4 @@
-package pl.lodz.p.bicycle_management.bicycle.application;
+package pl.lodz.p.bicycle_management.bicycle.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

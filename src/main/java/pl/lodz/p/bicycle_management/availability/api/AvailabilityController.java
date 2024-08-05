@@ -56,7 +56,7 @@ class AvailabilityController {
     @GetMapping
     public ResponseEntity<PageBicycleAvailabilityDto> getAvailabilities(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size
+            @RequestParam(defaultValue = "5") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
 
