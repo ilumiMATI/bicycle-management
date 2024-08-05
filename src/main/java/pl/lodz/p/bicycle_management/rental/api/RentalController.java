@@ -37,13 +37,13 @@ class RentalController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("rent")
+    @PostMapping("/rent")
     public ResponseEntity<Void> rentBicycle(@RequestBody RentCommand rentCommand){
         rentalService.rentBike(rentCommand);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("return")
+    @PostMapping("/return")
     public ResponseEntity<Void> returnBicycle(@RequestBody ReturnCommand returnCommand){
         rentalService.returnBike(returnCommand);
         return ResponseEntity.ok().build();
@@ -59,7 +59,7 @@ class RentalController {
     @GetMapping
     public ResponseEntity<PageUserRentalsDto> getUserRentals(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "3") int size
+            @RequestParam(defaultValue = "5") int size
     ) {
         Pageable pageable = PageRequest.of(page, size);
 

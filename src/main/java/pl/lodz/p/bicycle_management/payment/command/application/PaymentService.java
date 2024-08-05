@@ -17,7 +17,7 @@ public class PaymentService {
         log.info("Paying rent for " + userId + " with time " + timeInMinutes);
         // calculation of money
         Money moneyToPay = Money.of(5.5 * timeInMinutes);
-        log.info("User " + userId + " must pay " + moneyToPay.toString());
+        log.info("User " + userId + " must pay " + moneyToPay.asString());
         // payment
         payWithWallet(userId,moneyToPay);
     }

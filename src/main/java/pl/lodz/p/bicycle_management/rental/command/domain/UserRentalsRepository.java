@@ -6,6 +6,8 @@ public interface UserRentalsRepository {
 
     UserRentals save(UserRentals userRentals);
 
-    Optional<UserRentals> findBy(Integer userId);
+    void remove(UserId userId);
+
+    Optional<UserRentals> findByUserId(UserId userId);
 
 }

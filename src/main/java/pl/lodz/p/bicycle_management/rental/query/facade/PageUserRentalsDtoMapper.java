@@ -19,5 +19,6 @@ public interface PageUserRentalsDtoMapper {
     List<UserRentalsDto> toListDto(List<UserRentals> userRentals);
 
     @Named("userRentalsToUserRentalsDto")
+    @Mapping(target = "userId", source = "userId.userId")
     UserRentalsDto toDto(UserRentals domain);
 }

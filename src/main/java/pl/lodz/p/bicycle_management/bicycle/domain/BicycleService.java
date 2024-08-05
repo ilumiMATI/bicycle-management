@@ -4,7 +4,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import pl.lodz.p.bicycle_management.bicycle.api.AvailabilityService;
 
 @Service
 @Transactional

@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 public record Money(BigDecimal amount) {
+
     public static Money of(BigDecimal amount) {
         return new Money(amount.setScale(2, RoundingMode.HALF_UP));
     }
+
     public static Money of(Double amount) {
         return new Money(BigDecimal.valueOf(amount).setScale(2, RoundingMode.HALF_UP));
     }
@@ -27,8 +29,7 @@ public record Money(BigDecimal amount) {
         return new Money(money.amount.divide(money.amount(), 2, RoundingMode.HALF_UP));
     }
 
-    @Override
-    public String toString() {
+    public String asString() {
         return amount.toString();
     }
 }
