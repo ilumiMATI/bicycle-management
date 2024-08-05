@@ -1,6 +1,7 @@
 package pl.lodz.p.bicycle_management.user.infrastructure.storage;
 
 
+import org.springframework.stereotype.Repository;
 import pl.lodz.p.bicycle_management.user.domain.PageUser;
 import pl.lodz.p.bicycle_management.user.domain.User;
 import pl.lodz.p.bicycle_management.user.domain.UserAlreadyExistsException;
@@ -19,9 +20,8 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Log
-@Component
-public
-class UserStorageAdapter implements UserRepository {
+@Repository
+public class UserStorageAdapter implements UserRepository {
 
     private final JpaUserRepository jpaUserRepository;
 

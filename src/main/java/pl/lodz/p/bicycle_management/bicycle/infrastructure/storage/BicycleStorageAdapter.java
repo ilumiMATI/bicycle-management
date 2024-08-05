@@ -15,9 +15,9 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
 
+@Log
 @RequiredArgsConstructor
 @Repository
-@Log
 public class BicycleStorageAdapter implements BicycleRepository {
     final private JpaBicycleRepository jpaBicycleRepository;
 
