@@ -13,8 +13,9 @@ public class BicycleService {
     private final AvailabilityService availabilityService;
 
     public Bicycle save(Bicycle bicycle) {
-        availabilityService.createAvailability(bicycle.getBicycleNumber());
-        return bicycleRepository.save(bicycle);
+        Bicycle savedBicycle = bicycleRepository.save(bicycle);
+        availabilityService.createAvailability(savedBicycle.getBicycleNumber());
+        return savedBicycle;
     }
 
     public Bicycle findById(Integer id) {
@@ -35,7 +36,7 @@ public class BicycleService {
         return bicycleRepository.update(bicycle);
     }
 
-    public void deleteById(Integer id) {
+    public void removeById(Integer id) {
         availabilityService.removeAvailability(bicycleRepository.findById(id).get().getBicycleNumber());
         bicycleRepository.delete(id);
     }

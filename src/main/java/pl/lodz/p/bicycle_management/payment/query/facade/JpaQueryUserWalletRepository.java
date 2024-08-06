@@ -8,5 +8,4 @@ import java.util.Optional;
 
 public interface JpaQueryUserWalletRepository extends JpaRepository<UserWallet, Integer> {
     Optional<UserWallet> findUserWalletByUserId(UserId userId);
-
 }

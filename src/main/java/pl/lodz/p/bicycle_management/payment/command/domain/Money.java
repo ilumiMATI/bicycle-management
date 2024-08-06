@@ -22,7 +22,9 @@ public record Money(
     public Money add(Money money) {
         return new Money(amount.add(money.amount()));
     }
-
+    // TODO: Having less than 0 funds is allowed
+    //       Add a way to block a rent if there aren't any minimal funds on user wallet
+    //       Add a way to deposit money
     public Money subtract(Money money) {
         if (amount.compareTo(money.amount) < 0) {
             throw new PaymentInsufficientFundsException();

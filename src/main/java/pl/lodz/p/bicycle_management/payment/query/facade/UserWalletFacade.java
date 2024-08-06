@@ -20,4 +20,5 @@ public class UserWalletFacade {
         final Optional<UserWallet> userWallet = jpaQueryUserWalletRepository.findUserWalletByUserId(UserId.of(userId));
         return userWalletDtoMapper.toDto(userWallet.orElseThrow(UserWalletNotFoundException::new));
     }
+    // TODO: Add Page Wallet
 }

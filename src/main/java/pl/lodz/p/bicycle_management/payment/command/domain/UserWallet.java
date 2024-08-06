@@ -42,6 +42,8 @@ public class UserWallet {
     @Version
     Integer version;
 
+    // TODO: Later on add policies based on user bought packets/subscriptions/memberships
+
     public UserWallet(UserId userId, Money money) {
         this.money = money;
         this.userId = userId;

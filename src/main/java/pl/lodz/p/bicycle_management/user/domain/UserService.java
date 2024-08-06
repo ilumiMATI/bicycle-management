@@ -1,5 +1,6 @@
 package pl.lodz.p.bicycle_management.user.domain;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -7,24 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
     private final EncodingService encoder;
     private final UserWalletService userWalletService;
     private final RentalService rentalService;
-
-    // This constructor was added because there was circular dependency between UserService and RentalService
-    // TODO: Ask about it
-    public UserService(UserRepository userRepository,
-                       EncodingService encoder,
-                       UserWalletService userWalletService,
-                       @Lazy RentalService rentalService) {
-        this.userRepository = userRepository;
-        this.encoder = encoder;
-        this.userWalletService = userWalletService;
-        this.rentalService = rentalService;
-    }
 
     public User save(User user) {
         User createdUser = userRepository.save(

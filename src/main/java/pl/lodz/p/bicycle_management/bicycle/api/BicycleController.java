@@ -51,7 +51,7 @@ public class BicycleController {
 
     @DeleteMapping(path = "/{id}")
     ResponseEntity<Void> removeBicycle(@PathVariable Integer id) {
-        bicycleService.deleteById(id);
+        bicycleService.removeById(id);
         return ResponseEntity.ok().build();
     }
 }
