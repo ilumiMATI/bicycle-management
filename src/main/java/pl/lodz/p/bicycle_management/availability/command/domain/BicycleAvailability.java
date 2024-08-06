@@ -74,7 +74,10 @@ public class BicycleAvailability {
     }
 
     public Integer unlock() {
-        Integer minutes = (int) lockTime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+        Integer minutes = null;
+        if (this.lockTime != null) {
+            minutes = (int) lockTime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+        }
         this.lockTime = null;
         this.userId = null;
         return minutes;

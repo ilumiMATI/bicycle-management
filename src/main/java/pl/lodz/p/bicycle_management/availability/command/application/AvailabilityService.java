@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 public class AvailabilityService {
 
     private final BicycleAvailabilityRepository bicycleAvailabilityRepository;
-//    private final AuthenticationService authenticationService;
 
     public BicycleAvailability create(final CreateCommand createCommand) {
         return bicycleAvailabilityRepository.save(new BicycleAvailability(BicycleNumber.of(createCommand.bicycleNumber())));
@@ -29,16 +28,7 @@ public class AvailabilityService {
 
     public void lockBicycle(LockCommand lockCommand) {
         System.out.println("####### lock bicycle");
-//        User user = authenticationService.getLoggedInUser();
         BicycleAvailability bicycleAvailability = findByBicycleNumber(BicycleNumber.of(lockCommand.bicycleNumber()));
-//        if (lockCommand.userId() == null) {
-//            bicycleAvailability.lockFor(UserId.of(user.bicycleNumber()));
-//        } else {
-//            if (user.role() != UserRole.ADMIN) {
-//                throw new MethodNotAllowedException();
-//            }
-//            bicycleAvailability.lockFor(UserId.of(lockCommand.userId()));
-//        }
         bicycleAvailability.lockFor(UserId.of(lockCommand.userId()));
     }
 

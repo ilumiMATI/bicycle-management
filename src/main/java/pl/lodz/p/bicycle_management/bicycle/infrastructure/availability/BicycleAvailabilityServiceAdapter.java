@@ -7,7 +7,7 @@ import pl.lodz.p.bicycle_management.bicycle.domain.BicycleNumber;
 
 @RequiredArgsConstructor
 @Component
-public class AvailabilityAdapter implements AvailabilityService {
+public class BicycleAvailabilityServiceAdapter implements AvailabilityService {
     private final pl.lodz.p.bicycle_management.availability.command.application.AvailabilityService availabilityService;
 
     @Override

@@ -20,25 +20,29 @@ public record Money(
     }
 
     public Money add(Money money) {
-        return new Money(money.amount.add(money.amount()));
+        return new Money(amount.add(money.amount()));
     }
 
     public Money subtract(Money money) {
-        if (money.amount.compareTo(this.amount) > 0) {
+        if (amount.compareTo(money.amount) < 0) {
             throw new PaymentInsufficientFundsException();
         }
-        return new Money(money.amount.subtract(money.amount()));
+        return new Money(amount.subtract(money.amount()));
     }
 
     public Money multiply(Money money) {
-        return new Money(money.amount.multiply(money.amount()));
+        return new Money(amount.multiply(money.amount()));
     }
 
     public Money divide(Money money) {
-        return new Money(money.amount.divide(money.amount(), 2, RoundingMode.HALF_UP));
+        return new Money(amount.divide(money.amount(), 2, RoundingMode.HALF_UP));
     }
 
     public String asString() {
         return amount.toString();
+    }
+
+    public BigDecimal value() {
+        return amount;
     }
 }

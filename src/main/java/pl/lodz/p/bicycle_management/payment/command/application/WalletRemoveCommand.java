@@ -1,6 +1,6 @@
 package pl.lodz.p.bicycle_management.payment.command.application;
 
-public record RemoveCommand(
+public record WalletRemoveCommand(
         Integer userId
 ) {
 }

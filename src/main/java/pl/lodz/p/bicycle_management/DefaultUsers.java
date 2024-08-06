@@ -18,7 +18,6 @@ public class DefaultUsers implements CommandLineRunner {
     }
 
     private final User adminUser = new User(
-            null,
             "admin@gmail.com",
             "Admin",
             "password",
@@ -26,7 +25,6 @@ public class DefaultUsers implements CommandLineRunner {
     );
 
     private final User vipUser = new User(
-            null,
             "vip@gmail.com",
             "Vip",
             "password",
@@ -34,7 +32,6 @@ public class DefaultUsers implements CommandLineRunner {
     );
 
     private final User regularUser = new User(
-            null,
             "user@gmail.com",
             "User",
             "password",

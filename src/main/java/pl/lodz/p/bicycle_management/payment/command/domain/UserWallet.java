@@ -48,10 +48,10 @@ public class UserWallet {
     }
 
     public void pay(Money amount) {
-        money.subtract(amount);
+        money = money.subtract(amount);
     }
 
     public void deposit(Money amount) {
-        money.add(amount);
+        money = money.add(amount);
     }
 }

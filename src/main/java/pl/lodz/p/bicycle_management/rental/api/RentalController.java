@@ -4,6 +4,7 @@ import pl.lodz.p.bicycle_management.rental.command.application.CreateCommand;
 import pl.lodz.p.bicycle_management.rental.command.application.RentCommand;
 import pl.lodz.p.bicycle_management.rental.command.application.RentalService;
 import pl.lodz.p.bicycle_management.rental.command.application.ReturnCommand;
+import pl.lodz.p.bicycle_management.rental.command.domain.UserId;
 import pl.lodz.p.bicycle_management.rental.query.facade.PageUserRentalsDto;
 import pl.lodz.p.bicycle_management.rental.query.facade.UserRentalsDto;
 import pl.lodz.p.bicycle_management.rental.query.facade.UserRentalsFacade;
@@ -27,9 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
         consumes = "application/json"
 )
 class RentalController {
-
     private final RentalService rentalService;
-
 
     @PostMapping
     public ResponseEntity<Void> createUserRentals(@RequestBody CreateCommand createCommand){
@@ -53,7 +52,7 @@ class RentalController {
 
     @GetMapping( path = "/{userId}")
     public ResponseEntity<UserRentalsDto> getUserRentalsForUser(@PathVariable Integer userId) {
-        return ResponseEntity.ok(userRentalsFacade.findByUserId(userId));
+        return ResponseEntity.ok(userRentalsFacade.findByUserId(UserId.of(userId)));
     }
 
     @GetMapping

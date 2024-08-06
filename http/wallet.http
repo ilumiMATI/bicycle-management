@@ -40,49 +40,14 @@ Content-Type: application/json
     client.global.set("auth_token", "Bearer " + response.body.token);
 %}
 
-### Create Bicycle
-POST http://localhost:8080/api/v1/bicycles
+### get wallet by user id
+GET http://localhost:8080/api/v1/wallet/1
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
-{
-  "bicycleNumber": "bikeX",
-  "model": "Y",
-  "brand": "X",
-  "batteryChargeDesign": 468,
-  "batteryChargeCurrent": 256
-}
-
-### Get Bicycles
-GET http://localhost:8080/api/v1/bicycles
-Accept: application/json
-Content-Type: application/json
-Authorization: {{auth_token}}
-
-### Get Bicycle by ID
-GET http://localhost:8080/api/v1/bicycles/2
-Accept: application/json
-Content-Type: application/json
-Authorization: {{auth_token}}
-
-### Update Bicycle
-PUT http://localhost:8080/api/v1/bicycles
-Accept: application/json
-Content-Type: application/json
-Authorization: {{auth_token}}
-
-{
-  "id": 4,
-  "bicycleNumber": "bikeX",
-  "model": "Y V2",
-  "brand": "X",
-  "batteryChargeDesign": 789,
-  "batteryChargeCurrent": 579
-}
-
-### Remove Bicycle
-DELETE http://localhost:8080/api/v1/bicycles/2
+### get my wallet
+GET http://localhost:8080/api/v1/wallet
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
