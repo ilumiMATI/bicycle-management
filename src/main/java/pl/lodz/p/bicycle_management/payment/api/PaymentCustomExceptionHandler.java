@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import pl.lodz.p.bicycle_management.payment.command.domain.MethodNotAllowedException;
-import pl.lodz.p.bicycle_management.payment.command.domain.PaymentInsufficientFundsException;
 import pl.lodz.p.bicycle_management.payment.command.domain.UserWalletAlreadyExistsException;
+import pl.lodz.p.bicycle_management.payment.command.domain.UserWalletNotFoundException;
 
 import java.io.IOException;
 
@@ -19,9 +19,9 @@ public class PaymentCustomExceptionHandler extends ResponseEntityExceptionHandle
         return buildResponse(ex,  HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(PaymentInsufficientFundsException.class)
-    public final ResponseEntity<ErrorResponse> handleMethodNotAllowedException(PaymentInsufficientFundsException ex) {
-        return buildResponse(ex,  HttpStatus.PAYMENT_REQUIRED);
+    @ExceptionHandler(UserWalletNotFoundException.class)
+    public final ResponseEntity<ErrorResponse> handleMethodNotAllowedException(UserWalletNotFoundException ex) {
+        return buildResponse(ex,  HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodNotAllowedException.class)

@@ -22,9 +22,9 @@ public class PaymentService { // This is more general service which Later on cou
     private final UserService userService;
 
     public void payForRent(RentPaymentCommand rentPaymentCommand) {
-        log.info("Paying rent for " + rentPaymentCommand.userId() + " with time of " + rentPaymentCommand.timeInMinutes() + " minutes");
+        log.info(prefix() + "Paying rent for " + rentPaymentCommand.userId() + " with time of " + rentPaymentCommand.timeInMinutes() + " minutes");
         if (userService.getUser(UserId.of(rentPaymentCommand.userId())).role() == UserRole.ADMIN) {
-            log.info("Admin doesn't have to pay");
+            log.info(prefix() + "Admin doesn't have to pay");
             return;
         }
         walletService.payForRent(rentPaymentCommand);
@@ -35,10 +35,14 @@ public class PaymentService { // This is more general service which Later on cou
         User user = authenticationService.getLoggedInUser();
         // TODO: Change filter to only allow this for admin
         if(user.role() != UserRole.ADMIN && !Objects.equals(walletDepositCommand.userId(), user.id())) {
-                throw new MethodNotAllowedException();
+            log.warning(prefix() + "Only Admin can deposit to wallet");
+            throw new MethodNotAllowedException();
         }
-
+        log.warning(prefix() + "Depositing...");
         walletService.deposit(walletDepositCommand);
     }
 
+    private String prefix() {
+        return "[PaymentService] ";
+    }
 }

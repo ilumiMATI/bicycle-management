@@ -1,5 +1,6 @@
 package pl.lodz.p.bicycle_management.rental.command.application;
 
+import lombok.extern.java.Log;
 import pl.lodz.p.bicycle_management.rental.command.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Log
 public class RentalService {
 
     private final AuthenticationService authenticationService;
@@ -19,25 +21,28 @@ public class RentalService {
     private final WalletService walletService;
 
     public UserRentals create(final CreateCommand createCommand) {
+        log.info(prefix() + "Creating rentals for " + createCommand.userId());
         return userRentalsRepository.save(UserRentalsFactory.createUserRentals(UserId.of(createCommand.userId())));
     }
 
     public void remove(final RemoveCommand removeCommand) {
+        log.info(prefix() + "Removing rentals for " + removeCommand.userId());
         userRentalsRepository.removeByUserId(UserId.of(removeCommand.userId()));
     }
 
     public UserRentals findByUserId(UserId userId) {
-
+        log.info(prefix() + "finding user with id " + userId.value());
         final UserRentals userRentals = userRentalsRepository.findByUserId(userId)
                 .orElseThrow(UserRentalsNotFoundException::new);
         return userRentals;
     }
 
     public void rentBike(RentCommand command) {
+        log.info(prefix() + "Renting bicycle " + command.bicycleNumber() + " for user with id " + command.userId());
         User user = authenticationService.getLoggedInUser();
         Integer userId;
 
-        if (command.userId() == null) {
+        if (command.userId() == null || command.userId().equals(user.id())) {
             userId = user.id();
         } else {
             if (user.role() != UserRole.ADMIN) {
@@ -46,23 +51,25 @@ public class RentalService {
             userId = command.userId();
         }
 
-        availabilityService.lockBicycle(command.bicycleNumber(), userId);
-        UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(UserId.of(userId)), user);
-
         // TODO: Is this okay place to check for minimal money?
         //       Is it better to put this into renting policy somehow?
         if (user.role() != UserRole.ADMIN && !walletService.hasMoney(UserId.of(userId), BigDecimal.valueOf(10.00))) {
+            log.warning(prefix() + "User has no minimal funds to rent bicycle");
             throw new NoMinimalFundsException();
         }
+
+        availabilityService.lockBicycle(command.bicycleNumber(), userId);
+        UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(UserId.of(userId)), user);
 
         userRentals.rentBike(command.bicycleNumber());
     }
 
     public void returnBike(ReturnCommand command) {
+        log.info(prefix() + "Returning bicycle " + command.bicycleNumber() + " for user with id " + command.userId());
         User user = authenticationService.getLoggedInUser();
         Integer userId;
 
-        if (command.userId() == null) {
+        if (command.userId() == null || command.userId().equals(user.id())) {
             userId = user.id();
         } else {
             if (user.role() != UserRole.ADMIN) {
@@ -78,4 +85,7 @@ public class RentalService {
         paymentService.payForRent(userId, rentTimeInMinutes);
     }
 
+    private String prefix() {
+        return "[RentalService] ";
+    }
 }

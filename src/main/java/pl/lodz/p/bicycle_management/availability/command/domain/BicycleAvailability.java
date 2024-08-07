@@ -72,14 +72,14 @@ public class BicycleAvailability {
             throw new BicycleAlreadyLockedException();
         }
 
-        log.info(this.toString() + "Locking bicycle " + bicycleNumber + " for user " + userId.asString());
+        log.info(prefix() + "Locking for user " + userId.asString());
 
         this.lockTime = LocalDateTime.now();
         this.userId = userId;
     }
 
     public Integer unlock() {
-        log.info(this.toString() + "Unlocking bicycle " + bicycleNumber + " from user " + this.userId.asString());
+        log.info(prefix() + "Unlocking from user " + this.userId.asString());
         Integer minutes = null;
         if (this.lockTime != null) {
             minutes = (int) lockTime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
@@ -87,6 +87,10 @@ public class BicycleAvailability {
         this.lockTime = null;
         this.userId = null;
         return minutes;
+    }
+
+    private String prefix() {
+        return "[BicycleAvailability with bicycleNumber " + bicycleNumber.asString() + "] ";
     }
 
 }

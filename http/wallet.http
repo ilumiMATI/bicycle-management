@@ -65,6 +65,6 @@ Content-Type: application/json
 Authorization: {{auth_token}}
 
 {
-  "userId": 1,
+  "userId": 3,
   "amount": 10.50
 }

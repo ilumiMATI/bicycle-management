@@ -40,14 +40,8 @@ Content-Type: application/json
     client.global.set("auth_token", "Bearer " + response.body.token);
 %}
 
-### test
-POST http://localhost:8080/api/v1/rentals
-Accept: application/json
-Content-Type: application/json
-Authorization: {{auth_token}}
-
 ### get rentals by user id
-GET http://localhost:8080/api/v1/rentals/1
+GET http://localhost:8080/api/v1/rentals/3
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
@@ -66,7 +60,7 @@ Authorization: {{auth_token}}
 
 {
   "bicycleNumber": "bike1",
-  "userId": 1
+  "userId": 3
 }
 
 ### return bicycle
@@ -77,7 +71,7 @@ Authorization: {{auth_token}}
 
 {
   "bicycleNumber": "bike1",
-  "userId": 1
+  "userId": 3
 }
 
 ### create rentals

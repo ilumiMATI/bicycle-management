@@ -56,7 +56,7 @@ public class UserWallet {
 
     public void pay(Money amount) {
         money = money.subtract(amount);
-        log.info(this.toString() + "Paying: " + amount.asString());
+        log.info(prefix() + "Paying: " + amount.asString());
     }
 
     public void payForRent(Integer timeInMinutes) {
@@ -64,16 +64,20 @@ public class UserWallet {
             throw new IllegalStateException("Rent payment policy not set");
         }
         Money rentPrice = rentPaymentPolicy.calculatePriceForRent(timeInMinutes);
-        log.info(this.toString() + " Rent price: " + rentPrice.asString());
+        log.info(prefix() + "Rent price: " + rentPrice.asString());
         pay(rentPrice);
     }
 
     public void deposit(Money amount) {
         money = money.add(amount);
-        log.info(this.toString() + " Depositing: " + amount.asString());
+        log.info(prefix() + " Depositing: " + amount.asString());
     }
 
     public boolean hasMoney(Money amount) {
         return money.compareTo(amount) > 0;
+    }
+
+    private String prefix() {
+        return "[UserWallet with userId " + userId.value() + "] ";
     }
 }
