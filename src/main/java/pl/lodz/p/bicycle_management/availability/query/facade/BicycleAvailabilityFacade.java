@@ -16,8 +16,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Log
-public
-class BicycleAvailabilityFacade {
+public class BicycleAvailabilityFacade {
 
     private final JpaQueryBicycleAvailabilityRepository bicycleAvailabilityRepository;
     private final BicycleAvailabilityDtoMapper bicycleAvailabilityDtoMapper;

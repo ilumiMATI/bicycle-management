@@ -2,15 +2,17 @@ package pl.lodz.p.bicycle_management.rental.command.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(
+        name = "user_rentals",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "user_id_unique",
+                        name = "user_rentals_user_id_unique",
                         columnNames = "userId"
                 )
         }
@@ -20,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Log
 public class UserRentals {
     @Id
     @SequenceGenerator(
@@ -43,7 +46,7 @@ public class UserRentals {
     List<String> bicycles = new ArrayList<>();
 
     @Version
-    private Integer version;
+    Integer version;
 
     @Transient
     RentingPolicy rentingPolicy;
@@ -59,16 +62,19 @@ public class UserRentals {
         if (rentingPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
-
-        rentingPolicy.rentBicycle(this, bicycleNumber);
+        log.info(prefix() + " Renting bike:" + bicycleNumber);
+        rentingPolicy.rentBicycle( this, bicycleNumber);
     }
 
     public void returnBike(String bicycleNumber) {
         if (returningPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
-
+        log.info(prefix() + " Returning bike:" + bicycleNumber);
         returningPolicy.returnBicycle(this, bicycleNumber);
     }
 
+    private String prefix() {
+        return "[UserRentals with userId " + userId.value() + "] ";
+    }
 }

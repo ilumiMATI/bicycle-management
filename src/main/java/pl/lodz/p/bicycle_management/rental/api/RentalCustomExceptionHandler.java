@@ -1,6 +1,7 @@
 package pl.lodz.p.bicycle_management.rental.api;
 
 import pl.lodz.p.bicycle_management.rental.command.domain.MethodNotAllowedException;
+import pl.lodz.p.bicycle_management.rental.command.domain.NoMinimalFundsException;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsAlreadyExistsException;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsNotFoundException;
 import pl.lodz.p.bicycle_management.rental.query.facade.UserRentalsDtoNotFoundException;
@@ -14,6 +15,11 @@ import java.io.IOException;
 
 @ControllerAdvice
 class RentalCustomExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(NoMinimalFundsException.class)
+    public final ResponseEntity<ErrorResponse> handleUserRentalsNotFoundException(NoMinimalFundsException ex) {
+        return buildResponse(ex,  HttpStatus.PAYMENT_REQUIRED);
+    }
 
     @ExceptionHandler(UserRentalsNotFoundException.class)
     public final ResponseEntity<ErrorResponse> handleUserRentalsNotFoundException(UserRentalsNotFoundException ex) {

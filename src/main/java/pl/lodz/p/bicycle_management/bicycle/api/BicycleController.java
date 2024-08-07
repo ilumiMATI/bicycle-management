@@ -8,9 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
 import pl.lodz.p.bicycle_management.bicycle.domain.BicycleService;
 
-@RestController
-@RequestMapping("/api/v1/bicycles")
+
 @RequiredArgsConstructor
+@RestController
+@RequestMapping(path = "/api/v1/bicycles",
+        produces = "application/json",
+        consumes = "application/json"
+)
 public class BicycleController {
     private final BicycleService bicycleService;
     private final BicycleDtoMapper bicycleDtoMapper;
@@ -47,7 +51,7 @@ public class BicycleController {
 
     @DeleteMapping(path = "/{id}")
     ResponseEntity<Void> removeBicycle(@PathVariable Integer id) {
-        bicycleService.deleteById(id);
+        bicycleService.removeById(id);
         return ResponseEntity.ok().build();
     }
 }

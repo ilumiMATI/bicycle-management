@@ -33,7 +33,7 @@ public class UserRentalsStorageAdapter implements UserRentalsRepository {
     }
 
     @Override
-    public void remove(UserId userId) {
+    public void removeByUserId(final UserId userId) {
         jpaUserRentalsRepository.deleteByUserId(userId);
     }
 

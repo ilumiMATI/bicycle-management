@@ -10,4 +10,8 @@ public record UserId(Integer userId) {
     public String asString() {
         return userId.toString();
     }
+
+    public Integer value() {
+        return userId;
+    }
 }

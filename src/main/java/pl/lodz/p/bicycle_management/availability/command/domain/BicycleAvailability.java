@@ -15,6 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.extern.java.Log;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -34,6 +35,7 @@ import java.time.temporal.ChronoUnit;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Log
 public class BicycleAvailability {
     @Id
     @SequenceGenerator(
@@ -69,15 +71,26 @@ public class BicycleAvailability {
         if (this.userId != null) {
             throw new BicycleAlreadyLockedException();
         }
+
+        log.info(prefix() + "Locking for user " + userId.asString());
+
         this.lockTime = LocalDateTime.now();
         this.userId = userId;
     }
 
     public Integer unlock() {
-        Integer minutes = (int) lockTime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+        log.info(prefix() + "Unlocking from user " + this.userId.asString());
+        Integer minutes = null;
+        if (this.lockTime != null) {
+            minutes = (int) lockTime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+        }
         this.lockTime = null;
         this.userId = null;
         return minutes;
+    }
+
+    private String prefix() {
+        return "[BicycleAvailability with bicycleNumber " + bicycleNumber.asString() + "] ";
     }
 
 }

@@ -23,22 +23,19 @@ public class DefaultBicycles implements CommandLineRunner {
                     new BicycleNumber("bike1"),
                     "TourRay E 3.0 Gent T350",
                     "R-RAYMON",
-                    468,
-                    435
+                    468
             ),
             new Bicycle(
                     new BicycleNumber("bike2"),
                     "SX Youth Blue 14\"",
                     "Ecobike",
-                    468,
-                    256
+                    468
             ),
             new Bicycle(
                     new BicycleNumber("bike3"),
                     "e-Orkan M 1.0",
                     "ROMET",
-                    500,
-                    450
+                    500
             )
     );
 

@@ -3,11 +3,7 @@ package pl.lodz.p.bicycle_management.bicycle.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@EqualsAndHashCode(of = "id")
+@Entity
 @Table(
         name = "bicycles",
         uniqueConstraints = {
@@ -16,7 +12,11 @@ import lombok.*;
                         columnNames = "bicycleNumber"
                 )
 })
-@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Bicycle {
     @Id
     @SequenceGenerator(
@@ -44,17 +44,16 @@ public class Bicycle {
     @Column (nullable = false)
     private Integer batteryChargeDesign;
 
-    @Column (nullable = false)
+    @Column (nullable = true)
     private Integer batteryChargeCurrent;
 
     @Version
     private Integer version;
 
-    public Bicycle(BicycleNumber bicycleNumber, String model, String brand, Integer batteryChargeDesign, Integer batteryChargeCurrent) {
+    public Bicycle(BicycleNumber bicycleNumber, String model, String brand, Integer batteryChargeDesign) {
         this.bicycleNumber = bicycleNumber;
         this.model = model;
         this.brand = brand;
         this.batteryChargeDesign = batteryChargeDesign;
-        this.batteryChargeCurrent = batteryChargeCurrent;
     }
 }

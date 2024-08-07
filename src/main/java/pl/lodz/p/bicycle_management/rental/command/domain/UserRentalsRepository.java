@@ -6,7 +6,7 @@ public interface UserRentalsRepository {
 
     UserRentals save(UserRentals userRentals);
 
-    void remove(UserId userId);
+    void removeByUserId(UserId userId);
 
     Optional<UserRentals> findByUserId(UserId userId);
 

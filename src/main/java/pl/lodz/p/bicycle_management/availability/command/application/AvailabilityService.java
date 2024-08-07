@@ -1,6 +1,7 @@
 package pl.lodz.p.bicycle_management.availability.command.application;
 
 
+import lombok.extern.java.Log;
 import pl.lodz.p.bicycle_management.availability.command.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,44 +9,41 @@ import org.springframework.stereotype.Service;
 @Service
 //@Transactional
 @RequiredArgsConstructor
+@Log
 public class AvailabilityService {
 
     private final BicycleAvailabilityRepository bicycleAvailabilityRepository;
-//    private final AuthenticationService authenticationService;
 
     public BicycleAvailability create(final CreateCommand createCommand) {
+        log.info(prefix() + "Creating new bicycle availability for bicycleNumber: " + createCommand.bicycleNumber());
         return bicycleAvailabilityRepository.save(new BicycleAvailability(BicycleNumber.of(createCommand.bicycleNumber())));
     }
 
     public void remove(final RemoveCommand removeCommand) {
+        log.info(prefix() + "Removing bicycle availability for bicycleNumber: " + removeCommand.bicycleNumber());
         bicycleAvailabilityRepository.remove(BicycleNumber.of(removeCommand.bicycleNumber()));
     }
 
     public BicycleAvailability findByBicycleNumber(BicycleNumber bicycleNumber) {
-
+        log.info(prefix() + "Finding bicycle availability for bicycleNumber: " + bicycleNumber.asString());
         return bicycleAvailabilityRepository.findBy(bicycleNumber)
                 .orElseThrow(BicycleNotFoundException::new);
     }
 
     public void lockBicycle(LockCommand lockCommand) {
-        System.out.println("####### lock bicycle");
-//        User user = authenticationService.getLoggedInUser();
+        log.info(prefix() + "Locking bicycle with bicycleNumber: " + lockCommand.bicycleNumber());
         BicycleAvailability bicycleAvailability = findByBicycleNumber(BicycleNumber.of(lockCommand.bicycleNumber()));
-//        if (lockCommand.userId() == null) {
-//            bicycleAvailability.lockFor(UserId.of(user.bicycleNumber()));
-//        } else {
-//            if (user.role() != UserRole.ADMIN) {
-//                throw new MethodNotAllowedException();
-//            }
-//            bicycleAvailability.lockFor(UserId.of(lockCommand.userId()));
-//        }
         bicycleAvailability.lockFor(UserId.of(lockCommand.userId()));
     }
 
     public Integer unlockBicycle(UnlockCommand unlockCommand) {
-//        User user = authenticationService.getLoggedInUser();
+        log.info(prefix() + "Unlocking bicycle with bicycleNumber: " + unlockCommand.bicycleNumber());
         BicycleAvailability bicycleAvailability = findByBicycleNumber(BicycleNumber.of(unlockCommand.bicycleNumber()));
         return bicycleAvailability.unlock();
+    }
+
+    private String prefix() {
+        return "[AvailabilityService] ";
     }
 
 }
