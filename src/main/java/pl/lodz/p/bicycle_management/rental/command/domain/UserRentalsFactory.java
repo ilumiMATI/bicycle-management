@@ -1,6 +1,12 @@
 package pl.lodz.p.bicycle_management.rental.command.domain;
 
+
+import lombok.RequiredArgsConstructor;
+import pl.lodz.p.bicycle_management.payment.command.application.WalletService;
+
+@RequiredArgsConstructor
 public class UserRentalsFactory {
+
     public static UserRentals createUserRentals(UserId userId) {
         return new UserRentals(userId);
     }

@@ -13,6 +13,8 @@ public class RentalPaymentServiceAdapter implements PaymentService {
 
     @Override
     public void payForRent(Integer userId, Integer timeInMinutes) {
-        paymentService.payForRent(new pl.lodz.p.bicycle_management.payment.command.domain.UserId(userId), timeInMinutes);
+        paymentService.payForRent(new pl.lodz.p.bicycle_management.payment.command.application.RentPaymentCommand(
+                userId, timeInMinutes
+        ));
     }
 }

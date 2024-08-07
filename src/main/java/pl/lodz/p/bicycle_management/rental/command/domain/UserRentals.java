@@ -2,6 +2,7 @@ package pl.lodz.p.bicycle_management.rental.command.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Log
 public class UserRentals {
     @Id
     @SequenceGenerator(
@@ -60,15 +62,15 @@ public class UserRentals {
         if (rentingPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
-
-        rentingPolicy.rentBicycle(this, bicycleNumber);
+        log.info(this.toString() + " Renting bike:" + bicycleNumber);
+        rentingPolicy.rentBicycle( this, bicycleNumber);
     }
 
     public void returnBike(String bicycleNumber) {
         if (returningPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
-
+        log.info(this.toString() + " Returning bike:" + bicycleNumber);
         returningPolicy.returnBicycle(this, bicycleNumber);
     }
 

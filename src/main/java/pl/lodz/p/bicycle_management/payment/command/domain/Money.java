@@ -26,9 +26,9 @@ public record Money(
     //       Add a way to block a rent if there aren't any minimal funds on user wallet
     //       Add a way to deposit money
     public Money subtract(Money money) {
-        if (amount.compareTo(money.amount) < 0) {
-            throw new PaymentInsufficientFundsException();
-        }
+//        if (amount.compareTo(money.amount) < 0) {
+//            throw new PaymentInsufficientFundsException();
+//        }
         return new Money(amount.subtract(money.amount()));
     }
 
@@ -38,6 +38,10 @@ public record Money(
 
     public Money divide(Money money) {
         return new Money(amount.divide(money.amount(), 2, RoundingMode.HALF_UP));
+    }
+
+    public int compareTo(Money money) {
+        return amount.compareTo(money.amount());
     }
 
     public String asString() {

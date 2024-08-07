@@ -1,6 +1,7 @@
 package pl.lodz.p.bicycle_management.rental.command.domain;
 
 import lombok.AllArgsConstructor;
+import pl.lodz.p.bicycle_management.rental.command.application.WalletService;
 
 import java.util.List;
 

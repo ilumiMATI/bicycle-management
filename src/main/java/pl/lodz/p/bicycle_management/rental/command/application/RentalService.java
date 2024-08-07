@@ -5,18 +5,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class RentalService {
+
     private final AuthenticationService authenticationService;
     private final UserRentalsRepository userRentalsRepository;
     private final AvailabilityService availabilityService;
     private final PaymentService paymentService;
-
-//    public void test() {
-//        availabilityService.unlockBicycle(new UnlockCommand("bike1", 1));
-//    }
+    private final WalletService walletService;
 
     public UserRentals create(final CreateCommand createCommand) {
         return userRentalsRepository.save(UserRentalsFactory.createUserRentals(UserId.of(createCommand.userId())));
@@ -48,6 +48,13 @@ public class RentalService {
 
         availabilityService.lockBicycle(command.bicycleNumber(), userId);
         UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(UserId.of(userId)), user);
+
+        // TODO: Is this okay place to check for minimal money?
+        //       Is it better to put this into renting policy somehow?
+        if (user.role() != UserRole.ADMIN && !walletService.hasMoney(UserId.of(userId), BigDecimal.valueOf(10.00))) {
+            throw new NoMinimalFundsException();
+        }
+
         userRentals.rentBike(command.bicycleNumber());
     }
 
