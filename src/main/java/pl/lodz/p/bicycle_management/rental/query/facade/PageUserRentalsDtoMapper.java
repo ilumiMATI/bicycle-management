@@ -9,7 +9,7 @@ import org.mapstruct.Named;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface PageUserRentalsDtoMapper {
+public interface PageUserRentalsDtoMapper extends BicycleNumberMappingHelper{
 
     @Mapping(target = "rentals", qualifiedByName = "toUserRentalsDtoList")
     PageUserRentalsDto toPageDto(PageUserRentals domain);

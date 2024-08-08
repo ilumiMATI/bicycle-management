@@ -40,10 +40,10 @@ public class UserRentals {
     @Embedded
     UserId userId;
 
-    @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_rentals_bicycles", joinColumns = @JoinColumn(name = "user_rentals_id"))
     @Column(name = "bicycle_number", nullable = true)
-    List<String> bicycles = new ArrayList<>();
+    List<BicycleNumber> bicycles = new ArrayList<>();
 
     @Version
     Integer version;
@@ -58,19 +58,19 @@ public class UserRentals {
         this.userId = userId;
     }
 
-    public void rentBike(String bicycleNumber) {
+    public void rentBike(BicycleNumber bicycleNumber) {
         if (rentingPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
-        log.info(prefix() + " Renting bike:" + bicycleNumber);
+        log.info(prefix() + "Renting bike: " + bicycleNumber.asString());
         rentingPolicy.rentBicycle( this, bicycleNumber);
     }
 
-    public void returnBike(String bicycleNumber) {
+    public void returnBike(BicycleNumber bicycleNumber) {
         if (returningPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
-        log.info(prefix() + " Returning bike:" + bicycleNumber);
+        log.info(prefix() + "Returning bike: " + bicycleNumber);
         returningPolicy.returnBicycle(this, bicycleNumber);
     }
 

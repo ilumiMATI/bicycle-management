@@ -58,7 +58,7 @@ public class BicycleAvailability {
     UserId userId;
 
     @Column(nullable = true)
-    LocalDateTime lockTime;
+    LocalDateTime lockStartTime;
 
     @Version
     Integer version;
@@ -74,19 +74,22 @@ public class BicycleAvailability {
 
         log.info(prefix() + "Locking for user " + userId.asString());
 
-        this.lockTime = LocalDateTime.now();
+        this.lockStartTime = LocalDateTime.now();
         this.userId = userId;
     }
 
-    public Integer unlock() {
+    // TODO: Remember to change seconds to minutes
+    public LockDuration unlock() {
         log.info(prefix() + "Unlocking from user " + this.userId.asString());
-        Integer minutes = null;
-        if (this.lockTime != null) {
-            minutes = (int) lockTime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+        LockDuration lockDuration = null;
+        if (this.lockStartTime != null) {
+            Integer minutes = (int) this.lockStartTime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+            lockDuration = LockDuration.of(lockStartTime,minutes);
         }
-        this.lockTime = null;
+        log.info(prefix() + "Bicycle was locked for " + lockDuration.inMinutes().toString());
+        this.lockStartTime = null;
         this.userId = null;
-        return minutes;
+        return lockDuration;
     }
 
     private String prefix() {

@@ -11,8 +11,8 @@ import java.util.List;
 public class UserRentingPolicy implements RentingPolicy {
 
     @Override
-    public void rentBicycle(final UserRentals userRentals, final String bicycleNumber) {
-        final List<String> bicycles = userRentals.getBicycles();
+    public void rentBicycle(final UserRentals userRentals, final BicycleNumber bicycleNumber) {
+        final List<BicycleNumber> bicycles = userRentals.getBicycles();
         if (bicycles.size() >= 2) {
             throw new MethodNotAllowedException();
         }

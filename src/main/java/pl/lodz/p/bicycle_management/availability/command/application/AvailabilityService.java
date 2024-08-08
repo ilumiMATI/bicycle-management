@@ -36,7 +36,7 @@ public class AvailabilityService {
         bicycleAvailability.lockFor(UserId.of(lockCommand.userId()));
     }
 
-    public Integer unlockBicycle(UnlockCommand unlockCommand) {
+    public LockDuration unlockBicycle(UnlockCommand unlockCommand) {
         log.info(prefix() + "Unlocking bicycle with bicycleNumber: " + unlockCommand.bicycleNumber());
         BicycleAvailability bicycleAvailability = findByBicycleNumber(BicycleNumber.of(unlockCommand.bicycleNumber()));
         return bicycleAvailability.unlock();

@@ -12,20 +12,6 @@ Content-Type: application/json
     client.global.set("auth_token", "Bearer " + response.body.token);
 %}
 
-### login vip
-POST http://localhost:8080/api/v1/auth/login
-Accept: application/json
-Content-Type: application/json
-
-{
-  "username": "vip@gmail.com",
-  "password": "password"
-}
-
-> {%
-    client.global.set("auth_token", "Bearer " + response.body.token);
-%}
-
 ### login user
 POST http://localhost:8080/api/v1/auth/login
 Accept: application/json
@@ -40,46 +26,26 @@ Content-Type: application/json
     client.global.set("auth_token", "Bearer " + response.body.token);
 %}
 
-### get rentals by user id
-GET http://localhost:8080/api/v1/rentals/1
+### get all rental reports
+GET http://localhost:8080/api/v1/reports/rentals
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
-### get all rentals
-GET http://localhost:8080/api/v1/rentals
+### get all rental reports with user id
+GET http://localhost:8080/api/v1/reports/rentals/user/1
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
-### rent bicycle
-POST http://localhost:8080/api/v1/rentals/rent
+### get all rental reports with bicycle number
+GET http://localhost:8080/api/v1/reports/rentals/bicycle/bike1
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
 
-{
-  "bicycleNumber": "bike1",
-  "userId": 1
-}
-
-### return bicycle
-POST http://localhost:8080/api/v1/rentals/return
+### get rental report with rentalNumber
+GET http://localhost:8080/api/v1/reports/rentals/OJYRP8582834505
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
-
-{
-  "bicycleNumber": "bike1",
-  "userId": 1
-}
-
-#### create rentals
-#POST http://localhost:8080/api/v1/rentals
-#Accept: application/json
-#Content-Type: application/json
-#Authorization: {{auth_token}}
-#
-#{
-#  "userId": 3
-#}
