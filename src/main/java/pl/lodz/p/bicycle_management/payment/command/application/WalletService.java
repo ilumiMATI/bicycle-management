@@ -33,7 +33,7 @@ public class WalletService {
         log.info(prefix() + "Wallet payment successful, user has " + userWallet.getMoney().asString() + " now");
     }
 
-    public void payForRent(final RentPaymentCommand rentPaymentCommand) {
+    public Money payForRent(final RentPaymentCommand rentPaymentCommand) {
         log.info(prefix() + "Trying to pay for rent with wallet with userId: " + rentPaymentCommand.userId().toString());
 
         UserWallet userWallet = UserWalletFactory.prepareForRentPayment(
@@ -41,7 +41,7 @@ public class WalletService {
                         .orElseThrow(UserWalletNotFoundException::new));
         log.info(prefix() + "Wallet found has " + userWallet.getMoney().asString() + " now");
 
-        userWallet.payForRent(rentPaymentCommand.timeInMinutes());
+        return userWallet.payForRent(rentPaymentCommand.timeInMinutes());
     }
 
     public void deposit(final WalletDepositCommand walletDepositCommand) {

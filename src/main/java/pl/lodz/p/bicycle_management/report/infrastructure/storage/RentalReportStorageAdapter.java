@@ -26,7 +26,7 @@ public class RentalReportStorageAdapter implements RentalReportRepository {
             log.info("Saved entity " + saved);
             return saved;
         } catch (DataIntegrityViolationException ex) {
-            log.warning("User Rentals for User " + rentalReport.getUserId() + " already exits in db");
+            log.warning("Rental Report for User " + rentalReport.getUserId() + " already exits in db");
             throw new RentalReportAlreadyExistsException();
         }
     }

@@ -20,6 +20,7 @@ public class PaymentService { // This is more general service which Later on cou
     private final AuthenticationService authenticationService;
     private final WalletService walletService;
     private final UserService userService;
+    private final ReportService reportService;
 
     public void payForRent(RentPaymentCommand rentPaymentCommand) {
         log.info(prefix() + "Paying rent for " + rentPaymentCommand.userId() + " with time of " + rentPaymentCommand.timeInMinutes() + " minutes");
@@ -27,7 +28,12 @@ public class PaymentService { // This is more general service which Later on cou
             log.info(prefix() + "Admin doesn't have to pay");
             return;
         }
-        walletService.payForRent(rentPaymentCommand);
+        Money rentPrice = walletService.payForRent(rentPaymentCommand);
+        reportService.save(
+                RentalNumber.of(rentPaymentCommand.rentalNumber()),
+                UserId.of(rentPaymentCommand.userId()),
+                rentPrice
+        );
     }
 
     // This is probably only for testing ...
