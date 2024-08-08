@@ -49,3 +49,21 @@ GET http://localhost:8080/api/v1/reports/rentals/OJYRP8582834505
 Accept: application/json
 Content-Type: application/json
 Authorization: {{auth_token}}
+
+### get all rental payment reports
+GET http://localhost:8080/api/v1/reports/rentals/payments
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+### get all rental payment reports with user id
+GET http://localhost:8080/api/v1/reports/rentals/payments/user/1
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}
+
+### get rental payment report with rentalNumber
+GET http://localhost:8080/api/v1/reports/rentals/payments/OJYRP8582834505
+Accept: application/json
+Content-Type: application/json
+Authorization: {{auth_token}}

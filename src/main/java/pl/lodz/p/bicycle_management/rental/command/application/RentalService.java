@@ -92,7 +92,7 @@ public class RentalService {
         );
 
 
-        paymentService.payForRent(userId, rentDuration.inMinutes());
+        paymentService.payForRent(rentalNumber, UserId.of(userId), rentDuration.inMinutes());
     }
 
     private String prefix() {

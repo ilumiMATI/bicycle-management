@@ -59,13 +59,14 @@ public class UserWallet {
         log.info(prefix() + "Paying: " + amount.asString());
     }
 
-    public void payForRent(Integer timeInMinutes) {
+    public Money payForRent(Integer timeInMinutes) {
         if (rentPaymentPolicy == null) {
             throw new IllegalStateException("Rent payment policy not set");
         }
         Money rentPrice = rentPaymentPolicy.calculatePriceForRent(timeInMinutes);
         log.info(prefix() + "Rent price: " + rentPrice.asString());
-        pay(rentPrice);
+        this.pay(rentPrice);
+        return rentPrice;
     }
 
     public void deposit(Money amount) {

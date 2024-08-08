@@ -10,7 +10,7 @@ import pl.lodz.p.bicycle_management.report.domain.RentalReport;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface PageRentalReportDtoMapper {
+public interface PageRentalReportDtoMapper extends ReportsMappingHelper {
 
     @Mapping(target = "reports", qualifiedByName = "toListDto")
     PageRentalReportDto toPageDto(PageRentalReport domain);
@@ -20,9 +20,6 @@ public interface PageRentalReportDtoMapper {
     List<RentalReportDto> toListDto(List<RentalReport> domain);
 
     @Named("toDto")
-    @Mapping(target = "userId", source = "userId.userId")
-    @Mapping(target = "bicycleNumber", source = "bicycleNumber.bicycleNumber")
-    @Mapping(target = "rentalNumber", source = "rentalNumber.rentalNumber")
     RentalReportDto toDto(RentalReport domain);
 
     @Mapping(target = "reports", qualifiedByName = "toListDomain")
@@ -33,8 +30,5 @@ public interface PageRentalReportDtoMapper {
     List<RentalReport> toListDomain(List<RentalReportDto> dto);
 
     @Named("toDomain")
-    @Mapping(target = "userId.userId", source = "userId")
-    @Mapping(target = "bicycleNumber.bicycleNumber", source = "bicycleNumber")
-    @Mapping(target = "rentalNumber.rentalNumber", source = "rentalNumber")
     RentalReport toDomain(RentalReportDto dto);
 }
