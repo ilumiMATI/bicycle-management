@@ -2,9 +2,11 @@ package pl.lodz.p.bicycle_management.user.infrastructure.payment;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.lodz.p.bicycle_management.user.domain.UserWalletService;
 
 @Component
+@Transactional
 @RequiredArgsConstructor
 public class UserWalletServiceAdapter implements UserWalletService {
     private final pl.lodz.p.bicycle_management.payment.command.application.WalletService walletService;

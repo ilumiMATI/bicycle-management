@@ -24,14 +24,14 @@ public class UserService {
                         encoder.encode(user.getPassword())
                 )
         );
-//        rentalService.createRentalsForUser(createdUser.getId());
-//        userWalletService.createWalletForUser(createdUser.getId());
+        rentalService.createRentalsForUser(createdUser.getId());
+        userWalletService.createWalletForUser(createdUser.getId());
         return createdUser;
     }
     public void remove(Integer id) {
         log.info(prefix() + "Removing user with id " + id.toString());
-//        rentalService.removeRentalsForUser(id);
-//        userWalletService.removeWalletForUser(id);
+        rentalService.removeRentalsForUser(id);
+        userWalletService.removeWalletForUser(id);
         userRepository.remove(id);
     }
 
