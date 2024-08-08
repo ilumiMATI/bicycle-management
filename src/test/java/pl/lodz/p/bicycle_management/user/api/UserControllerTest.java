@@ -1,36 +1,88 @@
-package pl.lodz.p.bicycle_management.user.infrastructure.web.user;
+package pl.lodz.p.bicycle_management.user.api;
 
-import pl.lodz.p.bicycle_management.BaseIT;
-import pl.lodz.p.bicycle_management.TestUserFactory;
-import pl.lodz.p.bicycle_management.user.api.ErrorResponse;
-import pl.lodz.p.bicycle_management.user.api.PageUserDto;
-import pl.lodz.p.bicycle_management.user.api.UserDto;
-import pl.lodz.p.bicycle_management.user.domain.User;
-import pl.lodz.p.bicycle_management.user.domain.UserService;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import pl.lodz.p.bicycle_management.BaseIT;
+import pl.lodz.p.bicycle_management.TestUserFactory;
+import pl.lodz.p.bicycle_management.payment.command.domain.UserWallet;
+import pl.lodz.p.bicycle_management.payment.query.facade.UserWalletDto;
+import pl.lodz.p.bicycle_management.rental.command.domain.UserRentals;
+import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsNotFoundException;
+import pl.lodz.p.bicycle_management.report.infrastructure.storage.JpaRentalReportRepository;
+import pl.lodz.p.bicycle_management.user.domain.User;
+import pl.lodz.p.bicycle_management.user.domain.UserRole;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserControllerTest extends BaseIT {
 
-    @Autowired
-    UserService service;
+    // USER NECESSARY DEPENDENCIES
+    
+    @Test
+    void creating_user_should_also_create_user_rentals() {
+        // given
+        User admin = TestUserFactory.createAdmin();
+        Integer adminId = userService.save(admin).getId();
+        String token = getAccessTokenForUser(admin);
+        UserDto newUser = new UserDto(null,"user@bestusers.com","BestUser","12341234", "USER");
+
+        // when
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/users",
+                token,
+                newUser,
+                UserDto.class);
+
+        // then
+        try {
+            UserRentals userRentals = rentalService.findByUserId(
+                    pl.lodz.p.bicycle_management.rental.command.domain.UserId.of(response.getBody().id()));
+            assertEquals(0,userRentals.getBicycles().size());
+        } catch (UserRentalsNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void creating_user_should_also_create_user_wallet() {
+        // given
+        User admin = TestUserFactory.createAdmin();
+        Integer userId = userService.save(admin).getId();
+        String token = getAccessTokenForUser(admin);
+        UserDto newUser = new UserDto(null,"user@bestusers.com","BestUser","12341234", "USER");
+
+        // when
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/users",
+                token,
+                newUser,
+                UserDto.class);
+
+        // then
+        try {
+            UserWalletDto userWalletDto = userWalletFacade.findByUserId(response.getBody().id());
+            assertTrue(true); // :)
+        } catch (UserRentalsNotFoundException e) {
+            fail();
+        }
+    }
+    
+    
+    // USER DEFAULT TESTS
 
     @Test
     void admin_should_get_information_about_any_user() {
         //given
         User admin = TestUserFactory.createAdmin();
-        service.save(admin);
+        userService.save(admin);
         User user = TestUserFactory.createUser();
-        service.save(user);
+        userService.save(user);
         String token = getAccessTokenForUser(admin);
 
         //when
         var response = callHttpMethod(HttpMethod.GET,
-                "/api/v1/users/" + service.findByEmail(user.getEmail()).getId(),
+                "/api/v1/users/" + userService.findByEmail(user.getEmail()).getId(),
                 token,
                 null,
                 UserDto.class);
@@ -49,7 +101,7 @@ class UserControllerTest extends BaseIT {
     void admin_should_get_response_code_404_when_user_not_exits_in_db() {
         //given
         User admin = TestUserFactory.createAdmin();
-        service.save(admin);
+        userService.save(admin);
         String token = getAccessTokenForUser(admin);
 
         //when
@@ -68,13 +120,13 @@ class UserControllerTest extends BaseIT {
         //given
         User user1 = TestUserFactory.createUser();
         User user2 = TestUserFactory.createVIP();
-        service.save(user1);
-        service.save(user2);
+        userService.save(user1);
+        userService.save(user2);
         String token = getAccessTokenForUser(user1);
 
         //when
         var response = callHttpMethod(HttpMethod.GET,
-                "/api/v1/users/" + service.findByEmail(user2.getEmail()).getId(),
+                "/api/v1/users/" + userService.findByEmail(user2.getEmail()).getId(),
                 token,
                 null,
                 ErrorResponse.class);
@@ -87,9 +139,9 @@ class UserControllerTest extends BaseIT {
     void admin_should_get_response_code_conflict_when_user_is_in_db() {
         //given
         User user = TestUserFactory.createUser();
-        service.save(user);
+        userService.save(user);
         User admin = TestUserFactory.createAdmin();
-        service.save(admin);
+        userService.save(admin);
         String token = getAccessTokenForUser(admin);
 
         //when
@@ -109,7 +161,7 @@ class UserControllerTest extends BaseIT {
         //given
         User user = TestUserFactory.createUser();
         User admin = TestUserFactory.createAdmin();
-        service.save(admin);
+        userService.save(admin);
         String token = getAccessTokenForUser(admin);
 
         //when
@@ -134,7 +186,7 @@ class UserControllerTest extends BaseIT {
     void user_should_get_information_about_himself() {
         //given
         User user = TestUserFactory.createUser();
-        service.save(user);
+        userService.save(user);
         String token = getAccessTokenForUser(user);
 
         //when
@@ -168,7 +220,7 @@ class UserControllerTest extends BaseIT {
                 user.getRole()
         );
         User admin = TestUserFactory.createAdmin();
-        service.save(admin);
+        userService.save(admin);
         String token = getAccessTokenForUser(admin);
 
         //when
@@ -186,7 +238,7 @@ class UserControllerTest extends BaseIT {
     void admin_should_be_get_response_code_200_when_update_user_not_exits() {
         //given
         User admin = TestUserFactory.createAdmin();
-        service.save(admin);
+        userService.save(admin);
         String token = getAccessTokenForUser(admin);
         User fakeUser = TestUserFactory.createUser();
 
@@ -231,14 +283,14 @@ class UserControllerTest extends BaseIT {
         //given
         User user = TestUserFactory.createUser();
         User admin = TestUserFactory.createAdmin();
-        service.save(admin);
+        userService.save(admin);
         String token = getAccessTokenForUser(admin);
         userService.save(user);
 
         //when
         var response = callHttpMethod(
                 HttpMethod.DELETE,
-                "/api/v1/users/" + service.findByEmail(user.getEmail()).getId(),
+                "/api/v1/users/" + userService.findByEmail(user.getEmail()).getId(),
                 token,
                 null,
                 UserDto.class);
@@ -252,7 +304,7 @@ class UserControllerTest extends BaseIT {
         //given
         User user = TestUserFactory.createUser();
         User admin = TestUserFactory.createAdmin();
-        service.save(admin);
+        userService.save(admin);
         String token = getAccessTokenForUser(admin);
 
         //when
@@ -293,7 +345,7 @@ class UserControllerTest extends BaseIT {
         //give
         User user = TestUserFactory.createUser();
         User admin = TestUserFactory.createAdmin();
-        service.save(admin);
+        userService.save(admin);
         String token = getAccessTokenForUser(admin);
         userService.save(user);
 

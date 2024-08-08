@@ -6,13 +6,13 @@ import lombok.extern.java.Log;
 
 @Entity
 @Table(
-        name = "user_wallets",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "user_wallets_user_id_unique",
-                        columnNames = "userId"
-                )
-        }
+        name = "user_wallets"//,
+//        uniqueConstraints = {
+//                @UniqueConstraint(
+//                        name = "user_wallets_user_id_unique",
+//                        columnNames = "userId"
+//                )
+//        }
 )
 @Getter
 @Setter

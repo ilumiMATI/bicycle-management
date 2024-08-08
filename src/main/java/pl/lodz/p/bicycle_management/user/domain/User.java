@@ -31,18 +31,22 @@ public class User {
             generator = "user_id_seq"
     )
     private Integer id;
+
     @Column(
             nullable = false
     )
     private String email;
+
     @Column(
             nullable = false
     )
     private String name;
+
     @Column(
             nullable = false
     )
     private String password;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 

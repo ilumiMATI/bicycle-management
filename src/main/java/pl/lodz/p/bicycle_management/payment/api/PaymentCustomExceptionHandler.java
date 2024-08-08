@@ -15,12 +15,12 @@ import java.io.IOException;
 public class PaymentCustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(UserWalletAlreadyExistsException.class)
-    public final ResponseEntity<ErrorResponse> handleMethodNotAllowedException(UserWalletAlreadyExistsException ex) {
+    public final ResponseEntity<ErrorResponse> handleUserWalletAlreadyExistsException(UserWalletAlreadyExistsException ex) {
         return buildResponse(ex,  HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(UserWalletNotFoundException.class)
-    public final ResponseEntity<ErrorResponse> handleMethodNotAllowedException(UserWalletNotFoundException ex) {
+    public final ResponseEntity<ErrorResponse> handleUserWalletNotFoundException(UserWalletNotFoundException ex) {
         return buildResponse(ex,  HttpStatus.NOT_FOUND);
     }
 

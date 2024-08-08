@@ -2,8 +2,10 @@ package pl.lodz.p.bicycle_management.payment.command.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.lodz.p.bicycle_management.payment.command.domain.*;
+import pl.lodz.p.bicycle_management.payment.query.facade.PageUserWallet;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +21,22 @@ public class WalletService {
                         UserId.of(walletCreateCommand.userId())
                 )
         );
+    }
+
+    public void remove(final WalletRemoveCommand walletRemoveCommand) {
+        log.info(prefix() + "Removing wallet with user id " + walletRemoveCommand.userId().toString());
+        userWalletRepository.removeByUserId(UserId.of(walletRemoveCommand.userId()));
+    }
+
+    public UserWallet findByUserId(final UserId userId) {
+        log.info(prefix() + "Finding wallet with user id " + userId.toString());
+        return userWalletRepository.findByUserId(userId)
+                .orElseThrow(UserWalletNotFoundException::new);
+    }
+
+    public PageUserWallet findAll(final Pageable pageable) {
+        log.info(prefix() + "Finding all wallets");
+        return userWalletRepository.findAll(pageable);
     }
 
     public void pay(final WalletPayCommand walletPayCommand) {
@@ -64,10 +82,6 @@ public class WalletService {
         return userWallet.hasMoney(Money.of(walletCheckMoneyCommand.amount()));
     }
 
-    public void remove(final WalletRemoveCommand walletRemoveCommand) {
-        log.info(prefix() + "Removing wallet with user id " + walletRemoveCommand.userId().toString());
-        userWalletRepository.removeByUserId(UserId.of(walletRemoveCommand.userId()));
-    }
 
     private String prefix() {
         return "[WalletService] ";

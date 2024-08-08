@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.io.IOException;
 
 @ControllerAdvice
-class AvailabilityCustomExceptionHandler extends ResponseEntityExceptionHandler {
+public class AvailabilityCustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BicycleNotFoundException.class)
     public final ResponseEntity<ErrorResponse> handleBicycleNotFoundException(BicycleNotFoundException ex) {
