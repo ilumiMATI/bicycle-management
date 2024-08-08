@@ -62,7 +62,7 @@ public class UserRentals {
         if (rentingPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
-        log.info(prefix() + " Renting bike:" + bicycleNumber.asString());
+        log.info(prefix() + "Renting bike: " + bicycleNumber.asString());
         rentingPolicy.rentBicycle( this, bicycleNumber);
     }
 
@@ -70,7 +70,7 @@ public class UserRentals {
         if (returningPolicy == null) {
             throw new IllegalStateException("Renting policy not set");
         }
-        log.info(prefix() + " Returning bike:" + bicycleNumber);
+        log.info(prefix() + "Returning bike: " + bicycleNumber);
         returningPolicy.returnBicycle(this, bicycleNumber);
     }
 
