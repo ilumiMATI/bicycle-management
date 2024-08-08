@@ -8,8 +8,8 @@ import java.util.List;
 @AllArgsConstructor
 public class AdminRentingPolicy implements RentingPolicy{
     @Override
-    public void rentBicycle(final UserRentals userRentals, final String bicycleNumber) {
-        final List<String> bicycles = userRentals.getBicycles();
+    public void rentBicycle(final UserRentals userRentals, final BicycleNumber bicycleNumber) {
+        final List<BicycleNumber> bicycles = userRentals.getBicycles();
         bicycles.add(bicycleNumber);
     }
 }

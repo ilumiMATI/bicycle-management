@@ -5,11 +5,13 @@ import pl.lodz.p.bicycle_management.availability.command.application.UnlockComma
 import pl.lodz.p.bicycle_management.rental.command.application.AvailabilityService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.lodz.p.bicycle_management.rental.command.domain.RentDuration;
 
 @Service
 @AllArgsConstructor
 public class RentalAvailabilityFacade implements AvailabilityService {
-    public final pl.lodz.p.bicycle_management.availability.command.application.AvailabilityService availabilityService;
+    private final pl.lodz.p.bicycle_management.availability.command.application.AvailabilityService availabilityService;
+    private final RentalAvailabilityMapper rentalAvailabilityMapper;
 
     @Override
     public void lockBicycle(final String bicycleNumber, Integer userId) {
@@ -17,7 +19,9 @@ public class RentalAvailabilityFacade implements AvailabilityService {
     }
 
     @Override
-    public Integer unlockBicycle(final String bicycleNumber, Integer userId) {
-        return availabilityService.unlockBicycle(new UnlockCommand(bicycleNumber, userId));
+    public RentDuration unlockBicycle(final String bicycleNumber, Integer userId) {
+        return rentalAvailabilityMapper.toRentalContext(
+                availabilityService.unlockBicycle(new UnlockCommand(bicycleNumber, userId))
+        );
     }
 }

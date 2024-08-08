@@ -19,6 +19,7 @@ public class RentalService {
     private final AvailabilityService availabilityService;
     private final PaymentService paymentService;
     private final WalletService walletService;
+    private final ReportService reportService;
 
     public UserRentals create(final CreateCommand createCommand) {
         log.info(prefix() + "Creating rentals for " + createCommand.userId());
@@ -61,7 +62,7 @@ public class RentalService {
         availabilityService.lockBicycle(command.bicycleNumber(), userId);
         UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(UserId.of(userId)), user);
 
-        userRentals.rentBike(command.bicycleNumber());
+        userRentals.rentBike(BicycleNumber.of(command.bicycleNumber()));
     }
 
     public void returnBike(ReturnCommand command) {
@@ -79,10 +80,19 @@ public class RentalService {
         }
 
         UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(UserId.of(userId)), user);
-        userRentals.returnBike(command.bicycleNumber());
+        userRentals.returnBike(BicycleNumber.of(command.bicycleNumber()));
 
-        Integer rentTimeInMinutes = availabilityService.unlockBicycle(command.bicycleNumber(), userId);
-        paymentService.payForRent(userId, rentTimeInMinutes);
+        // Unlocking bicycle availability and receiving RentDuration
+        RentDuration rentDuration = availabilityService.unlockBicycle(command.bicycleNumber(), userId);
+        RentalNumber rentalNumber = reportService.save(
+                UserId.of(userId),
+                BicycleNumber.of(command.bicycleNumber()),
+                rentDuration.startTime(),
+                rentDuration.endTime()
+        );
+
+
+        paymentService.payForRent(userId, rentDuration.inMinutes());
     }
 
     private String prefix() {
