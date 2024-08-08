@@ -55,14 +55,10 @@ public class BaseIT {
     @Autowired
     private JpaBicycleRepository jpaBicycleRepository;
 
-    @Autowired
-    private JpaBicycleTypeRepository jpaBicycleTypeRepository;
-
     @BeforeEach
     void init() {
         jpaUserRepository.deleteAll();
         jpaBicycleRepository.deleteAll();
-        jpaBicycleTypeRepository.deleteAll();
     }
 
     protected String localUrl(String endpoint) {
