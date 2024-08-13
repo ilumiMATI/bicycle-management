@@ -13,12 +13,12 @@ public class RentalCreateService {
     private final UserRentalsRepository userRentalsRepository;
 
     public UserRentals create(final CreateCommand createCommand) {
-        log.info(prefix() + "Creating rentals for " + createCommand.userId());
+        log.info(prefix() + "Creating rentals for user with id " + createCommand.userId());
         return userRentalsRepository.save(UserRentalsFactory.createUserRentals(UserId.of(createCommand.userId())));
     }
 
     public void remove(final RemoveCommand removeCommand) {
-        log.info(prefix() + "Removing rentals for " + removeCommand.userId());
+        log.info(prefix() + "Removing rentals for user with id " + removeCommand.userId());
         userRentalsRepository.removeByUserId(UserId.of(removeCommand.userId()));
     }
 

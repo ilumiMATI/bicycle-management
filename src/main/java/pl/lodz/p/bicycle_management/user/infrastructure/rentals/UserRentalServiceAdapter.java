@@ -2,6 +2,7 @@ package pl.lodz.p.bicycle_management.user.infrastructure.rentals;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import pl.lodz.p.bicycle_management.user.domain.RentalService;
 
 @Component

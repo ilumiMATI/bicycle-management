@@ -15,7 +15,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import pl.lodz.p.bicycle_management.availability.command.infrastructure.storage.JpaBicycleAvailabilityRepository;
 import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleRepository;
+import pl.lodz.p.bicycle_management.payment.command.application.WalletService;
+import pl.lodz.p.bicycle_management.payment.command.infrastructure.storage.JpaUserWalletRepository;
+import pl.lodz.p.bicycle_management.payment.query.facade.UserWalletFacade;
+import pl.lodz.p.bicycle_management.rental.command.application.RentalService;
+import pl.lodz.p.bicycle_management.rental.command.infrastructure.storage.JpaUserRentalsRepository;
+import pl.lodz.p.bicycle_management.report.infrastructure.storage.JpaRentalPaymentReportRepository;
+import pl.lodz.p.bicycle_management.report.infrastructure.storage.JpaRentalReportRepository;
 import pl.lodz.p.bicycle_management.security.JWTUtil;
 import pl.lodz.p.bicycle_management.user.domain.User;
 import pl.lodz.p.bicycle_management.user.domain.UserService;
@@ -38,6 +46,12 @@ public class BaseIT {
     @Autowired
     protected UserService userService;
 
+    @Autowired
+    protected RentalService rentalService;
+
+    @Autowired
+    protected UserWalletFacade userWalletFacade;
+
     protected BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
@@ -56,13 +70,30 @@ public class BaseIT {
     private JpaBicycleRepository jpaBicycleRepository;
 
     @Autowired
-    private JpaBicycleTypeRepository jpaBicycleTypeRepository;
+    private JpaUserRentalsRepository jpaUserRentalsRepository;
+
+    @Autowired
+    private JpaUserWalletRepository jpaUserWalletRepository;
+
+    @Autowired
+    private JpaRentalReportRepository jpaRentalReportRepository;
+
+    @Autowired
+    private JpaRentalPaymentReportRepository jpaRentalPaymentReportRepository;
+
+    @Autowired
+    private JpaBicycleAvailabilityRepository jpaBicycleAvailabilityRepository;
+
 
     @BeforeEach
     void init() {
-        jpaUserRepository.deleteAll();
         jpaBicycleRepository.deleteAll();
-        jpaBicycleTypeRepository.deleteAll();
+        jpaBicycleAvailabilityRepository.deleteAll();
+        jpaUserRepository.deleteAll();
+        jpaUserRentalsRepository.deleteAll();
+        jpaUserWalletRepository.deleteAll();
+        jpaRentalReportRepository.deleteAll();
+        jpaRentalPaymentReportRepository.deleteAll();
     }
 
     protected String localUrl(String endpoint) {

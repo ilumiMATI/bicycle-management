@@ -14,10 +14,10 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.io.IOException;
 
 @ControllerAdvice
-class RentalCustomExceptionHandler extends ResponseEntityExceptionHandler {
+public class RentalCustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(NoMinimalFundsException.class)
-    public final ResponseEntity<ErrorResponse> handleUserRentalsNotFoundException(NoMinimalFundsException ex) {
+    public final ResponseEntity<ErrorResponse> handleNoMinimalFundsException(NoMinimalFundsException ex) {
         return buildResponse(ex,  HttpStatus.PAYMENT_REQUIRED);
     }
 
