@@ -1,0 +1,345 @@
+package pl.lodz.p.bicycle_management.rental.api;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import pl.lodz.p.bicycle_management.BaseIT;
+import pl.lodz.p.bicycle_management.TestBicycleFactory;
+import pl.lodz.p.bicycle_management.TestUserFactory;
+import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
+import pl.lodz.p.bicycle_management.payment.command.application.WalletDepositCommand;
+import pl.lodz.p.bicycle_management.rental.command.application.RentCommand;
+import pl.lodz.p.bicycle_management.rental.command.application.ReturnCommand;
+import pl.lodz.p.bicycle_management.rental.command.domain.UserId;
+import pl.lodz.p.bicycle_management.rental.command.domain.UserRentals;
+import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsNotFoundException;
+import pl.lodz.p.bicycle_management.user.api.UserDto;
+import pl.lodz.p.bicycle_management.user.domain.User;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class RentalControllerTest extends BaseIT {
+
+    @Test
+    void user_rentals_should_be_created_when_user_is_created() {
+        // given
+        User admin = TestUserFactory.createAdmin();
+        Integer adminId = userService.save(admin).getId();
+        String token = getAccessTokenForUser(admin);
+        UserDto newUser = new UserDto(null,"user@bestusers.com","BestUser","12341234", "USER");
+
+        // when
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/users",
+                token,
+                newUser,
+                UserDto.class);
+
+        // then
+        try {
+            UserRentals userRentals = rentalService.findByUserId(UserId.of(response.getBody().id()));
+            assertEquals(0,userRentals.getBicycles().size());
+        } catch (UserRentalsNotFoundException e) {
+            fail();
+        }
+    }
+
+    @Test
+    void admin_should_be_able_to_rent_bicycle_when_his_wallet_has_less_than_minimal_funds() {
+        // given
+        User admin = TestUserFactory.createAdmin();
+        Integer adminId = userService.save(admin).getId();
+        String token = getAccessTokenForUser(admin);
+
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),adminId);
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        // then
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        UserRentals userRentals = rentalService.findByUserId(UserId.of(adminId));
+        assertEquals(1,userRentals.getBicycles().size());
+        assertEquals(bicycle.getBicycleNumber().asString(), userRentals.getBicycles().get(0).asString());
+    }
+
+    @Test
+    void user_should_not_be_able_to_rent_bicycle_when_his_wallet_has_less_than_minimal_funds() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),userId);
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        // then
+        assertEquals(HttpStatus.PAYMENT_REQUIRED,response.getStatusCode());
+    }
+
+    @Test
+    void user_should_be_able_to_rent_bicycle_when_his_wallet_has_at_least_minimal_funds() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,10.00));
+
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),userId);
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        // then
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        UserRentals userRentals = rentalService.findByUserId(UserId.of(userId));
+        assertEquals(1,userRentals.getBicycles().size());
+        assertEquals(bicycle.getBicycleNumber().asString(), userRentals.getBicycles().get(0).asString());
+    }
+
+    @Test
+    void user_should_be_able_to_rent_bicycle_for_another_user_even_when_his_wallet_has_funds() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        User anotherUser = TestUserFactory.createUser();
+        Integer anotherUserId = userService.save(anotherUser).getId();
+        String token = getAccessTokenForUser(user);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,10.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),anotherUserId);
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        // then
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED,response.getStatusCode());
+    }
+
+    @Test
+    void admin_should_be_able_to_rent_bicycle_for_another_user_even_when_his_wallet_has_no_funds() {
+        // given
+        User admin = TestUserFactory.createAdmin();
+        Integer adminId = userService.save(admin).getId();
+        User anotherUser = TestUserFactory.createUser();
+        Integer anotherUserId = userService.save(anotherUser).getId();
+        String token = getAccessTokenForUser(admin);
+
+        paymentService.depositToWallet(new WalletDepositCommand(adminId,10.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),anotherUserId);
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        // then
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        UserRentals userRentals = rentalService.findByUserId(UserId.of(anotherUserId));
+        assertEquals(1,userRentals.getBicycles().size());
+        assertEquals(bicycle.getBicycleNumber().asString(), userRentals.getBicycles().get(0).asString());
+    }
+
+    @Test
+    void already_rented_bicycles_cannot_be_rented() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        User anotherUser = TestUserFactory.createUser();
+        Integer anotherUserId = userService.save(anotherUser).getId();
+        String token = getAccessTokenForUser(user);
+        String anotherToken = getAccessTokenForUser(anotherUser);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,10.00));
+        paymentService.depositToWallet(new WalletDepositCommand(anotherUserId,10.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),userId);
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        RentCommand anotherRentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),anotherUserId);
+        var anotherResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                anotherToken,
+                anotherRentCommand,
+                RentCommand.class);
+
+        // then
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+        assertEquals(HttpStatus.CONFLICT,anotherResponse.getStatusCode());
+        UserRentals anotherUserRentals = rentalService.findByUserId(UserId.of(anotherUserId));
+        assertEquals(0,anotherUserRentals.getBicycles().size());
+    }
+
+    @Test
+    void nonexistent_bicycles_cannot_be_rented() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,10.00));
+
+        // when
+        RentCommand rentCommand = new RentCommand("nonexistent",userId);
+        var response = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        // then
+        assertEquals(HttpStatus.NOT_FOUND,response.getStatusCode());
+    }
+
+    // RETURN RELATED
+
+    @Test
+    void user_should_be_able_to_return_bicycle_that_was_rented_by_him() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,10.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),userId);
+        var rentResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+        ReturnCommand returnCommand = new ReturnCommand(bicycle.getBicycleNumber().asString(),userId);
+        var returnResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/return",
+                token,
+                returnCommand,
+                ReturnCommand.class);
+
+        // then
+        assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
+        assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
+    }
+
+    @Test
+    void user_should_not_be_able_to_return_bicycle_that_he_did_not_rent() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,10.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        ReturnCommand returnCommand = new ReturnCommand(bicycle.getBicycleNumber().asString(),userId);
+        var returnResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/return",
+                token,
+                returnCommand,
+                ReturnCommand.class);
+
+        // then
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED,returnResponse.getStatusCode());
+    }
+
+    @Test
+    void user_should_not_be_able_to_return_another_users_bicycle() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        User anotherUser = TestUserFactory.createUser();
+        Integer anotherUserId = userService.save(anotherUser).getId();
+        String anotherToken = getAccessTokenForUser(anotherUser);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,10.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),userId);
+        var rentResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+        ReturnCommand returnCommand = new ReturnCommand(bicycle.getBicycleNumber().asString(),userId);
+        var returnResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/return",
+                anotherToken,
+                returnCommand,
+                ReturnCommand.class);
+
+        // then
+        assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
+        assertEquals(HttpStatus.METHOD_NOT_ALLOWED,returnResponse.getStatusCode());
+    }
+
+    @Test
+    void admin_should_be_able_to_return_another_users_bicycle() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        User admin = TestUserFactory.createAdmin();
+        Integer adminId = userService.save(admin).getId();
+        String adminToken = getAccessTokenForUser(admin);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,10.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),userId);
+        var rentResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+        ReturnCommand returnCommand = new ReturnCommand(bicycle.getBicycleNumber().asString(),userId);
+        var returnResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/return",
+                adminToken,
+                returnCommand,
+                ReturnCommand.class);
+
+        // then
+        assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
+        assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
+    }
+}

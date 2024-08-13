@@ -18,7 +18,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserControllerTest extends BaseIT {
 
     // USER NECESSARY DEPENDENCIES
-    
+
+    // TODO: Delete this test bcs it was moved to RentalControllerTest
     @Test
     void creating_user_should_also_create_user_rentals() {
         // given

@@ -83,7 +83,7 @@ public class BicycleAvailability {
         log.info(prefix() + "Unlocking from user " + this.userId.asString());
         LockDuration lockDuration = null;
         if (this.lockStartTime != null) {
-            Integer minutes = (int) this.lockStartTime.until(LocalDateTime.now(), ChronoUnit.SECONDS);
+            Integer minutes = (int) this.lockStartTime.until(LocalDateTime.now(), ChronoUnit.MINUTES);
             lockDuration = LockDuration.of(lockStartTime,minutes);
         }
         log.info(prefix() + "Bicycle was locked for " + lockDuration.inMinutes().toString());

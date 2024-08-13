@@ -16,7 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import pl.lodz.p.bicycle_management.availability.command.infrastructure.storage.JpaBicycleAvailabilityRepository;
+import pl.lodz.p.bicycle_management.bicycle.domain.BicycleService;
 import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleRepository;
+import pl.lodz.p.bicycle_management.payment.command.application.PaymentService;
 import pl.lodz.p.bicycle_management.payment.command.application.WalletService;
 import pl.lodz.p.bicycle_management.payment.command.infrastructure.storage.JpaUserWalletRepository;
 import pl.lodz.p.bicycle_management.payment.query.facade.UserWalletFacade;
@@ -50,7 +52,13 @@ public class BaseIT {
     protected RentalService rentalService;
 
     @Autowired
+    protected BicycleService bicycleService;
+
+    @Autowired
     protected UserWalletFacade userWalletFacade;
+
+    @Autowired
+    protected PaymentService paymentService;
 
     protected BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

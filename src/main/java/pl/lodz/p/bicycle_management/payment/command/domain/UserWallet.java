@@ -75,7 +75,7 @@ public class UserWallet {
     }
 
     public boolean hasMoney(Money amount) {
-        return money.compareTo(amount) > 0;
+        return money.compareTo(amount) >= 0;
     }
 
     private String prefix() {

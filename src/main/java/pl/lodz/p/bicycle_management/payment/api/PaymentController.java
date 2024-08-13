@@ -6,13 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pl.lodz.p.bicycle_management.payment.command.application.AuthenticationService;
 import pl.lodz.p.bicycle_management.payment.command.application.PaymentService;
 import pl.lodz.p.bicycle_management.payment.command.application.WalletDepositCommand;
-import pl.lodz.p.bicycle_management.payment.command.domain.MethodNotAllowedException;
-import pl.lodz.p.bicycle_management.payment.command.domain.User;
-
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController

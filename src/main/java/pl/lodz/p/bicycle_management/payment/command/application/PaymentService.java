@@ -17,7 +17,6 @@ import java.util.Objects;
 @Log
 public class PaymentService { // This is more general service which Later on could also use cards ...
 
-    private final AuthenticationService authenticationService;
     private final WalletService walletService;
     private final UserService userService;
     private final ReportService reportService;
@@ -38,12 +37,12 @@ public class PaymentService { // This is more general service which Later on cou
 
     // This is probably only for testing ...
     public void depositToWallet(WalletDepositCommand walletDepositCommand) {
-        User user = authenticationService.getLoggedInUser();
-        // TODO: Change filter to only allow this for admin
-        if(user.role() != UserRole.ADMIN && !Objects.equals(walletDepositCommand.userId(), user.id())) {
-            log.warning(prefix() + "Only Admin can deposit to wallet");
-            throw new MethodNotAllowedException();
-        }
+//        User user = authenticationService.getLoggedInUser();
+//        // TODO: Change filter to only allow this for admin
+//        if(user.role() != UserRole.ADMIN && !Objects.equals(walletDepositCommand.userId(), user.id())) {
+//            log.warning(prefix() + "Only Admin can deposit to wallet");
+//            throw new MethodNotAllowedException();
+//        }
         log.warning(prefix() + "Depositing...");
         walletService.deposit(walletDepositCommand);
     }
