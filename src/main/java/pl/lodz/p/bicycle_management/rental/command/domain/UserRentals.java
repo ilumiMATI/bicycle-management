@@ -9,13 +9,13 @@ import java.util.List;
 
 @Entity
 @Table(
-        name = "user_rentals"
-//        uniqueConstraints = {
-//                @UniqueConstraint(
-//                        name = "user_rentals_user_id_unique",
-//                        columnNames = "userId"
-//                )
-//        }
+        name = "user_rentals",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "user_rentals_user_id_unique",
+                        columnNames = "userId"
+                )
+        }
 )
 @Getter
 @Setter
