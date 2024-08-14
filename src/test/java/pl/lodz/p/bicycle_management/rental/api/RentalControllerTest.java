@@ -8,7 +8,6 @@ import pl.lodz.p.bicycle_management.TestBicycleFactory;
 import pl.lodz.p.bicycle_management.TestUserFactory;
 import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
 import pl.lodz.p.bicycle_management.payment.command.application.WalletDepositCommand;
-import pl.lodz.p.bicycle_management.payment.command.domain.UserWallet;
 import pl.lodz.p.bicycle_management.payment.query.facade.UserWalletDto;
 import pl.lodz.p.bicycle_management.rental.command.application.RentCommand;
 import pl.lodz.p.bicycle_management.rental.command.application.ReturnCommand;
@@ -20,8 +19,6 @@ import pl.lodz.p.bicycle_management.user.domain.User;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,6 +45,30 @@ public class RentalControllerTest extends BaseIT {
             assertEquals(0,userRentals.getBicycles().size());
         } catch (UserRentalsNotFoundException e) {
             fail();
+        }
+    }
+
+    @Test
+    void user_rentals_should_be_deleted_when_user_is_deleted() {
+        // given
+        User admin = TestUserFactory.createAdmin();
+        Integer adminId = userService.save(admin).getId();
+        String token = getAccessTokenForUser(admin);
+        UserDto newUser = new UserDto(null,"user@bestusers.com","BestUser","12341234", "USER");
+
+        // when
+        var response = callHttpMethod(HttpMethod.DELETE,
+                "/api/v1/users/" + adminId.toString(),
+                token,
+                null,
+                Void.class);
+
+        // then
+        try {
+            UserRentals userRentals = rentalService.findByUserId(UserId.of(adminId));
+            fail();
+        } catch (UserRentalsNotFoundException e) {
+            assertTrue(true);
         }
     }
 
@@ -259,6 +280,8 @@ public class RentalControllerTest extends BaseIT {
         // then
         assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
         assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
+        UserRentals userRentals = rentalService.findByUserId(UserId.of(userId));
+        assertEquals(0,userRentals.getBicycles().size());
     }
 
     @Test
@@ -347,6 +370,8 @@ public class RentalControllerTest extends BaseIT {
         // then
         assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
         assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
+        UserRentals userRentals = rentalService.findByUserId(UserId.of(userId));
+        assertEquals(0,userRentals.getBicycles().size());
     }
 
     @Test
@@ -381,6 +406,8 @@ public class RentalControllerTest extends BaseIT {
         assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
         UserWalletDto userWalletDto = userWalletFacade.findByUserId(userId);
         assertTrue(userWalletDto.money().compareTo(BigDecimal.valueOf(50.00)) < 0);
+        UserRentals userRentals = rentalService.findByUserId(UserId.of(userId));
+        assertEquals(0,userRentals.getBicycles().size());
     }
 
     @Test
@@ -415,5 +442,7 @@ public class RentalControllerTest extends BaseIT {
         assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
         UserWalletDto userWalletDto = userWalletFacade.findByUserId(adminId);
         assertEquals(BigDecimal.valueOf(50.00).setScale(2, RoundingMode.HALF_UP), userWalletDto.money());
+        UserRentals userRentals = rentalService.findByUserId(UserId.of(adminId));
+        assertEquals(0,userRentals.getBicycles().size());
     }
 }
