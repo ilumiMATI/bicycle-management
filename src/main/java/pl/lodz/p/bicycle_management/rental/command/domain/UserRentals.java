@@ -74,6 +74,10 @@ public class UserRentals {
         returningPolicy.returnBicycle(this, bicycleNumber);
     }
 
+    public boolean hasRentedBike(BicycleNumber bicycleNumber) {
+        return bicycles.contains(bicycleNumber);
+    }
+
     private String prefix() {
         return "[UserRentals with userId " + userId.value() + "] ";
     }

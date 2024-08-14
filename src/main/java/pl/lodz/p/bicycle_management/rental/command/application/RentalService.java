@@ -80,6 +80,11 @@ public class RentalService {
         }
 
         UserRentals userRentals = UserRentalsFactory.prepareUserRentalsForUser(findByUserId(UserId.of(userId)), user);
+
+        // Returning bicycles is allowed only when they are rented
+        if (!userRentals.hasRentedBike(BicycleNumber.of(command.bicycleNumber()))) {
+            throw new MethodNotAllowedException();
+        }
         userRentals.returnBike(BicycleNumber.of(command.bicycleNumber()));
 
         // Unlocking bicycle availability and receiving RentDuration
@@ -90,7 +95,6 @@ public class RentalService {
                 rentDuration.startTime(),
                 rentDuration.endTime()
         );
-
 
         paymentService.payForRent(rentalNumber, UserId.of(userId), rentDuration.inMinutes());
     }

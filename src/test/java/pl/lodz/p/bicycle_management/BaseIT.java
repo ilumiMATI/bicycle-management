@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,13 +16,19 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import pl.lodz.p.bicycle_management.availability.command.application.AvailabilityService;
 import pl.lodz.p.bicycle_management.availability.command.infrastructure.storage.JpaBicycleAvailabilityRepository;
+import pl.lodz.p.bicycle_management.bicycle.domain.BicycleService;
 import pl.lodz.p.bicycle_management.bicycle.infrastructure.storage.JpaBicycleRepository;
-import pl.lodz.p.bicycle_management.payment.command.application.WalletService;
+import pl.lodz.p.bicycle_management.clock.Clock;
+import pl.lodz.p.bicycle_management.clock.ClockService;
+import pl.lodz.p.bicycle_management.payment.command.application.PaymentService;
 import pl.lodz.p.bicycle_management.payment.command.infrastructure.storage.JpaUserWalletRepository;
 import pl.lodz.p.bicycle_management.payment.query.facade.UserWalletFacade;
 import pl.lodz.p.bicycle_management.rental.command.application.RentalService;
 import pl.lodz.p.bicycle_management.rental.command.infrastructure.storage.JpaUserRentalsRepository;
+import pl.lodz.p.bicycle_management.report.domain.RentalPaymentReportService;
+import pl.lodz.p.bicycle_management.report.domain.RentalReportService;
 import pl.lodz.p.bicycle_management.report.infrastructure.storage.JpaRentalPaymentReportRepository;
 import pl.lodz.p.bicycle_management.report.infrastructure.storage.JpaRentalReportRepository;
 import pl.lodz.p.bicycle_management.security.JWTUtil;
@@ -35,6 +42,7 @@ import pl.lodz.p.bicycle_management.user.infrastructure.storage.JpaUserRepositor
         classes = BicycleManagementApplication.class
 )
 @ExtendWith(SpringExtension.class)
+@Import(TestClockConfiguration.class)
 public class BaseIT {
 
     @Autowired
@@ -50,7 +58,25 @@ public class BaseIT {
     protected RentalService rentalService;
 
     @Autowired
+    protected BicycleService bicycleService;
+
+    @Autowired
     protected UserWalletFacade userWalletFacade;
+
+    @Autowired
+    protected PaymentService paymentService;
+
+    @Autowired
+    protected RentalReportService rentalReportService;
+
+    @Autowired
+    protected RentalPaymentReportService rentalPaymentReportService;
+
+    @Autowired
+    protected Clock clock;
+
+    @Autowired
+    protected AvailabilityService availabilityService;
 
     protected BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
