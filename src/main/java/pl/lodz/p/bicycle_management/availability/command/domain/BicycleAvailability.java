@@ -69,10 +69,9 @@ public class BicycleAvailability {
         this.userId = userId;
     }
 
-    // TODO: Remember to change seconds to minutes
     public LockDuration unlock(LocalDateTime unlockTime) {
-        log.info(prefix() + "Unlocking from user " + this.userId.asString());
-        LockDuration lockDuration = null;
+        log.info(prefix() + "Unlocking from user " + (this.userId != null ? this.userId.asString() : "null"));
+        LockDuration lockDuration = new LockDuration(null, 0);
         if (this.lockStartTime != null) {
             Integer minutes = (int) this.lockStartTime.until(unlockTime, ChronoUnit.MINUTES);
             lockDuration = LockDuration.of(lockStartTime,minutes);

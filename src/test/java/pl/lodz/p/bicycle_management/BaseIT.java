@@ -27,6 +27,8 @@ import pl.lodz.p.bicycle_management.payment.command.infrastructure.storage.JpaUs
 import pl.lodz.p.bicycle_management.payment.query.facade.UserWalletFacade;
 import pl.lodz.p.bicycle_management.rental.command.application.RentalService;
 import pl.lodz.p.bicycle_management.rental.command.infrastructure.storage.JpaUserRentalsRepository;
+import pl.lodz.p.bicycle_management.report.domain.RentalPaymentReportService;
+import pl.lodz.p.bicycle_management.report.domain.RentalReportService;
 import pl.lodz.p.bicycle_management.report.infrastructure.storage.JpaRentalPaymentReportRepository;
 import pl.lodz.p.bicycle_management.report.infrastructure.storage.JpaRentalReportRepository;
 import pl.lodz.p.bicycle_management.security.JWTUtil;
@@ -63,6 +65,12 @@ public class BaseIT {
 
     @Autowired
     protected PaymentService paymentService;
+
+    @Autowired
+    protected RentalReportService rentalReportService;
+
+    @Autowired
+    protected RentalPaymentReportService rentalPaymentReportService;
 
     @Autowired
     protected Clock clock;

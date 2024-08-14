@@ -1,6 +1,8 @@
 package pl.lodz.p.bicycle_management.rental.api;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import pl.lodz.p.bicycle_management.BaseIT;
@@ -8,12 +10,15 @@ import pl.lodz.p.bicycle_management.TestBicycleFactory;
 import pl.lodz.p.bicycle_management.TestUserFactory;
 import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
 import pl.lodz.p.bicycle_management.payment.command.application.WalletDepositCommand;
+import pl.lodz.p.bicycle_management.payment.command.domain.Money;
 import pl.lodz.p.bicycle_management.payment.query.facade.UserWalletDto;
 import pl.lodz.p.bicycle_management.rental.command.application.RentCommand;
 import pl.lodz.p.bicycle_management.rental.command.application.ReturnCommand;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserId;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentals;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsNotFoundException;
+import pl.lodz.p.bicycle_management.report.domain.PageRentalPaymentReport;
+import pl.lodz.p.bicycle_management.report.domain.PageRentalReport;
 import pl.lodz.p.bicycle_management.user.api.UserDto;
 import pl.lodz.p.bicycle_management.user.domain.User;
 
@@ -444,5 +449,87 @@ public class RentalControllerTest extends BaseIT {
         assertEquals(BigDecimal.valueOf(50.00).setScale(2, RoundingMode.HALF_UP), userWalletDto.money());
         UserRentals userRentals = rentalService.findByUserId(UserId.of(adminId));
         assertEquals(0,userRentals.getBicycles().size());
+    }
+
+    // REPORTING TESTS
+
+    @Test
+    void returning_bicycle_should_generate_rental_report() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,50.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),userId);
+        var rentResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        clock.addMinutes(10); // time change
+
+        ReturnCommand returnCommand = new ReturnCommand(bicycle.getBicycleNumber().asString(),userId);
+        var returnResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/return",
+                token,
+                returnCommand,
+                ReturnCommand.class);
+
+        assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
+        assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
+
+        PageRentalReport pageRentalReport = rentalReportService.findAllByUserId(
+                pl.lodz.p.bicycle_management.report.domain.UserId.of(userId),
+                PageRequest.of(0,2));
+
+        assertEquals(1,pageRentalReport.getTotalElements());
+        assertEquals(bicycle.getBicycleNumber().asString(),pageRentalReport.getReports().get(0).getBicycleNumber().asString());
+        assertEquals(userId,pageRentalReport.getReports().get(0).getUserId().value());
+    }
+
+    @Test
+    void returning_bicycle_should_generate_rental_payment_report() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,50.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),userId);
+        var rentResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        clock.addMinutes(10); // time change
+
+        ReturnCommand returnCommand = new ReturnCommand(bicycle.getBicycleNumber().asString(),userId);
+        var returnResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/return",
+                token,
+                returnCommand,
+                ReturnCommand.class);
+
+        assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
+        assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
+
+        PageRentalPaymentReport pageRentalPaymentReport = rentalPaymentReportService.findAllByUserId(
+                pl.lodz.p.bicycle_management.report.domain.UserId.of(userId),
+                PageRequest.of(0,2));
+
+        assertEquals(1,pageRentalPaymentReport.getTotalElements());
+        assertEquals(userId,pageRentalPaymentReport.getReports().get(0).getUserId().value());
+        UserWalletDto userWalletDto = userWalletFacade.findByUserId(userId);
+        Money paid = Money.of(50.00).subtract(Money.of(userWalletDto.money()));
+        assertEquals(paid.amount(),pageRentalPaymentReport.getReports().get(0).getPaidPrice().amount());
     }
 }
