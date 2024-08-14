@@ -1,15 +1,6 @@
 package pl.lodz.p.bicycle_management.availability.command.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -67,23 +58,23 @@ public class BicycleAvailability {
         this.bicycleNumber = bicycleNumber;
     }
 
-    public void lockFor(UserId userId) {
+    public void lockFor(UserId userId, LocalDateTime lockTime) {
         if (this.userId != null) {
             throw new BicycleAlreadyLockedException();
         }
 
         log.info(prefix() + "Locking for user " + userId.asString());
 
-        this.lockStartTime = LocalDateTime.now();
+        this.lockStartTime = lockTime;
         this.userId = userId;
     }
 
     // TODO: Remember to change seconds to minutes
-    public LockDuration unlock() {
+    public LockDuration unlock(LocalDateTime unlockTime) {
         log.info(prefix() + "Unlocking from user " + this.userId.asString());
         LockDuration lockDuration = null;
         if (this.lockStartTime != null) {
-            Integer minutes = (int) this.lockStartTime.until(LocalDateTime.now(), ChronoUnit.MINUTES);
+            Integer minutes = (int) this.lockStartTime.until(unlockTime, ChronoUnit.MINUTES);
             lockDuration = LockDuration.of(lockStartTime,minutes);
         }
         log.info(prefix() + "Bicycle was locked for " + lockDuration.inMinutes().toString());

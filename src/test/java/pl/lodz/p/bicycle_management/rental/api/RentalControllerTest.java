@@ -8,6 +8,8 @@ import pl.lodz.p.bicycle_management.TestBicycleFactory;
 import pl.lodz.p.bicycle_management.TestUserFactory;
 import pl.lodz.p.bicycle_management.bicycle.domain.Bicycle;
 import pl.lodz.p.bicycle_management.payment.command.application.WalletDepositCommand;
+import pl.lodz.p.bicycle_management.payment.command.domain.UserWallet;
+import pl.lodz.p.bicycle_management.payment.query.facade.UserWalletDto;
 import pl.lodz.p.bicycle_management.rental.command.application.RentCommand;
 import pl.lodz.p.bicycle_management.rental.command.application.ReturnCommand;
 import pl.lodz.p.bicycle_management.rental.command.domain.UserId;
@@ -16,8 +18,12 @@ import pl.lodz.p.bicycle_management.rental.command.domain.UserRentalsNotFoundExc
 import pl.lodz.p.bicycle_management.user.api.UserDto;
 import pl.lodz.p.bicycle_management.user.domain.User;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class RentalControllerTest extends BaseIT {
 
@@ -341,5 +347,73 @@ public class RentalControllerTest extends BaseIT {
         // then
         assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
         assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
+    }
+
+    @Test
+    void user_should_be_charged_after_return_of_bicycle() {
+        // given
+        User user = TestUserFactory.createUser();
+        Integer userId = userService.save(user).getId();
+        String token = getAccessTokenForUser(user);
+
+        paymentService.depositToWallet(new WalletDepositCommand(userId,50.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),userId);
+        var rentResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        clock.addMinutes(10); // time change
+
+        ReturnCommand returnCommand = new ReturnCommand(bicycle.getBicycleNumber().asString(),userId);
+        var returnResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/return",
+                token,
+                returnCommand,
+                ReturnCommand.class);
+
+        // then
+        assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
+        assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
+        UserWalletDto userWalletDto = userWalletFacade.findByUserId(userId);
+        assertTrue(userWalletDto.money().compareTo(BigDecimal.valueOf(50.00)) < 0);
+    }
+
+    @Test
+    void admin_should_not_be_charged_after_return_of_bicycle() {
+        // given
+        User admin = TestUserFactory.createAdmin();
+        Integer adminId = userService.save(admin).getId();
+        String token = getAccessTokenForUser(admin);
+
+        paymentService.depositToWallet(new WalletDepositCommand(adminId,50.00));
+        Bicycle bicycle = bicycleService.save(TestBicycleFactory.createBicycle());
+
+        // when
+        RentCommand rentCommand = new RentCommand(bicycle.getBicycleNumber().asString(),adminId);
+        var rentResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/rent",
+                token,
+                rentCommand,
+                RentCommand.class);
+
+        clock.addMinutes(10); // time change
+
+        ReturnCommand returnCommand = new ReturnCommand(bicycle.getBicycleNumber().asString(),adminId);
+        var returnResponse = callHttpMethod(HttpMethod.POST,
+                "/api/v1/rentals/return",
+                token,
+                returnCommand,
+                ReturnCommand.class);
+
+        // then
+        assertEquals(HttpStatus.OK,rentResponse.getStatusCode());
+        assertEquals(HttpStatus.OK,returnResponse.getStatusCode());
+        UserWalletDto userWalletDto = userWalletFacade.findByUserId(adminId);
+        assertEquals(BigDecimal.valueOf(50.00).setScale(2, RoundingMode.HALF_UP), userWalletDto.money());
     }
 }
